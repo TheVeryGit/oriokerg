@@ -1,0 +1,58 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: public/images/uploads
+public_folder: /images/uploads
+
+collections:
+  - name: cats
+    label: Кошки и производители
+    folder: content/cats
+    create: true
+    extension: md
+    format: frontmatter
+    fields:
+      - { label: Имя, name: name, widget: string }
+      - label: Тип
+        name: type
+        widget: select
+        options:
+          - Производитель
+          - Котёнок в продаже
+      - label: Пол
+        name: gender
+        widget: select
+        options:
+          - Кот
+          - Кошка
+      - { label: Окрас, name: color, widget: string }
+      - { label: Цена, name: price, widget: number, required: false }
+      - { label: Описание, name: description, widget: text }
+      - label: Фотографии
+        name: photos
+        widget: list
+        field: { label: Фото, name: photo, widget: image }
+      - { label: Доступно, name: available, widget: boolean, default: true }
+  - name: kittens
+    label: Котята в продаже
+    folder: content/kittens
+    create: true
+    extension: md
+    format: frontmatter
+    fields:
+      - { label: Имя, name: name, widget: string }
+      - label: Пол
+        name: gender
+        widget: select
+        options:
+          - Кот
+          - Кошка
+      - { label: Окрас, name: color, widget: string }
+      - { label: Цена, name: price, widget: number }
+      - { label: Описание, name: description, widget: text }
+      - label: Фотографии
+        name: photos
+        widget: list
+        field: { label: Фото, name: photo, widget: image }
+      - { label: Зарезервирован, name: reserved, widget: boolean, default: false }
