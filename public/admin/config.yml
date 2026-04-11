@@ -1,6 +1,28 @@
 backend:
   name: git-gateway
+  repo: TheVeryGit/oriokerg
   branch: main
+  auth_type: pkce
+  base_url: https://auth.decapbridge.com
+  auth_endpoint: /sites/cf4c374d-f26f-4302-82b4-9b07ac3b4b50/pkce
+  auth_token_endpoint: /sites/cf4c374d-f26f-4302-82b4-9b07ac3b4b50/token
+  gateway_url: https://gateway.decapbridge.com
+  commit_messages:
+    create: Create {{collection}} "{{slug}}" - {{author-name}} <{{author-login}}> via DecapBridge
+    update: Update {{collection}} "{{slug}}" - {{author-name}} <{{author-login}}> via DecapBridge
+    delete: Delete {{collection}} "{{slug}}" - {{author-name}} <{{author-login}}> via DecapBridge
+    uploadMedia: Upload "{{path}}" - {{author-name}} <{{author-login}}> via DecapBridge
+    deleteMedia: Delete "{{path}}" - {{author-name}} <{{author-login}}> via DecapBridge
+    openAuthoring: Message {{message}} - {{author-name}} <{{author-login}}> via DecapBridge
+
+auth:
+  email_claim: email
+  first_name_claim: first_name
+  last_name_claim: last_name
+  avatar_url_claim: avatar_url
+
+logo_url: https://decapbridge.com/decapcms-with-bridge.svg
+site_url: https://oriokerg.ru
 
 media_folder: public/images/uploads
 public_folder: /images/uploads
@@ -34,6 +56,7 @@ collections:
         widget: list
         field: { label: Фото, name: photo, widget: image }
       - { label: Доступно, name: available, widget: boolean, default: true }
+
   - name: kittens
     label: Котята в продаже
     folder: content/kittens
@@ -55,4 +78,4 @@ collections:
         name: photos
         widget: list
         field: { label: Фото, name: photo, widget: image }
-      - { label: Зарезервирован, name: reserved, widget: boolean, default: false }
+      - { label: Зарезервировано, name: reserved, widget: boolean, default: false }
