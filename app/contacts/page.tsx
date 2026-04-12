@@ -1,22 +1,26 @@
-const contacts = [
-  {
-    href: "https://t.me/oriokerg",
-    label: "Telegram",
-    description: "@oriokerg",
-  },
-  {
-    href: "https://wa.me/79000000000",
-    label: "WhatsApp",
-    description: "+7 900 000 00 00",
-  },
-  {
-    href: "tel:+79000000000",
-    label: "Позвонить",
-    description: "+7 900 000 00 00",
-  },
-];
+import type { ContactsSettings } from "@/lib/content";
+import { getSettings } from "@/lib/content";
 
 export default function ContactsPage() {
+  const contacts = getSettings<ContactsSettings>("contacts");
+  const contactItems = [
+    {
+      href: contacts.telegram,
+      label: "Telegram",
+      description: contacts.telegram,
+    },
+    {
+      href: contacts.whatsapp,
+      label: "WhatsApp",
+      description: contacts.whatsapp,
+    },
+    {
+      href: `tel:${contacts.phone.replace(/[^\d+]/g, "")}`,
+      label: "Позвонить",
+      description: contacts.phone,
+    },
+  ];
+
   return (
     <div className="mx-auto flex w-full max-w-7xl flex-col gap-10 px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
       <section className="max-w-3xl">
@@ -31,7 +35,7 @@ export default function ContactsPage() {
       </section>
 
       <div className="grid gap-6 md:grid-cols-3">
-        {contacts.map((contact) => (
+        {contactItems.map((contact) => (
           <a
             key={contact.label}
             href={contact.href}

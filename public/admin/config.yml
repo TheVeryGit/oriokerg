@@ -79,3 +79,29 @@ collections:
         widget: list
         field: { label: Фото, name: photo, widget: image }
       - { label: Зарезервировано, name: reserved, widget: boolean, default: false }
+
+  - name: settings
+    label: Настройки сайта
+    files:
+      - label: Контакты и общее
+        name: contacts
+        file: content/settings/contacts.md
+        fields:
+          - { name: phone, label: Телефон, widget: string }
+          - { name: telegram, label: "Telegram (ссылка)", widget: string }
+          - { name: whatsapp, label: "WhatsApp (ссылка)", widget: string }
+          - { name: address, label: "Адрес (необязательно)", widget: string, required: false }
+      - label: Главная страница
+        name: homepage
+        file: content/settings/homepage.md
+        fields:
+          - { name: hero_title, label: "Заголовок hero", widget: string }
+          - { name: hero_subtitle, label: "Подзаголовок hero", widget: string }
+          - { name: intro_text, label: "Вступительный текст", widget: text }
+      - label: О питомнике
+        name: about
+        file: content/settings/about.md
+        fields:
+          - { name: title, label: Заголовок, widget: string }
+          - { name: body, label: "Текст страницы", widget: markdown }
+          - { name: photo, label: Фото, widget: image, required: false }

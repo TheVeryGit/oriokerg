@@ -23,6 +23,24 @@ export type KittenEntry = BaseEntry & {
   reserved: boolean;
 };
 
+export type ContactsSettings = {
+  phone: string;
+  telegram: string;
+  whatsapp: string;
+  address?: string;
+};
+
+export type HomepageSettings = {
+  hero_title: string;
+  hero_subtitle: string;
+  intro_text: string;
+};
+
+export type AboutSettings = {
+  title: string;
+  photo?: string;
+};
+
 const contentRoot = path.join(process.cwd(), "content");
 
 function listMarkdownFiles(directory: string) {
@@ -94,6 +112,18 @@ function readFileEntry(directoryName: string, fileName: string) {
   };
 }
 
+function readSettingsEntry(fileName: string) {
+  const normalizedFileName = fileName.endsWith(".md") ? fileName : `${fileName}.md`;
+  const fullPath = path.join(contentRoot, "settings", normalizedFileName);
+  const rawFile = fs.readFileSync(fullPath, "utf8");
+  const { data, content } = matter(rawFile);
+
+  return {
+    data,
+    content: content.trim(),
+  };
+}
+
 export function getCats(): CatEntry[] {
   const directory = path.join(contentRoot, "cats");
 
@@ -139,6 +169,14 @@ export function getKittens(): KittenEntry[] {
       };
     })
     .sort((left, right) => left.name.localeCompare(right.name, "ru"));
+}
+
+export function getSettings<T>(fileName: string): T {
+  return readSettingsEntry(fileName).data as T;
+}
+
+export function getSettingsContent(fileName: string) {
+  return readSettingsEntry(fileName).content;
 }
 
 export function formatPrice(price?: number) {

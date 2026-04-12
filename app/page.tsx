@@ -1,6 +1,11 @@
 import Link from "next/link";
 
+import type { HomepageSettings } from "@/lib/content";
+import { getSettings } from "@/lib/content";
+
 export default function HomePage() {
+  const homepage = getSettings<HomepageSettings>("homepage");
+
   return (
     <div className="mx-auto flex w-full max-w-7xl flex-col gap-16 px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
       <section className="overflow-hidden rounded-[2.5rem] border border-border bg-card px-6 py-16 sm:px-10 lg:px-14 lg:py-24">
@@ -9,14 +14,13 @@ export default function HomePage() {
             Premium Cattery
           </p>
           <h1 className="mt-6 text-4xl font-semibold tracking-tight text-foreground sm:text-5xl lg:text-7xl">
-            OrioKerg
+            {homepage.hero_title}
           </h1>
           <p className="mt-6 text-xl text-foreground/90 sm:text-2xl">
-            Питомник ориентальных кошек
+            {homepage.hero_subtitle}
           </p>
           <p className="mt-8 max-w-2xl text-base leading-8 text-muted sm:text-lg">
-            Спокойное, современное пространство для знакомства с выпускниками
-            питомника, производителями и котятами, которые ищут свой новый дом.
+            {homepage.intro_text}
           </p>
           <div className="mt-10">
             <Link
