@@ -1,13 +1,31 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="noindex" />
-    <title>Content Manager</title>
+    <link rel="icon" href="/favicon.ico" />
+    <title>OrioKerg — управление сайтом</title>
     <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   </head>
   <body>
     <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+    <script>
+      // Оформление панели предпросмотра в тёплой гамме сайта
+      (function () {
+        if (!window.CMS || typeof window.CMS.registerPreviewStyle !== "function") {
+          return;
+        }
+
+        var previewCss =
+          "@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600&display=swap');" +
+          "body{font-family:Inter,system-ui,sans-serif;color:#2e2620;background:#f7f1e7;padding:28px;line-height:1.7;}" +
+          "h1,h2,h3,h4{font-family:'Cormorant Garamond',Georgia,serif;color:#2e2620;font-weight:600;}" +
+          "h1{font-size:2.6rem;margin:0 0 .4em;} h2{font-size:2rem;}" +
+          "a{color:#9a6b3f;} img{max-width:100%;border-radius:16px;}";
+
+        window.CMS.registerPreviewStyle(previewCss, { raw: true });
+      })();
+    </script>
   </body>
 </html>

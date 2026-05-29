@@ -21,8 +21,11 @@ auth:
   last_name_claim: last_name
   avatar_url_claim: avatar_url
 
+locale: ru
+
 logo_url: https://decapbridge.com/decapcms-with-bridge.svg
 site_url: https://oriokerg.ru
+display_url: https://oriokerg.ru
 
 media_folder: public/images/uploads
 public_folder: /images/uploads
@@ -33,84 +36,110 @@ slug:
   sanitize_replacement: "-"
 
 collections:
-  - name: cats
-    label: Кошки и производители
-    folder: content/cats
-    create: true
-    identifier_field: name
-    slug: "{{slug}}"
-    extension: md
-    format: frontmatter
-    fields:
-      - { label: Имя, name: name, widget: string }
-      - label: Тип
-        name: type
-        widget: select
-        options:
-          - Производитель
-          - Котёнок в продаже
-      - label: Пол
-        name: gender
-        widget: select
-        options:
-          - Кот
-          - Кошка
-      - { label: Окрас, name: color, widget: string }
-      - { label: Цена, name: price, widget: number, required: false }
-      - { label: Описание, name: description, widget: text }
-      - label: Фотографии
-        name: photos
-        widget: list
-        field: { label: Фото, name: photo, widget: image }
-      - { label: Доступно, name: available, widget: boolean, default: true }
-
   - name: kittens
     label: Котята в продаже
+    label_singular: Котёнка
+    description: Малыши, доступные для продажи. Появляются на странице «Котята».
     folder: content/kittens
     create: true
     identifier_field: name
     slug: "{{slug}}"
     extension: md
     format: frontmatter
+    summary: "{{name}} — {{color}}"
+    sortable_fields: [name, price]
+    preview_path: kittens
+    view_filters:
+      - { label: Свободные, field: reserved, pattern: false }
+      - { label: Зарезервированные, field: reserved, pattern: true }
     fields:
-      - { label: Имя, name: name, widget: string }
+      - { label: Имя, name: name, widget: string, hint: "Кличка котёнка" }
       - label: Пол
         name: gender
         widget: select
-        options:
-          - Кот
-          - Кошка
-      - { label: Окрас, name: color, widget: string }
-      - { label: Цена, name: price, widget: number }
-      - { label: Описание, name: description, widget: text }
+        default: Кошка
+        options: [Кот, Кошка]
+      - { label: Окрас, name: color, widget: string, hint: "Например: красный тикированный" }
+      - { label: Цена, name: price, widget: number, hint: "В рублях" }
+      - { label: Описание, name: description, widget: text, required: false }
       - label: Фотографии
         name: photos
         widget: list
+        required: false
+        summary: "Фото {{index}}"
+        hint: "Первое фото — обложка карточки"
         field: { label: Фото, name: photo, widget: image }
-      - { label: Зарезервировано, name: reserved, widget: boolean, default: false }
+      - { label: Зарезервирован, name: reserved, widget: boolean, default: false, hint: "Включите, если котёнок уже забронирован" }
+
+  - name: cats
+    label: Кошки и производители
+    label_singular: Кошку
+    description: Производители питомника и подрастающие животные. Страница «Наши кошки».
+    folder: content/cats
+    create: true
+    identifier_field: name
+    slug: "{{slug}}"
+    extension: md
+    format: frontmatter
+    summary: "{{name}} — {{color}}"
+    sortable_fields: [name, price]
+    preview_path: "cats/{{slug}}"
+    view_filters:
+      - { label: Производители, field: type, pattern: Производитель }
+      - { label: Котята в продаже, field: type, pattern: Котёнок в продаже }
+      - { label: Доступные, field: available, pattern: true }
+    view_groups:
+      - { label: По типу, field: type }
+    fields:
+      - { label: Имя, name: name, widget: string, hint: "Кличка животного" }
+      - label: Тип
+        name: type
+        widget: select
+        default: Производитель
+        options: [Производитель, Котёнок в продаже]
+      - label: Пол
+        name: gender
+        widget: select
+        default: Кошка
+        options: [Кот, Кошка]
+      - { label: Окрас, name: color, widget: string, hint: "Например: красный тикированный" }
+      - { label: Цена, name: price, widget: number, required: false, hint: "В рублях. Можно не указывать." }
+      - { label: Описание, name: description, widget: text, required: false }
+      - label: Фотографии
+        name: photos
+        widget: list
+        required: false
+        summary: "Фото {{index}}"
+        hint: "Первое фото — обложка карточки"
+        field: { label: Фото, name: photo, widget: image }
+      - { label: Доступен, name: available, widget: boolean, default: true }
 
   - name: settings
     label: Настройки сайта
+    description: Общие тексты, контакты и содержимое статичных страниц.
     files:
       - label: Контакты и общее
         name: contacts
         file: content/settings/contacts.md
+        description: Телефон и мессенджеры — используются на кнопках по всему сайту.
         fields:
-          - { name: phone, label: Телефон, widget: string }
-          - { name: telegram, label: "Telegram (ссылка)", widget: string }
-          - { name: whatsapp, label: "WhatsApp (ссылка)", widget: string }
+          - { name: phone, label: Телефон, widget: string, hint: "Например: +7 900 000 00 00" }
+          - { name: telegram, label: "Telegram (ссылка)", widget: string, hint: "Полная ссылка, например https://t.me/oriokerg" }
+          - { name: whatsapp, label: "WhatsApp (ссылка)", widget: string, hint: "Полная ссылка, например https://wa.me/79000000000" }
           - { name: address, label: "Адрес (необязательно)", widget: string, required: false }
       - label: Главная страница
         name: homepage
         file: content/settings/homepage.md
+        description: Заголовок, подзаголовок и фото первого экрана.
         fields:
-          - { name: hero_title, label: "Заголовок hero", widget: string }
-          - { name: hero_subtitle, label: "Подзаголовок hero", widget: string }
+          - { name: hero_title, label: "Заголовок (первый экран)", widget: string }
+          - { name: hero_subtitle, label: "Подзаголовок (первый экран)", widget: text }
           - { name: hero_image, label: "Фото на первом экране", widget: image, required: false, hint: "Если пусто — используется фото по умолчанию" }
           - { name: intro_text, label: "Вступительный текст", widget: text }
       - label: О питомнике
         name: about
         file: content/settings/about.md
+        description: Заголовок, текст и фото страницы «О питомнике».
         fields:
           - { name: title, label: Заголовок, widget: string }
           - { name: body, label: "Текст страницы", widget: markdown }
