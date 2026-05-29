@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+import { Cormorant_Garamond, Inter } from "next/font/google";
 import type { ReactNode } from "react";
 
 import { Footer } from "@/components/Footer";
@@ -15,7 +15,7 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
-const playfair = Playfair_Display({
+const serif = Cormorant_Garamond({
   subsets: ["latin", "cyrillic"],
   weight: ["500", "600", "700"],
   display: "swap",
@@ -37,7 +37,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
 
   return (
     <html lang="ru">
-      <body className={`${inter.variable} ${playfair.variable} min-h-screen bg-background text-foreground`}>
+      <body className={`${inter.variable} ${serif.variable} min-h-screen bg-background text-foreground`}>
         <div className="flex min-h-screen flex-col">
           <Header />
           <main className="flex-1">{children}</main>

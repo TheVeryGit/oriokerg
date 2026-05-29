@@ -76,7 +76,7 @@ export function Header() {
               <Link
                 key={item.href}
                 href={item.href}
-                className="rounded-2xl px-4 py-3 text-base text-muted transition-colors hover:bg-white/5 hover:text-foreground"
+                className="rounded-2xl px-4 py-3 text-base text-muted transition-colors hover:bg-accent/5 hover:text-foreground"
                 onClick={() => setIsOpen(false)}
               >
                 {item.label}

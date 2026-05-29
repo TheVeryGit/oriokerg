@@ -27,7 +27,7 @@ export default async function AboutPage() {
 
       {about.photo ? (
         <div
-          className="h-[420px] w-full overflow-hidden rounded-[2rem] border border-border bg-gray-800"
+          className="h-[420px] w-full overflow-hidden rounded-[2rem] border border-border bg-accent/5"
           style={{
             backgroundImage: `url(${about.photo})`,
             backgroundPosition: "center",
@@ -35,7 +35,7 @@ export default async function AboutPage() {
           }}
         />
       ) : (
-        <div className="h-[420px] w-full rounded-[2rem] border border-border bg-gray-800" />
+        <div className="h-[420px] w-full rounded-[2rem] border border-border bg-accent/5" />
       )}
     </div>
   );

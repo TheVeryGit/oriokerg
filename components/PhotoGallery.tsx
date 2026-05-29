@@ -12,7 +12,7 @@ export function PhotoGallery({ photos, alt }: PhotoGalleryProps) {
   const [activePhoto, setActivePhoto] = useState(photos[0] ?? null);
 
   if (photos.length === 0 || !activePhoto) {
-    return <div className="aspect-[4/3] rounded-[2rem] bg-[#161616]" />;
+    return <div className="aspect-[4/3] rounded-[2rem] border border-border bg-accent/5" />;
   }
 
   return (

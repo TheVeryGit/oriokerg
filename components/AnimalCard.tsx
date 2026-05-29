@@ -25,7 +25,7 @@ function CardShell({
   children: ReactNode;
 }) {
   const className =
-    "group flex flex-col overflow-hidden rounded-[1.75rem] border border-border bg-card transition-all duration-300 hover:-translate-y-1.5 hover:border-accent/50 hover:shadow-[0_24px_60px_-24px_rgba(201,168,76,0.45)]";
+    "group flex flex-col overflow-hidden rounded-[1.75rem] border border-border bg-card transition-all duration-300 hover:-translate-y-1.5 hover:border-accent/50 hover:shadow-[0_24px_55px_-22px_rgba(80,60,40,0.35)]";
 
   if (href) {
     return (
@@ -60,10 +60,10 @@ export function AnimalCard({
             className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
           />
         ) : (
-          <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-[#161616] to-[#0e0e0e]">
+          <div className="flex h-full w-full items-center justify-center bg-accent/5">
             <svg
               viewBox="0 0 24 24"
-              className="h-12 w-12 text-border"
+              className="h-12 w-12 text-accent/30"
               fill="currentColor"
               aria-hidden="true"
             >
@@ -76,7 +76,7 @@ export function AnimalCard({
           <span
             className={`absolute right-4 top-4 rounded-full px-3 py-1 text-xs backdrop-blur-md ${
               badge.tone === "muted"
-                ? "bg-black/50 text-foreground/70"
+                ? "bg-card/90 text-foreground"
                 : "bg-accent text-accent-foreground"
             }`}
           >

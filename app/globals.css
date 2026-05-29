@@ -3,14 +3,14 @@
 @tailwind utilities;
 
 :root {
-  --background: #0a0a0a;
-  --foreground: #f5f1e8;
-  --card: #111111;
-  --border: #222222;
-  --muted: #a3a3a3;
-  --accent: #c9a84c;
-  --accent-soft: #e8d8a0;
-  --accent-foreground: #1a1406;
+  --background: #f7f1e7;
+  --foreground: #2e2620;
+  --card: #ffffff;
+  --border: #e6dac6;
+  --muted: #6b5d4d;
+  --accent: #9a6b3f;
+  --accent-soft: #b58a5a;
+  --accent-foreground: #ffffff;
 }
 
 @layer base {
@@ -26,8 +26,8 @@
     min-height: 100vh;
     color: var(--foreground);
     background:
-      radial-gradient(circle at top, rgba(201, 168, 76, 0.14), transparent 30%),
-      linear-gradient(180deg, #0d0d0d 0%, #090909 100%);
+      radial-gradient(circle at top, rgba(154, 107, 63, 0.10), transparent 32%),
+      linear-gradient(180deg, #f8f3ea 0%, #f4ecdf 100%);
     font-family: var(--font-inter), sans-serif;
     text-rendering: optimizeLegibility;
   }
@@ -37,7 +37,7 @@
   }
 
   ::selection {
-    background: rgba(201, 168, 76, 0.35);
+    background: rgba(154, 107, 63, 0.22);
     color: var(--foreground);
   }
 }
