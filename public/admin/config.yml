@@ -27,11 +27,18 @@ site_url: https://oriokerg.ru
 media_folder: public/images/uploads
 public_folder: /images/uploads
 
+slug:
+  encoding: unicode
+  clean_accents: true
+  sanitize_replacement: "-"
+
 collections:
   - name: cats
     label: Кошки и производители
     folder: content/cats
     create: true
+    identifier_field: name
+    slug: "{{slug}}"
     extension: md
     format: frontmatter
     fields:
@@ -61,6 +68,8 @@ collections:
     label: Котята в продаже
     folder: content/kittens
     create: true
+    identifier_field: name
+    slug: "{{slug}}"
     extension: md
     format: frontmatter
     fields:
