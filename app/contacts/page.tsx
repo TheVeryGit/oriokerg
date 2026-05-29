@@ -24,13 +24,15 @@ export default function ContactsPage() {
   return (
     <div className="mx-auto flex w-full max-w-7xl flex-col gap-10 px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
       <section className="max-w-3xl">
-        <p className="text-sm uppercase tracking-[0.28em] text-accent">
+        <p className="text-sm uppercase tracking-[0.3em] text-accent">
           Контакты
         </p>
-        <h1 className="mt-4 text-4xl font-semibold text-foreground">Связаться с нами</h1>
-        <p className="mt-6 text-base leading-8 text-muted">
-          Выберите удобный способ связи. Форму пока не добавляю: по условию здесь
-          нужны только прямые контактные действия.
+        <h1 className="mt-4 font-serif text-4xl font-semibold text-foreground sm:text-5xl">
+          Связаться с нами
+        </h1>
+        <p className="mt-6 text-lg leading-8 text-muted">
+          Напишите или позвоните удобным способом — с радостью расскажем о
+          доступных котятах, пришлём фото и видео и поможем выбрать питомца.
         </p>
       </section>
 
@@ -46,7 +48,7 @@ export default function ContactsPage() {
             <p className="text-sm uppercase tracking-[0.22em] text-accent">
               Контакт
             </p>
-            <h2 className="mt-5 text-2xl font-semibold text-foreground">
+            <h2 className="mt-5 font-serif text-2xl font-semibold text-foreground">
               {contact.label}
             </h2>
             <p className="mt-3 text-base text-muted">{contact.description}</p>

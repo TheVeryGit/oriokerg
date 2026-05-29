@@ -34,12 +34,12 @@ export function Footer({ contacts }: FooterProps) {
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-4 py-10 sm:px-6 lg:px-8">
         <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
           <div>
-            <p className="text-lg font-semibold uppercase tracking-[0.24em] text-foreground">
+            <p className="font-serif text-xl font-semibold tracking-[0.18em] text-foreground">
               OrioKerg
             </p>
             <p className="mt-2 max-w-xl text-sm text-muted">
-              Питомник с премиальным и спокойным визуальным стилем. Контакты пока
-              оставлены как временные заглушки.
+              Питомник ориентальных кошек. Здоровые котята с документами,
+              прививками и поддержкой на всю жизнь.
             </p>
           </div>
 

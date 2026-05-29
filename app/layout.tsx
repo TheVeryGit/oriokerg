@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Playfair_Display } from "next/font/google";
 import type { ReactNode } from "react";
 
 import { Footer } from "@/components/Footer";
@@ -15,9 +15,17 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
+const playfair = Playfair_Display({
+  subsets: ["latin", "cyrillic"],
+  weight: ["500", "600", "700"],
+  display: "swap",
+  variable: "--font-serif",
+});
+
 export const metadata: Metadata = {
-  title: "OrioKerg",
-  description: "Питомник кошек OrioKerg",
+  title: "OrioKerg — питомник ориентальных кошек",
+  description:
+    "Питомник OrioKerg: здоровые социализированные ориентальные котята с документами, прививками и поддержкой на всю жизнь.",
 };
 
 type RootLayoutProps = {
@@ -29,7 +37,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
 
   return (
     <html lang="ru">
-      <body className={`${inter.variable} min-h-screen bg-background text-foreground`}>
+      <body className={`${inter.variable} ${playfair.variable} min-h-screen bg-background text-foreground`}>
         <div className="flex min-h-screen flex-col">
           <Header />
           <main className="flex-1">{children}</main>

@@ -2,7 +2,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { PhotoGallery } from "@/components/PhotoGallery";
-import { formatPrice, getCatBySlug, getCats } from "@/lib/content";
+import type { ContactsSettings } from "@/lib/content";
+import { formatPrice, getCatBySlug, getCats, getSettings } from "@/lib/content";
 
 type CatPageProps = {
   params: {
@@ -58,6 +59,7 @@ export default function CatPage({ params }: CatPageProps) {
     notFound();
   }
 
+  const contacts = getSettings<ContactsSettings>("contacts");
   const price = formatPrice(cat.price);
 
   return (
@@ -69,7 +71,7 @@ export default function CatPage({ params }: CatPageProps) {
           <p className="text-sm uppercase tracking-[0.28em] text-accent">
             {cat.type}
           </p>
-          <h1 className="mt-4 text-4xl font-semibold text-foreground">
+          <h1 className="mt-4 font-serif text-4xl font-semibold text-foreground">
             {cat.name}
           </h1>
 
@@ -98,7 +100,7 @@ export default function CatPage({ params }: CatPageProps) {
 
           <div className="mt-8 flex flex-col gap-3">
             <a
-              href="https://t.me/oriokerg"
+              href={contacts.telegram}
               target="_blank"
               rel="noreferrer"
               className="inline-flex items-center justify-center rounded-full border border-accent bg-accent px-6 py-3 text-sm font-medium text-accent-foreground"
@@ -106,7 +108,7 @@ export default function CatPage({ params }: CatPageProps) {
               Написать в Telegram
             </a>
             <a
-              href="https://wa.me/79000000000"
+              href={contacts.whatsapp}
               target="_blank"
               rel="noreferrer"
               className="inline-flex items-center justify-center rounded-full border border-border bg-background px-6 py-3 text-sm font-medium text-foreground hover:border-accent hover:text-accent"

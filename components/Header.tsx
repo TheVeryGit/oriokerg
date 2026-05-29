@@ -19,9 +19,9 @@ export function Header() {
       <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-6 px-4 py-4 sm:px-6 lg:px-8">
         <Link
           href="/"
-          className="text-xl font-semibold uppercase tracking-[0.28em] text-foreground transition-colors hover:text-accent"
+          className="font-serif text-2xl font-semibold tracking-[0.22em] text-foreground transition-colors hover:text-accent"
         >
-          OrioKerg
+          ORIOKERG
         </Link>
 
         <nav className="hidden items-center gap-8 md:flex">

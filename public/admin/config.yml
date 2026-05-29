@@ -106,6 +106,7 @@ collections:
         fields:
           - { name: hero_title, label: "Заголовок hero", widget: string }
           - { name: hero_subtitle, label: "Подзаголовок hero", widget: string }
+          - { name: hero_image, label: "Фото на первом экране", widget: image, required: false, hint: "Если пусто — используется фото по умолчанию" }
           - { name: intro_text, label: "Вступительный текст", widget: text }
       - label: О питомнике
         name: about

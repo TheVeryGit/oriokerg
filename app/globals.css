@@ -9,6 +9,7 @@
   --border: #222222;
   --muted: #a3a3a3;
   --accent: #c9a84c;
+  --accent-soft: #e8d8a0;
   --accent-foreground: #1a1406;
 }
 
@@ -44,5 +45,16 @@
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+
+  .font-serif {
+    font-family: var(--font-serif), Georgia, serif;
+  }
+
+  .text-gold-gradient {
+    background: linear-gradient(120deg, var(--accent-soft), var(--accent));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
   }
 }

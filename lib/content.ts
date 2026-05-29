@@ -3,6 +3,8 @@ import path from "path";
 
 import matter from "gray-matter";
 
+export { formatPrice } from "./format";
+
 type BaseEntry = {
   slug: string;
   name: string;
@@ -33,13 +35,17 @@ export type ContactsSettings = {
 export type HomepageSettings = {
   hero_title: string;
   hero_subtitle: string;
+  hero_image?: string;
   intro_text: string;
 };
 
 export type AboutSettings = {
   title: string;
+  body?: string;
   photo?: string;
 };
+
+export const DEFAULT_HERO_IMAGE = "/images/hero-cat.jpg";
 
 const contentRoot = path.join(process.cwd(), "content");
 
@@ -177,12 +183,4 @@ export function getSettings<T>(fileName: string): T {
 
 export function getSettingsContent(fileName: string) {
   return readSettingsEntry(fileName).content;
-}
-
-export function formatPrice(price?: number) {
-  if (typeof price !== "number") {
-    return null;
-  }
-
-  return new Intl.NumberFormat("ru-RU").format(price);
 }
