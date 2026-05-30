@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { AnimalCard } from "@/components/AnimalCard";
+import { TelegramIcon, VkIcon } from "@/components/icons";
 import { Hero } from "@/components/home/Hero";
 import { Reveal } from "@/components/Reveal";
 import { Stagger, StaggerItem } from "@/components/motion/Stagger";
@@ -405,17 +406,19 @@ export default function HomePage() {
                 href={contacts.telegram}
                 target="_blank"
                 rel="noreferrer"
-                className="rounded-full bg-card px-8 py-4 text-sm font-medium text-accent-strong transition-transform duration-200 hover:-translate-y-0.5"
+                className="inline-flex items-center gap-2.5 rounded-full bg-card px-8 py-4 text-sm font-medium text-accent-strong transition-transform duration-200 hover:-translate-y-0.5"
               >
-                Написать в Telegram
+                <TelegramIcon className="h-5 w-5" />
+                Telegram
               </a>
               <a
-                href={contacts.whatsapp}
+                href={contacts.vk}
                 target="_blank"
                 rel="noreferrer"
-                className="rounded-full border border-accent-foreground/40 px-8 py-4 text-sm text-accent-foreground transition-colors hover:bg-accent-foreground/10"
+                className="inline-flex items-center gap-2.5 rounded-full border border-accent-foreground/40 px-8 py-4 text-sm text-accent-foreground transition-colors hover:bg-accent-foreground/10"
               >
-                WhatsApp
+                <VkIcon className="h-5 w-5" />
+                ВКонтакте
               </a>
             </div>
           </div>

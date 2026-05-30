@@ -87,7 +87,6 @@ export default function CatPage({ params }: CatPageProps) {
 
   const contacts = getSettings<ContactsSettings>("contacts");
   const price = formatPrice(cat.price);
-  const message = `Здравствуйте! Интересует ${cat.name} (${cat.color}).`;
   const related = getCats()
     .filter((item) => item.slug !== cat.slug)
     .slice(0, 3);
@@ -146,8 +145,8 @@ export default function CatPage({ params }: CatPageProps) {
 
               <ContactButtons
                 telegram={contacts.telegram}
-                whatsapp={contacts.whatsapp}
-                message={message}
+                vk={contacts.vk}
+                phone={contacts.phone}
                 className="mt-7 sm:flex-col"
               />
             </div>

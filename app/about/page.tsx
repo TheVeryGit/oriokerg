@@ -82,7 +82,8 @@ export default async function AboutPage() {
               </div>
               <ContactButtons
                 telegram={contacts.telegram}
-                whatsapp={contacts.whatsapp}
+                vk={contacts.vk}
+                phone={contacts.phone}
                 className="lg:w-auto"
               />
             </div>

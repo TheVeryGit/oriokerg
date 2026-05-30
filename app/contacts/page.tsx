@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import type { ReactNode } from "react";
+import type { ComponentType, SVGProps } from "react";
 
+import { PhoneIcon, TelegramIcon, VkIcon, telHref } from "@/components/icons";
 import { PageHeader } from "@/components/PageHeader";
 import { Reveal } from "@/components/Reveal";
 import { Stagger, StaggerItem } from "@/components/motion/Stagger";
@@ -10,18 +11,8 @@ import { getSettings } from "@/lib/content";
 export const metadata: Metadata = {
   title: "Контакты",
   description:
-    "Свяжитесь с питомником OrioKerg в Telegram, WhatsApp или по телефону — расскажем о доступных котятах.",
+    "Свяжитесь с питомником OrioKerg в Telegram, ВКонтакте или по телефону — расскажем о доступных котятах.",
 };
-
-const telegramIcon = (
-  <path d="M21.2 4.6 18.3 18c-.2 1-.8 1.2-1.7.8l-4.3-3.2-2.1 2c-.2.2-.4.4-.9.4l.3-4.4 8-7.2c.3-.3-.1-.5-.5-.2l-9.9 6.2-4.3-1.3c-.9-.3-1-.9.2-1.4L19.5 3c.8-.3 1.5.2 1.2 1.6Z" />
-);
-const whatsappIcon = (
-  <path d="M19.1 4.9A9.9 9.9 0 0 0 3.5 17.1L2 22l5-1.3a9.9 9.9 0 0 0 4.8 1.2h.1A10 10 0 0 0 22 12c0-2.7-1-5.2-2.9-7.1Zm-7.2 15.3a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3a8.3 8.3 0 1 1 6.9 3.7Zm4.6-6.2c-.2-.1-1.5-.8-1.7-.9-.2-.1-.4-.1-.6.1l-.8.9c-.1.1-.3.2-.5.1-.2-.1-1-.4-1.8-1.1-.7-.6-1.1-1.3-1.3-1.5-.1-.2 0-.4.1-.5l.4-.5.3-.4c.1-.1.1-.3 0-.4l-.7-1.8c-.2-.4-.4-.4-.6-.4h-.5c-.2 0-.4.1-.6.3-.2.2-.8.8-.8 2 0 1.2.8 2.4.9 2.6.1.2 1.7 2.7 4.1 3.7.6.3 1.1.5 1.5.6.6.2 1.2.2 1.6.1.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.1-1.2-.1-.1-.3-.2-.5-.3Z" />
-);
-const phoneIcon = (
-  <path d="M7.3 3.5c.4-1 1.5-1.5 2.5-1.1l2 1c.9.4 1.4 1.5 1.1 2.4l-.7 2c-.2.5 0 1.1.3 1.5l2 2c.4.4 1 .5 1.5.3l2-.7c1-.3 2 .1 2.4 1.1l1 2c.5 1 .1 2.1-.9 2.6l-1.6.7c-1.6.7-3.4.8-5 .2-2-.8-4.1-2.2-6.3-4.4-2.2-2.2-3.6-4.3-4.4-6.3-.6-1.6-.5-3.4.2-5l.7-1.6Z" />
-);
 
 export default function ContactsPage() {
   const contacts = getSettings<ContactsSettings>("contacts");
@@ -30,28 +21,28 @@ export default function ContactsPage() {
     href: string;
     label: string;
     value: string;
-    icon: ReactNode;
+    Icon: ComponentType<SVGProps<SVGSVGElement>>;
     external: boolean;
   }[] = [
     {
       href: contacts.telegram,
       label: "Telegram",
       value: "Написать в Telegram",
-      icon: telegramIcon,
+      Icon: TelegramIcon,
       external: true,
     },
     {
-      href: contacts.whatsapp,
-      label: "WhatsApp",
-      value: "Написать в WhatsApp",
-      icon: whatsappIcon,
+      href: contacts.vk,
+      label: "ВКонтакте",
+      value: "Написать ВКонтакте",
+      Icon: VkIcon,
       external: true,
     },
     {
-      href: `tel:${(contacts.phone ?? "").replace(/[^\d+]/g, "")}`,
+      href: telHref(contacts.phone),
       label: "Телефон",
       value: contacts.phone,
-      icon: phoneIcon,
+      Icon: PhoneIcon,
       external: false,
     },
   ];
@@ -75,13 +66,7 @@ export default function ContactsPage() {
                 className="group flex h-full flex-col rounded-4xl border border-border bg-card p-8 shadow-soft transition-all duration-500 hover:-translate-y-1.5 hover:border-accent/40 hover:shadow-lift"
               >
                 <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-accent-soft to-accent-strong text-accent-foreground shadow-soft transition-transform duration-300 group-hover:scale-105">
-                  <svg
-                    viewBox="0 0 24 24"
-                    className="h-6 w-6 fill-current"
-                    aria-hidden="true"
-                  >
-                    {card.icon}
-                  </svg>
+                  <card.Icon className="h-6 w-6" />
                 </span>
                 <h2 className="mt-6 font-serif text-2xl font-semibold text-foreground">
                   {card.label}

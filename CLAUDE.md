@@ -18,7 +18,7 @@
 
 - `content/cats/*.md` — кошки и производители (коллекция `cats`)
 - `content/kittens/*.md` — котята в продаже (коллекция `kittens`)
-- `content/settings/contacts.md` — телефон, Telegram, WhatsApp, адрес
+- `content/settings/contacts.md` — телефон, Telegram, ВКонтакте, адрес
 - `content/settings/homepage.md` — **все блоки главной**: hero, цифры (`stats`),
   «почему мы» (`features`), блок о породе (`breed_*`), шаги (`steps`), отзывы (`reviews`),
   CTA. Списки редактируются в Decap.
@@ -97,8 +97,9 @@ npm run lint    # проверка eslint
   - Анимируем только `transform`/`opacity`.
 - **Компоненты:** `AnimalCard` (фото 4:5, zoom, скрим, бейдж `gold/muted/sold`, чип цены,
   hover-«Подробнее», ссылка через `href`); `PhotoGallery` (активное фото с fade, превью
-  с акцентной рамкой); `ContactButtons` (Telegram/WhatsApp, в WhatsApp прокидывается
-  `message` через `?text=`); `PageHeader` (eyebrow + serif h1 + intro); `Header`
+  с акцентной рамкой); `ContactButtons` (Telegram/ВКонтакте/телефон); бренд-иконки —
+  в `components/icons.tsx` (Simple Icons: Telegram, VK + телефон); `PageHeader`
+  (eyebrow + serif h1 + intro); `Header`
   (прозрачный→твёрдый при скролле, активная ссылка, кнопка «Выбрать котёнка», моб. меню);
   `Footer` (колонки, соц-пиллы, призрачный вотермарк — `hidden` на мобиле).
 - **Декор спрятан на мобиле:** ✦ в тёмной секции (`hidden lg:block`) и вотермарк

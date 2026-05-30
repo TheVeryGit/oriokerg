@@ -125,7 +125,7 @@ collections:
         fields:
           - { name: phone, label: Телефон, widget: string, hint: "Например: +7 900 000 00 00" }
           - { name: telegram, label: "Telegram (ссылка)", widget: string, hint: "Полная ссылка, например https://t.me/oriokerg" }
-          - { name: whatsapp, label: "WhatsApp (ссылка)", widget: string, hint: "Полная ссылка, например https://wa.me/79000000000" }
+          - { name: vk, label: "ВКонтакте (ссылка)", widget: string, hint: "Полная ссылка, например https://vk.com/oriokerg" }
           - { name: address, label: "Адрес (необязательно)", widget: string, required: false }
       - label: Главная страница
         name: homepage

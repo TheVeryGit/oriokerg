@@ -28,7 +28,7 @@ export type KittenEntry = BaseEntry & {
 export type ContactsSettings = {
   phone: string;
   telegram: string;
-  whatsapp: string;
+  vk: string;
   address?: string;
 };
 

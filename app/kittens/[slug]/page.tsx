@@ -92,7 +92,6 @@ export default function KittenPage({ params }: KittenPageProps) {
 
   const contacts = getSettings<ContactsSettings>("contacts");
   const price = formatPrice(kitten.price);
-  const message = `Здравствуйте! Интересует котёнок ${kitten.name} (${kitten.color}).`;
   const related = getKittens()
     .filter((item) => item.slug !== kitten.slug && !item.reserved)
     .slice(0, 3);
@@ -162,8 +161,8 @@ export default function KittenPage({ params }: KittenPageProps) {
 
               <ContactButtons
                 telegram={contacts.telegram}
-                whatsapp={contacts.whatsapp}
-                message={message}
+                vk={contacts.vk}
+                phone={contacts.phone}
                 className="mt-7 sm:flex-col"
               />
               <p className="mt-4 text-center text-xs text-muted">
