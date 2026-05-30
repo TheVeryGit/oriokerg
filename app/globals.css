@@ -3,31 +3,33 @@
 @tailwind utilities;
 
 :root {
-  /* Warm premium palette — gold + emerald */
-  --background: #faf6ef; /* warm ivory */
-  --surface: #fffdf9; /* card */
-  --surface-2: #efe4d1; /* alt sections / sand (deeper for visible rhythm) */
+  /* Warm premium palette — gold + emerald.
+     Tokens are space-separated RGB CHANNELS (not hex) so Tailwind opacity
+     modifiers (bg-card/70, bg-surface-2/50, …) actually work. Use them in raw
+     CSS as rgb(var(--token)). */
+  --background: 250 246 239; /* warm ivory */
+  --surface: 255 253 249; /* card */
+  --surface-2: 239 228 209; /* alt sections / sand */
   --card: var(--surface);
-  --foreground: #221c15; /* deep espresso text */
-  --muted: #6e5c4b; /* warm taupe (AA on ivory) */
-  --border: #e7d9c4;
-  --border-strong: #d8c4a6;
+  --foreground: 34 28 21; /* deep espresso text */
+  --muted: 110 92 75; /* warm taupe (AA on ivory) */
+  --border: 231 217 196;
+  --border-strong: 216 196 166;
 
   /* Caramel-gold accent (AA-compliant as text on ivory). */
-  --accent: #956629;
-  --accent-soft: #c79a63;
-  --accent-strong: #7e4f22;
-  --accent-foreground: #fff9f0;
+  --accent: 149 102 41;
+  --accent-soft: 199 154 99;
+  --accent-strong: 126 79 34;
+  --accent-foreground: 255 249 240;
 
-  /* Emerald — the second colour that breaks the warm monotone.
-     Dark green as text/accent on light; light mint as accent on dark. */
-  --emerald: #1f5640;
-  --emerald-soft: #8cc0a6;
+  /* Emerald — the second colour that breaks the warm monotone. */
+  --emerald: 31 86 64;
+  --emerald-soft: 140 192 166;
 
-  /* Dark sections are now deep emerald (was brown) — gold + emerald = luxury. */
-  --ink: #143528;
-  --ink-soft: #1c4734;
-  --ink-foreground: #eef0e6;
+  /* Dark sections are deep emerald. */
+  --ink: 20 53 40;
+  --ink-soft: 28 71 52;
+  --ink-foreground: 238 240 230;
 
   --shadow-color: 50 50 38;
 }
@@ -43,7 +45,7 @@
 
   body {
     min-height: 100vh;
-    color: var(--foreground);
+    color: rgb(var(--foreground));
     background:
       radial-gradient(circle at 12% -5%, rgba(176, 122, 60, 0.12), transparent 38%),
       radial-gradient(circle at 95% 8%, rgba(199, 154, 99, 0.1), transparent 34%),
@@ -60,18 +62,18 @@
 
   /* Visible, on-brand keyboard focus ring (only for keyboard users). */
   :focus-visible {
-    outline: 2px solid var(--accent);
+    outline: 2px solid rgb(var(--accent));
     outline-offset: 3px;
     border-radius: 4px;
   }
   /* Dark sections: ring uses the lighter accent for visibility. */
   .bg-ink :focus-visible {
-    outline-color: var(--accent-soft);
+    outline-color: rgb(var(--accent-soft));
   }
 
   ::selection {
-    background: rgba(176, 122, 60, 0.24);
-    color: var(--foreground);
+    background: rgb(var(--accent) / 0.24);
+    color: rgb(var(--foreground));
   }
 
   h1,
@@ -96,7 +98,7 @@
 
   /* Caramel gradient text for accents */
   .text-gold-gradient {
-    background: linear-gradient(118deg, var(--accent-soft) 0%, var(--accent) 48%, var(--accent-strong) 100%);
+    background: linear-gradient(118deg, rgb(var(--accent-soft)) 0%, rgb(var(--accent)) 48%, rgb(var(--accent-strong)) 100%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -132,7 +134,7 @@
   /* Hairline gradient divider */
   .rule-gold {
     height: 1px;
-    background: linear-gradient(90deg, transparent, var(--border-strong), transparent);
+    background: linear-gradient(90deg, transparent, rgb(var(--border-strong)), transparent);
   }
 
   /* Fine grain texture overlay (applied to a fixed layer in layout) */
@@ -159,7 +161,7 @@
     width: 100%;
     transform: scaleX(0);
     transform-origin: right;
-    background: var(--accent);
+    background: rgb(var(--accent));
     transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
   }
   .link-underline:hover::after,
