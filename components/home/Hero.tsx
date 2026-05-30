@@ -4,6 +4,7 @@ import { m, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { useRef } from "react";
+import type { CSSProperties } from "react";
 
 type HeroProps = {
   title: string;
@@ -12,19 +13,14 @@ type HeroProps = {
   telegram: string;
 };
 
-const EASE = [0.22, 1, 0.36, 1] as const;
-
-const container = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.12, delayChildren: 0.1 } },
-};
-
-const item = {
-  hidden: { opacity: 0, y: 26 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: EASE } },
-};
-
 const trustPoints = ["Документы WCF", "Прививки по возрасту", "Договор"];
+
+/** Entrance is CSS (`animate-fade-up`, auto-plays on load — reliable on static
+ *  export). Framer is used only for the scroll parallax, which is enhancement:
+ *  if it never runs, the image is simply static and fully visible. */
+function fade(delay: number): CSSProperties {
+  return { animationDelay: `${delay}ms` };
+}
 
 export function Hero({ title, subtitle, image, telegram }: HeroProps) {
   const reduce = useReducedMotion();
@@ -39,7 +35,6 @@ export function Hero({ title, subtitle, image, telegram }: HeroProps) {
 
   return (
     <section ref={sectionRef} className="relative overflow-hidden">
-      {/* Decorative warm orbs */}
       <m.div
         aria-hidden="true"
         style={{ y: decoY }}
@@ -52,37 +47,30 @@ export function Hero({ title, subtitle, image, telegram }: HeroProps) {
       />
 
       <div className="relative mx-auto grid w-full max-w-7xl items-center gap-12 px-4 py-16 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:px-8 lg:py-24">
-        <m.div
-          variants={reduce ? undefined : container}
-          initial={reduce ? undefined : "hidden"}
-          animate={reduce ? undefined : "show"}
-        >
-          <m.p
-            variants={reduce ? undefined : item}
-            className="inline-flex items-center gap-2 rounded-full border border-border bg-card/70 px-4 py-1.5 text-xs uppercase tracking-luxe text-accent-strong"
+        <div>
+          <p
+            style={fade(40)}
+            className="inline-flex animate-fade-up items-center gap-2 rounded-full border border-border bg-card/70 px-4 py-1.5 text-xs uppercase tracking-luxe text-accent-strong"
           >
             <span className="h-1.5 w-1.5 rounded-full bg-accent" />
             Питомник с любовью
-          </m.p>
+          </p>
 
-          <m.h1
-            variants={reduce ? undefined : item}
-            className="mt-6 font-serif text-[2.75rem] font-semibold leading-[1.03] text-foreground text-balance sm:text-6xl lg:text-7xl"
+          <h1
+            style={fade(120)}
+            className="mt-6 animate-fade-up font-serif text-[2.75rem] font-semibold leading-[1.03] text-foreground text-balance sm:text-6xl lg:text-7xl"
           >
             {title}
-          </m.h1>
+          </h1>
 
-          <m.p
-            variants={reduce ? undefined : item}
-            className="mt-7 max-w-md text-lg leading-8 text-muted text-pretty"
+          <p
+            style={fade(210)}
+            className="mt-7 max-w-md animate-fade-up text-lg leading-8 text-muted text-pretty"
           >
             {subtitle}
-          </m.p>
+          </p>
 
-          <m.div
-            variants={reduce ? undefined : item}
-            className="mt-9 flex flex-wrap gap-4"
-          >
+          <div style={fade(290)} className="mt-9 flex animate-fade-up flex-wrap gap-4">
             <Link
               href="/kittens"
               className="rounded-full bg-gradient-to-br from-accent to-accent-strong px-8 py-4 text-sm font-medium text-accent-foreground shadow-glow transition-transform duration-200 hover:-translate-y-0.5"
@@ -97,11 +85,11 @@ export function Hero({ title, subtitle, image, telegram }: HeroProps) {
             >
               Написать нам
             </a>
-          </m.div>
+          </div>
 
-          <m.div
-            variants={reduce ? undefined : item}
-            className="mt-9 flex flex-wrap gap-x-7 gap-y-2 text-sm text-muted"
+          <div
+            style={fade(370)}
+            className="mt-9 flex animate-fade-up flex-wrap gap-x-7 gap-y-2 text-sm text-muted"
           >
             {trustPoints.map((point) => (
               <span key={point} className="inline-flex items-center gap-2">
@@ -120,15 +108,10 @@ export function Hero({ title, subtitle, image, telegram }: HeroProps) {
                 {point}
               </span>
             ))}
-          </m.div>
-        </m.div>
+          </div>
+        </div>
 
-        <m.div
-          className="relative"
-          initial={reduce ? undefined : { opacity: 0, scale: 0.96 }}
-          animate={reduce ? undefined : { opacity: 1, scale: 1 }}
-          transition={{ duration: 1, ease: EASE, delay: 0.15 }}
-        >
+        <div style={fade(160)} className="relative animate-fade-up">
           <div className="absolute -right-4 -top-4 hidden h-32 w-32 rounded-4xl border border-border-strong sm:block" />
           <div className="relative aspect-[4/5] w-full overflow-hidden rounded-5xl shadow-lift">
             <m.div style={{ y: imageY }} className="absolute inset-0 -bottom-[14%]">
@@ -144,11 +127,9 @@ export function Hero({ title, subtitle, image, telegram }: HeroProps) {
             <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/25 via-transparent to-transparent" />
           </div>
 
-          <m.div
-            initial={reduce ? undefined : { opacity: 0, y: 16 }}
-            animate={reduce ? undefined : { opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: EASE, delay: 0.7 }}
-            className="absolute -bottom-5 left-5 flex items-center gap-3 rounded-4xl bg-card px-5 py-4 shadow-lift"
+          <div
+            style={fade(560)}
+            className="absolute -bottom-5 left-5 flex animate-fade-up items-center gap-3 rounded-4xl bg-card px-5 py-4 shadow-lift"
           >
             <div className="flex gap-0.5 text-accent">
               {Array.from({ length: 5 }).map((_, index) => (
@@ -166,8 +147,8 @@ export function Hero({ title, subtitle, image, telegram }: HeroProps) {
               <p className="font-medium text-foreground">4.9 / 5</p>
               <p className="text-muted">120+ семей</p>
             </div>
-          </m.div>
-        </m.div>
+          </div>
+        </div>
       </div>
     </section>
   );

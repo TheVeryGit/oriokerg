@@ -1,57 +1,70 @@
 "use client";
 
-import { m, useReducedMotion } from "framer-motion";
-import type { ReactNode } from "react";
+import { useEffect, useRef, useState } from "react";
+import type { CSSProperties, ReactNode } from "react";
 
 type RevealProps = {
   children: ReactNode;
-  /** Delay in milliseconds (kept for backwards-compatible call sites). */
+  /** Delay in milliseconds. */
   delay?: number;
   className?: string;
-  /** Initial offset in px along the chosen axis. */
-  distance?: number;
   direction?: "up" | "down" | "left" | "right";
   once?: boolean;
   as?: "div" | "section" | "li" | "article";
 };
 
-const EASE = [0.22, 1, 0.36, 1] as const;
-
+/**
+ * Scroll reveal via IntersectionObserver + CSS (see globals.css `.reveal`).
+ * Reliable on first static-export load — unlike Framer mount/whileInView, which
+ * could leave content stuck at its initial hidden state until a client re-mount.
+ */
 export function Reveal({
   children,
   delay = 0,
   className = "",
-  distance = 26,
   direction = "up",
   once = true,
   as = "div",
 }: RevealProps) {
-  const reduce = useReducedMotion();
+  const ref = useRef<HTMLElement | null>(null);
+  const [visible, setVisible] = useState(false);
 
-  const offset =
-    direction === "up"
-      ? { y: distance }
-      : direction === "down"
-        ? { y: -distance }
-        : direction === "left"
-          ? { x: distance }
-          : { x: -distance };
+  useEffect(() => {
+    const node = ref.current;
+    if (!node) return;
 
-  const MotionTag = m[as];
+    if (typeof IntersectionObserver === "undefined") {
+      setVisible(true);
+      return;
+    }
 
-  if (reduce) {
-    return <MotionTag className={className}>{children}</MotionTag>;
-  }
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          if (once) observer.disconnect();
+        } else if (!once) {
+          setVisible(false);
+        }
+      },
+      { threshold: 0.12, rootMargin: "0px 0px -8% 0px" },
+    );
+
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [once]);
+
+  const Tag = as;
 
   return (
-    <MotionTag
-      className={className}
-      initial={{ opacity: 0, ...offset }}
-      whileInView={{ opacity: 1, x: 0, y: 0 }}
-      viewport={{ once, margin: "0px 0px -12% 0px" }}
-      transition={{ duration: 0.7, delay: delay / 1000, ease: EASE }}
+    <Tag
+      // @ts-expect-error — ref typing across the small tag union is safe here.
+      ref={ref}
+      data-dir={direction}
+      style={{ "--reveal-delay": `${delay}ms` } as CSSProperties}
+      className={`reveal ${visible ? "is-visible" : ""} ${className}`}
     >
       {children}
-    </MotionTag>
+    </Tag>
   );
 }

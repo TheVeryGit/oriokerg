@@ -152,6 +152,53 @@
     transform: scaleX(1);
     transform-origin: left;
   }
+
+  /* Scroll-reveal system (IntersectionObserver-driven).
+     Hidden state only applies once <html> has `.reveal-ready` (added by JS
+     before paint) — so without JS / if anything fails, content stays VISIBLE
+     and is never stuck invisible. */
+  .reveal-ready .reveal {
+    opacity: 0;
+    transform: translateY(26px);
+    transition:
+      opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: var(--reveal-delay, 0ms);
+    will-change: opacity, transform;
+  }
+  .reveal-ready .reveal[data-dir="down"] {
+    transform: translateY(-26px);
+  }
+  .reveal-ready .reveal[data-dir="left"] {
+    transform: translateX(-26px);
+  }
+  .reveal-ready .reveal[data-dir="right"] {
+    transform: translateX(26px);
+  }
+  .reveal-ready .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  .reveal-ready .stagger > * {
+    opacity: 0;
+    transform: translateY(26px);
+    transition:
+      opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .reveal-ready .stagger.is-visible > * {
+    opacity: 1;
+    transform: none;
+  }
+  .reveal-ready .stagger.is-visible > *:nth-child(1) { transition-delay: 0ms; }
+  .reveal-ready .stagger.is-visible > *:nth-child(2) { transition-delay: 90ms; }
+  .reveal-ready .stagger.is-visible > *:nth-child(3) { transition-delay: 180ms; }
+  .reveal-ready .stagger.is-visible > *:nth-child(4) { transition-delay: 270ms; }
+  .reveal-ready .stagger.is-visible > *:nth-child(5) { transition-delay: 360ms; }
+  .reveal-ready .stagger.is-visible > *:nth-child(6) { transition-delay: 450ms; }
+  .reveal-ready .stagger.is-visible > *:nth-child(7) { transition-delay: 540ms; }
+  .reveal-ready .stagger.is-visible > *:nth-child(n + 8) { transition-delay: 630ms; }
 }
 
 /* Respect reduced motion globally as a safety net */
@@ -165,6 +212,12 @@
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
+  }
+  /* Reduced motion: never hide content waiting for an animation. */
+  .reveal,
+  .stagger > * {
+    opacity: 1 !important;
+    transform: none !important;
   }
   .grain-layer {
     display: none;

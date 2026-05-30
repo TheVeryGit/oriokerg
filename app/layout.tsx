@@ -58,10 +58,18 @@ export default function RootLayout({ children }: RootLayoutProps) {
   const contacts = getSettings<ContactsSettings>("contacts");
 
   return (
-    <html lang="ru">
+    <html lang="ru" suppressHydrationWarning>
       <body
         className={`${sans.variable} ${serif.variable} relative min-h-screen bg-background text-foreground`}
       >
+        {/* Mark JS as ready BEFORE paint so reveal animations can hide content;
+            without JS this class is never added and all content stays visible. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "document.documentElement.classList.add('reveal-ready')",
+          }}
+        />
         <a
           href="#main-content"
           className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-accent focus:px-5 focus:py-2.5 focus:text-sm focus:font-medium focus:text-accent-foreground focus:shadow-lift"

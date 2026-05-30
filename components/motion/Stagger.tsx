@@ -1,73 +1,61 @@
 "use client";
 
-import { m, useReducedMotion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
-
-const EASE = [0.22, 1, 0.36, 1] as const;
 
 type StaggerProps = {
   children: ReactNode;
   className?: string;
-  /** Seconds between each child's entrance. */
+  /** Kept for API compatibility; cadence is handled in CSS (globals.css). */
   step?: number;
   once?: boolean;
 };
 
-/** Container that orchestrates a staggered reveal of its <StaggerItem> children. */
-export function Stagger({
-  children,
-  className = "",
-  step = 0.09,
-  once = true,
-}: StaggerProps) {
-  const reduce = useReducedMotion();
+/**
+ * Staggered reveal of direct children via IntersectionObserver + CSS
+ * (see globals.css `.stagger`). Reliable on first static-export load.
+ */
+export function Stagger({ children, className = "", once = true }: StaggerProps) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
 
-  if (reduce) {
-    return <div className={className}>{children}</div>;
-  }
+  useEffect(() => {
+    const node = ref.current;
+    if (!node) return;
+
+    if (typeof IntersectionObserver === "undefined") {
+      setVisible(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          if (once) observer.disconnect();
+        }
+      },
+      { threshold: 0.1, rootMargin: "0px 0px -8% 0px" },
+    );
+
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [once]);
 
   return (
-    <m.div
-      className={className}
-      initial="hidden"
-      whileInView="show"
-      viewport={{ once, margin: "0px 0px -12% 0px" }}
-      variants={{
-        hidden: {},
-        show: { transition: { staggerChildren: step } },
-      }}
-    >
+    <div ref={ref} className={`stagger ${visible ? "is-visible" : ""} ${className}`}>
       {children}
-    </m.div>
+    </div>
   );
 }
 
 type StaggerItemProps = {
   children: ReactNode;
   className?: string;
+  /** Kept for API compatibility. */
   distance?: number;
 };
 
-export function StaggerItem({
-  children,
-  className = "",
-  distance = 26,
-}: StaggerItemProps) {
-  const reduce = useReducedMotion();
-
-  if (reduce) {
-    return <div className={className}>{children}</div>;
-  }
-
-  return (
-    <m.div
-      className={className}
-      variants={{
-        hidden: { opacity: 0, y: distance },
-        show: { opacity: 1, y: 0, transition: { duration: 0.65, ease: EASE } },
-      }}
-    >
-      {children}
-    </m.div>
-  );
+export function StaggerItem({ children, className = "" }: StaggerItemProps) {
+  return <div className={className}>{children}</div>;
 }
