@@ -3,30 +3,33 @@
 @tailwind utilities;
 
 :root {
-  /* Warm premium palette */
+  /* Warm premium palette — gold + emerald */
   --background: #faf6ef; /* warm ivory */
   --surface: #fffdf9; /* card */
-  --surface-2: #f3e9da; /* alt sections / sand */
+  --surface-2: #efe4d1; /* alt sections / sand (deeper for visible rhythm) */
   --card: var(--surface);
-  --foreground: #2a211b; /* espresso text */
+  --foreground: #221c15; /* deep espresso text */
   --muted: #6e5c4b; /* warm taupe (AA on ivory) */
   --border: #e7d9c4;
   --border-strong: #d8c4a6;
 
-  /* Caramel-gold accent system.
-     --accent darkened to #9a6a30 so accent-colored text clears WCAG AA (4.5:1)
-     on the ivory background; --accent-soft stays bright for gradients/dark sections. */
+  /* Caramel-gold accent (AA-compliant as text on ivory). */
   --accent: #956629;
   --accent-soft: #c79a63;
   --accent-strong: #7e4f22;
   --accent-foreground: #fff9f0;
 
-  /* Warm dark ("поклон" CATS, но тёплый) */
-  --ink: #221913;
-  --ink-soft: #2e231a;
-  --ink-foreground: #efe2d0;
+  /* Emerald — the second colour that breaks the warm monotone.
+     Dark green as text/accent on light; light mint as accent on dark. */
+  --emerald: #1f5640;
+  --emerald-soft: #8cc0a6;
 
-  --shadow-color: 80 60 40;
+  /* Dark sections are now deep emerald (was brown) — gold + emerald = luxury. */
+  --ink: #143528;
+  --ink-soft: #1c4734;
+  --ink-foreground: #eef0e6;
+
+  --shadow-color: 50 50 38;
 }
 
 @layer base {
@@ -97,6 +100,18 @@
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
+  }
+
+  /* Oversized editorial headings (fluid). Pair with font-serif. */
+  .text-display {
+    font-size: clamp(2.5rem, 5.6vw, 4.75rem);
+    line-height: 1.02;
+    letter-spacing: -0.018em;
+  }
+  .text-display-lg {
+    font-size: clamp(3rem, 9vw, 8rem);
+    line-height: 0.98;
+    letter-spacing: -0.02em;
   }
 
   /* Layered premium shadows */

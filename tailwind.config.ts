@@ -24,6 +24,8 @@ const config: Config = {
         ink: "var(--ink)",
         "ink-soft": "var(--ink-soft)",
         "ink-foreground": "var(--ink-foreground)",
+        emerald: "var(--emerald)",
+        "emerald-soft": "var(--emerald-soft)",
       },
       fontFamily: {
         sans: ["var(--font-sans)", "system-ui", "sans-serif"],

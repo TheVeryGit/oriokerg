@@ -5,6 +5,7 @@ import Link from "next/link";
 import { AnimalCard } from "@/components/AnimalCard";
 import { TelegramIcon, VkIcon } from "@/components/icons";
 import { Hero } from "@/components/home/Hero";
+import { StepsScroller } from "@/components/home/StepsScroller";
 import { Reveal } from "@/components/Reveal";
 import { Stagger, StaggerItem } from "@/components/motion/Stagger";
 import type { ContactsSettings } from "@/lib/content";
@@ -127,20 +128,20 @@ export default function HomePage() {
         telegram={contacts.telegram}
       />
 
-      {/* Stats */}
-      <section className="border-y border-border bg-surface-2/60">
-        <div className="mx-auto grid w-full max-w-7xl grid-cols-2 gap-8 px-4 py-12 sm:px-6 md:grid-cols-4 lg:px-8">
+      {/* Stats — emerald strip */}
+      <section className="bg-ink text-ink-foreground">
+        <div className="mx-auto grid w-full max-w-7xl grid-cols-2 gap-8 px-4 py-14 sm:px-6 md:grid-cols-4 lg:px-8">
           {homepage.stats.map((stat, index) => (
             <Reveal
               key={`${stat.label}-${index}`}
               delay={index * 90}
               className="px-2 text-center"
             >
-              <p className="font-serif text-5xl font-semibold text-gold-gradient">
+              <p className="font-serif text-6xl font-semibold text-gold-gradient sm:text-7xl">
                 {stat.value}
-                {stat.suffix ? <span className="text-3xl">{stat.suffix}</span> : null}
+                {stat.suffix ? <span className="text-4xl">{stat.suffix}</span> : null}
               </p>
-              <p className="mt-2 text-sm text-muted">{stat.label}</p>
+              <p className="mt-3 text-sm text-ink-foreground/70">{stat.label}</p>
             </Reveal>
           ))}
         </div>
@@ -151,7 +152,7 @@ export default function HomePage() {
         <Reveal className="flex flex-wrap items-end justify-between gap-6">
           <div>
             <Eyebrow>В продаже</Eyebrow>
-            <h2 className="mt-4 font-serif text-4xl font-semibold text-foreground sm:text-5xl">
+            <h2 className="mt-4 font-serif text-display font-semibold text-foreground">
               Наши котята
             </h2>
           </div>
@@ -194,35 +195,68 @@ export default function HomePage() {
         <div className="mx-auto w-full max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
           <Reveal className="max-w-2xl">
             <Eyebrow>Почему мы</Eyebrow>
-            <h2 className="mt-4 font-serif text-4xl font-semibold text-foreground sm:text-5xl">
+            <h2 className="mt-4 font-serif text-display font-semibold text-foreground">
               {homepage.features_title}
             </h2>
           </Reveal>
-          <Stagger className="mt-14 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
-            {homepage.features.map((feature, index) => (
-              <StaggerItem key={`${feature.title}-${index}`}>
-                <div className="h-full rounded-4xl border border-border bg-card p-7 shadow-soft transition-all duration-500 hover:-translate-y-1.5 hover:border-accent/40 hover:shadow-lift">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-accent/10 text-accent">
-                    <svg
-                      viewBox="0 0 24 24"
-                      className="h-6 w-6"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="1.7"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      aria-hidden="true"
+          <Stagger className="mt-14 grid gap-5 md:grid-flow-row-dense md:grid-cols-3 md:grid-rows-2">
+            {homepage.features.map((feature, index) => {
+              const dark = index === 0;
+              const span =
+                index === 0
+                  ? "md:row-span-2"
+                  : index === 1
+                    ? "md:col-span-2"
+                    : "";
+              return (
+                <StaggerItem key={`${feature.title}-${index}`} className={span}>
+                  <div
+                    className={`flex h-full flex-col rounded-4xl border p-7 shadow-soft transition-all duration-500 hover:-translate-y-1.5 hover:shadow-lift ${
+                      dark
+                        ? "border-transparent bg-ink text-ink-foreground"
+                        : "border-border bg-card hover:border-accent/40"
+                    }`}
+                  >
+                    <div
+                      className={`flex h-12 w-12 items-center justify-center rounded-2xl ${
+                        dark
+                          ? "bg-emerald-soft/15 text-emerald-soft"
+                          : "bg-accent/10 text-accent"
+                      }`}
                     >
-                      {featureIcons[index % featureIcons.length]}
-                    </svg>
+                      <svg
+                        viewBox="0 0 24 24"
+                        className="h-6 w-6"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.7"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        aria-hidden="true"
+                      >
+                        {featureIcons[index % featureIcons.length]}
+                      </svg>
+                    </div>
+                    <h3
+                      className={`font-medium ${
+                        dark
+                          ? "mt-auto pt-8 font-serif text-2xl font-semibold text-ink-foreground"
+                          : "mt-5 text-lg text-foreground"
+                      }`}
+                    >
+                      {feature.title}
+                    </h3>
+                    <p
+                      className={`mt-2 text-sm leading-7 ${
+                        dark ? "text-ink-foreground/75" : "text-muted"
+                      }`}
+                    >
+                      {feature.text}
+                    </p>
                   </div>
-                  <h3 className="mt-5 text-lg font-medium text-foreground">
-                    {feature.title}
-                  </h3>
-                  <p className="mt-2 text-sm leading-7 text-muted">{feature.text}</p>
-                </div>
-              </StaggerItem>
-            ))}
+                </StaggerItem>
+              );
+            })}
           </Stagger>
         </div>
       </section>
@@ -247,7 +281,7 @@ export default function HomePage() {
           <div>
             <Reveal>
               <Eyebrow>Порода</Eyebrow>
-              <h2 className="mt-4 font-serif text-4xl font-semibold text-foreground sm:text-5xl">
+              <h2 className="mt-4 font-serif text-display font-semibold text-foreground">
                 {homepage.breed_title}
               </h2>
               <p className="mt-5 max-w-lg text-lg leading-8 text-muted text-pretty">
@@ -287,7 +321,7 @@ export default function HomePage() {
         <div className="mx-auto w-full max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
           <Reveal>
             <Eyebrow>Галерея</Eyebrow>
-            <h2 className="mt-4 font-serif text-4xl font-semibold text-foreground sm:text-5xl">
+            <h2 className="mt-4 font-serif text-display font-semibold text-foreground">
               Жизнь в питомнике
             </h2>
           </Reveal>
@@ -320,39 +354,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Steps — warm dark band */}
-      <section className="relative overflow-hidden bg-ink text-ink-foreground">
-        <span
-          aria-hidden="true"
-          className="pointer-events-none absolute right-[-3%] top-1/2 hidden -translate-y-1/2 select-none font-serif text-[12rem] leading-none text-ink-foreground/[0.05] lg:block xl:text-[16rem]"
-        >
-          ✦
-        </span>
-        <div className="relative mx-auto w-full max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
-          <Reveal className="max-w-2xl">
-            <span className="inline-flex items-center gap-2 text-sm uppercase tracking-luxe text-accent-soft">
-              <span className="h-px w-8 bg-accent-soft/60" />
-              Просто
-            </span>
-            <h2 className="mt-4 font-serif text-4xl font-semibold sm:text-5xl">
-              {homepage.steps_title}
-            </h2>
-          </Reveal>
-          <Stagger className="mt-14 grid gap-10 md:grid-cols-4">
-            {homepage.steps.map((step, index) => (
-              <StaggerItem key={`${step.title}-${index}`}>
-                <span className="font-serif text-6xl font-semibold text-gold-gradient">
-                  {String(index + 1).padStart(2, "0")}
-                </span>
-                <h3 className="mt-4 text-lg font-medium">{step.title}</h3>
-                <p className="mt-2 text-sm leading-7 text-ink-foreground/70">
-                  {step.text}
-                </p>
-              </StaggerItem>
-            ))}
-          </Stagger>
-        </div>
-      </section>
+      {/* Steps — animated scroll-driven stepper */}
+      <StepsScroller title={homepage.steps_title} steps={homepage.steps} />
 
       {/* Reviews */}
       <section className="mx-auto w-full max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
@@ -360,7 +363,7 @@ export default function HomePage() {
           <div className="flex justify-center">
             <Eyebrow>Отзывы</Eyebrow>
           </div>
-          <h2 className="mt-4 font-serif text-4xl font-semibold text-foreground sm:text-5xl">
+          <h2 className="mt-4 font-serif text-display font-semibold text-foreground">
             {homepage.reviews_title}
           </h2>
         </Reveal>

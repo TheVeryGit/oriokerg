@@ -84,28 +84,32 @@ npm run lint    # проверка eslint
 - **Палитра** (CSS-переменные в `app/globals.css` → Tailwind-токены):
   `--background` тёплая слоновая кость, `--surface`/`--surface-2` (карточки/секции),
   `--foreground` эспрессо, `--muted`, `--border`/`--border-strong`,
-  `--accent`/`--accent-soft`/`--accent-strong` (карамель-золото),
-  `--ink`/`--ink-foreground` (тёплая тёмная секция — поклон референсу CATS, но тёплый).
-  Утилиты: `shadow-soft/lift/glow`, `text-gold-gradient`, `rule-gold`, `link-underline`,
-  `grain-layer` (зерно поверх фона), `tracking-luxe`, `rounded-4xl/5xl`.
-- **Шрифты:** Inter (`font-sans`) + Cormorant Garamond (`font-serif`), в `app/layout.tsx`.
+  `--accent`/`--accent-soft`/`--accent-strong` (карамель-золото, главный акцент),
+  `--emerald`/`--emerald-soft` (изумруд — второй цвет: акцентные плитки/иконки),
+  `--ink`/`--ink-soft`/`--ink-foreground` (тёмные секции — теперь **глубокий изумруд** `#143528`).
+  Утилиты: `shadow-soft/lift/glow`, `text-gold-gradient`, `text-display`/`text-display-lg`
+  (крупная редакторская типографика, clamp), `rule-gold`, `link-underline`,
+  `grain-layer` (зерно), `tracking-luxe`, `rounded-4xl/5xl`.
+- **Шрифты:** Manrope (`font-sans`, текст) + Cormorant Garamond (`font-serif`), в `app/layout.tsx`.
 - **Анимации — Framer Motion** через `LazyMotion`+`domAnimation` (бандл лёгкий):
   - Везде используем `m.*` (не `motion.*`), провайдер — `components/motion/MotionProvider.tsx`.
-  - `components/Reveal.tsx` — появление по скроллу (`whileInView`); `components/motion/Stagger.tsx`
-    (`Stagger`/`StaggerItem`) — каскад для сеток; `components/home/Hero.tsx` — оркестрованный
-    вход + parallax. Всё уважает `useReducedMotion` + глобальный `@media (prefers-reduced-motion)`.
-  - Анимируем только `transform`/`opacity`.
+  - **Появление — НЕ через Framer-mount** (он не срабатывает на первой загрузке static export):
+    `components/Reveal.tsx` и `components/motion/Stagger.tsx` = IntersectionObserver + CSS
+    (`.reveal`/`.stagger`/`.is-visible`, скрытие только при `.reveal-ready` на `<html>`).
+    `Hero` — вход через CSS `animate-fade-up`. Framer — только для скролл-параллакса (Hero),
+    меню (Header), галереи (PhotoGallery) и **скролл-степпера** (`components/home/StepsScroller.tsx`,
+    `useScroll`+`useMotionValueEvent`, sticky-pin; на мобиле/`reduced-motion` — статичный список).
+  - Всё уважает `useReducedMotion` + `@media (prefers-reduced-motion)`. Анимируем `transform`/`opacity`.
 - **Компоненты:** `AnimalCard` (фото 4:5, zoom, скрим, бейдж `gold/muted/sold`, чип цены,
   hover-«Подробнее», ссылка через `href`); `PhotoGallery` (активное фото с fade, превью
   с акцентной рамкой); `ContactButtons` (Telegram/ВКонтакте/телефон); бренд-иконки —
   в `components/icons.tsx` (Simple Icons: Telegram, VK + телефон); `PageHeader`
   (eyebrow + serif h1 + intro); `Header`
   (прозрачный→твёрдый при скролле, активная ссылка, кнопка «Выбрать котёнка», моб. меню);
-  `Footer` (колонки, соц-пиллы, призрачный вотермарк — `hidden` на мобиле).
-- **Декор спрятан на мобиле:** ✦ в тёмной секции (`hidden lg:block`) и вотермарк
-  в футере (`hidden sm:block`), чтобы не лезли на текст.
-- **Главная** (`app/page.tsx`): Hero → цифры → котята → «почему мы» → блок о породе →
-  галерея → шаги (тёмная секция) → отзывы → CTA.
+  `Footer` (изумрудный, колонки, соц-пиллы Telegram/VK/телефон).
+- **Главная** (`app/page.tsx`): Hero → **изумрудная полоса цифр** → котята →
+  «почему мы» (**bento**, плитка-изумруд) → порода → галерея →
+  **скролл-степпер** «как забрать» (изумруд) → отзывы → золотой CTA. Ритм светлых/изумрудных секций.
 - **Галерея** берёт реальные фото из карточек; если меньше 5 — заглушки `public/images/gallery/cat-1..5.jpg`.
 - **Контент главной и /breed — в CMS** (не хардкод!): тексты/списки берутся через
   `getHomepage()`/`getBreed()` из `lib/content.ts` с дефолтами-фолбэками. В коде остаются
