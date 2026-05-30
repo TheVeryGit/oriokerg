@@ -54,14 +54,6 @@ export function Footer({ contacts }: FooterProps) {
 
   return (
     <footer className="relative mt-10 overflow-hidden bg-ink text-ink-foreground">
-      {/* Ghosted wordmark, like the reference — desktop only, subtle texture behind columns */}
-      <span
-        aria-hidden="true"
-        className="pointer-events-none absolute bottom-2 left-1/2 hidden -translate-x-1/2 select-none whitespace-nowrap font-serif text-[15vw] font-semibold leading-none text-ink-foreground/[0.04] sm:block"
-      >
-        OrioKerg
-      </span>
-
       <div className="relative mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="grid gap-12 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr]">
           <div>
