@@ -26,7 +26,7 @@ const config: Config = {
         "ink-foreground": "var(--ink-foreground)",
       },
       fontFamily: {
-        sans: ["var(--font-inter)", "system-ui", "sans-serif"],
+        sans: ["var(--font-sans)", "system-ui", "sans-serif"],
         serif: ["var(--font-serif)", "Georgia", "serif"],
       },
       letterSpacing: {

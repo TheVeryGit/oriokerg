@@ -13,10 +13,12 @@
   --border: #e7d9c4;
   --border-strong: #d8c4a6;
 
-  /* Caramel-gold accent system */
-  --accent: #b07a3c;
+  /* Caramel-gold accent system.
+     --accent darkened to #9a6a30 so accent-colored text clears WCAG AA (4.5:1)
+     on the ivory background; --accent-soft stays bright for gradients/dark sections. */
+  --accent: #956629;
   --accent-soft: #c79a63;
-  --accent-strong: #8a5a28;
+  --accent-strong: #7e4f22;
   --accent-foreground: #fff9f0;
 
   /* Warm dark ("поклон" CATS, но тёплый) */
@@ -44,13 +46,24 @@
       radial-gradient(circle at 95% 8%, rgba(199, 154, 99, 0.1), transparent 34%),
       linear-gradient(180deg, #f9f4ea 0%, #f4ecdf 100%);
     background-attachment: fixed;
-    font-family: var(--font-inter), system-ui, sans-serif;
+    font-family: var(--font-sans), system-ui, sans-serif;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
   }
 
   a {
     @apply transition-colors duration-200;
+  }
+
+  /* Visible, on-brand keyboard focus ring (only for keyboard users). */
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  /* Dark sections: ring uses the lighter accent for visibility. */
+  .bg-ink :focus-visible {
+    outline-color: var(--accent-soft);
   }
 
   ::selection {

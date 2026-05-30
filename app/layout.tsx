@@ -1,5 +1,5 @@
-import type { Metadata } from "next";
-import { Cormorant_Garamond, Inter } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Cormorant_Garamond, Manrope } from "next/font/google";
 import type { ReactNode } from "react";
 
 import { Footer } from "@/components/Footer";
@@ -10,10 +10,12 @@ import { getSettings } from "@/lib/content";
 
 import "./globals.css";
 
-const inter = Inter({
+// Body face — distinctive, full Cyrillic, premium (intentionally NOT Inter/Roboto).
+const sans = Manrope({
   subsets: ["latin", "cyrillic"],
+  weight: ["400", "500", "600", "700"],
   display: "swap",
-  variable: "--font-inter",
+  variable: "--font-sans",
 });
 
 const serif = Cormorant_Garamond({
@@ -42,6 +44,12 @@ export const metadata: Metadata = {
   },
 };
 
+export const viewport: Viewport = {
+  themeColor: "#faf6ef",
+  width: "device-width",
+  initialScale: 1,
+};
+
 type RootLayoutProps = {
   children: ReactNode;
 };
@@ -52,13 +60,21 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="ru">
       <body
-        className={`${inter.variable} ${serif.variable} relative min-h-screen bg-background text-foreground`}
+        className={`${sans.variable} ${serif.variable} relative min-h-screen bg-background text-foreground`}
       >
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-accent focus:px-5 focus:py-2.5 focus:text-sm focus:font-medium focus:text-accent-foreground focus:shadow-lift"
+        >
+          К содержимому
+        </a>
         <div className="grain-layer" aria-hidden="true" />
         <MotionProvider>
           <div className="relative z-[2] flex min-h-screen flex-col">
             <Header />
-            <main className="flex-1">{children}</main>
+            <main id="main-content" className="flex-1">
+              {children}
+            </main>
             <Footer contacts={contacts} />
           </div>
         </MotionProvider>
