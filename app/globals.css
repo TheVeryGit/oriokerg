@@ -3,14 +3,28 @@
 @tailwind utilities;
 
 :root {
-  --background: #f7f1e7;
-  --foreground: #2e2620;
-  --card: #ffffff;
-  --border: #e6dac6;
-  --muted: #6b5d4d;
-  --accent: #9a6b3f;
-  --accent-soft: #b58a5a;
-  --accent-foreground: #ffffff;
+  /* Warm premium palette */
+  --background: #faf6ef; /* warm ivory */
+  --surface: #fffdf9; /* card */
+  --surface-2: #f3e9da; /* alt sections / sand */
+  --card: var(--surface);
+  --foreground: #2a211b; /* espresso text */
+  --muted: #6e5c4b; /* warm taupe (AA on ivory) */
+  --border: #e7d9c4;
+  --border-strong: #d8c4a6;
+
+  /* Caramel-gold accent system */
+  --accent: #b07a3c;
+  --accent-soft: #c79a63;
+  --accent-strong: #8a5a28;
+  --accent-foreground: #fff9f0;
+
+  /* Warm dark ("поклон" CATS, но тёплый) */
+  --ink: #221913;
+  --ink-soft: #2e231a;
+  --ink-foreground: #efe2d0;
+
+  --shadow-color: 80 60 40;
 }
 
 @layer base {
@@ -26,10 +40,13 @@
     min-height: 100vh;
     color: var(--foreground);
     background:
-      radial-gradient(circle at top, rgba(154, 107, 63, 0.10), transparent 32%),
-      linear-gradient(180deg, #f8f3ea 0%, #f4ecdf 100%);
-    font-family: var(--font-inter), sans-serif;
+      radial-gradient(circle at 12% -5%, rgba(176, 122, 60, 0.12), transparent 38%),
+      radial-gradient(circle at 95% 8%, rgba(199, 154, 99, 0.1), transparent 34%),
+      linear-gradient(180deg, #f9f4ea 0%, #f4ecdf 100%);
+    background-attachment: fixed;
+    font-family: var(--font-inter), system-ui, sans-serif;
     text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
   }
 
   a {
@@ -37,8 +54,14 @@
   }
 
   ::selection {
-    background: rgba(154, 107, 63, 0.22);
+    background: rgba(176, 122, 60, 0.24);
     color: var(--foreground);
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-feature-settings: "liga" 1, "calt" 1;
   }
 }
 
@@ -47,14 +70,90 @@
     text-wrap: balance;
   }
 
+  .text-pretty {
+    text-wrap: pretty;
+  }
+
   .font-serif {
     font-family: var(--font-serif), Georgia, serif;
   }
 
+  /* Caramel gradient text for accents */
   .text-gold-gradient {
-    background: linear-gradient(120deg, var(--accent-soft), var(--accent));
+    background: linear-gradient(118deg, var(--accent-soft) 0%, var(--accent) 48%, var(--accent-strong) 100%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
+  }
+
+  /* Layered premium shadows */
+  .shadow-soft {
+    box-shadow: 0 1px 2px -1px rgb(var(--shadow-color) / 0.18),
+      0 12px 30px -16px rgb(var(--shadow-color) / 0.28);
+  }
+
+  .shadow-lift {
+    box-shadow: 0 2px 4px -2px rgb(var(--shadow-color) / 0.2),
+      0 28px 60px -24px rgb(var(--shadow-color) / 0.4);
+  }
+
+  .shadow-glow {
+    box-shadow: 0 18px 40px -16px rgba(176, 122, 60, 0.55);
+  }
+
+  /* Hairline gradient divider */
+  .rule-gold {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border-strong), transparent);
+  }
+
+  /* Fine grain texture overlay (applied to a fixed layer in layout) */
+  .grain-layer {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0.4;
+    mix-blend-mode: soft-light;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* Animated underline for nav links */
+  .link-underline {
+    position: relative;
+  }
+  .link-underline::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -4px;
+    height: 1.5px;
+    width: 100%;
+    transform: scaleX(0);
+    transform-origin: right;
+    background: var(--accent);
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .link-underline:hover::after,
+  .link-underline[data-active="true"]::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+}
+
+/* Respect reduced motion globally as a safety net */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .grain-layer {
+    display: none;
   }
 }

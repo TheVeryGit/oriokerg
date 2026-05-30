@@ -1,66 +1,30 @@
+import type { ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
 import { AnimalCard } from "@/components/AnimalCard";
+import { Hero } from "@/components/home/Hero";
 import { Reveal } from "@/components/Reveal";
-import type { ContactsSettings, HomepageSettings } from "@/lib/content";
+import { Stagger, StaggerItem } from "@/components/motion/Stagger";
+import type { ContactsSettings } from "@/lib/content";
 import {
   DEFAULT_HERO_IMAGE,
   formatPrice,
   getCats,
+  getHomepage,
   getKittens,
   getSettings,
 } from "@/lib/content";
 
-const stats = [
-  { value: "8 лет", label: "питомнику" },
-  { value: "120+", label: "счастливых семей" },
-  { value: "WCF", label: "регистрация" },
-  { value: "4.9", label: "средняя оценка" },
-];
-
-const features = [
-  {
-    title: "Здоровье под контролем",
-    text: "Тесты на генетические заболевания, наблюдение ветеринара и прививки по возрасту.",
-  },
-  {
-    title: "Социализация с рождения",
-    text: "Котята растут в доме среди людей и звуков — спокойные, ручные и ласковые.",
-  },
-  {
-    title: "Полный пакет документов",
-    text: "Метрика, договор и ветеринарный паспорт едут вместе с малышом.",
-  },
-  {
-    title: "Поддержка на всю жизнь",
-    text: "Консультируем по питанию, уходу и воспитанию столько, сколько нужно.",
-  },
-];
-
-const steps = [
-  { title: "Знакомство", text: "Пишете нам — присылаем фото, видео и рассказываем о малышах." },
-  { title: "Бронь", text: "Выбираете котёнка и вносите бронь, чтобы он дождался переезда." },
-  { title: "Подготовка", text: "Прививки, документы и приучение к лотку и когтеточке." },
-  { title: "Переезд", text: "Передаём котёнка с пакетом документов и заботой о деталях." },
-];
-
-const reviews = [
-  {
-    name: "Анна",
-    city: "Москва",
-    text: "Котёнок приехал здоровым, ласковым и совершенно ручным. Заводчик на связи до сих пор!",
-  },
-  {
-    name: "Дмитрий",
-    city: "Казань",
-    text: "Всё честно: показали родителей, документы, отвечали на любые вопросы. Рекомендую.",
-  },
-  {
-    name: "Елена",
-    city: "Санкт-Петербург",
-    text: "Наш питомец — чудо: воспитанный, чистоплотный, обожает всю семью. Спасибо OrioKerg!",
-  },
+// Icons are assigned by position; the owner controls the text via the CMS.
+const featureIcons: ReactNode[] = [
+  <path key="i0" d="M3 12h3l2 5 4-12 2 7 2-3h4" />,
+  <path key="i1" d="M3 11l9-8 9 8M5 10v10h14V10M9 20v-6h6v6" />,
+  <path key="i2" d="M7 3h7l5 5v13H7zM14 3v5h5M9 13h6M9 17h6" />,
+  <path
+    key="i3"
+    d="M4 14a8 8 0 0 1 16 0v3a2 2 0 0 1-2 2h-1v-5h3M4 14v3a2 2 0 0 0 2 2h1v-5H4"
+  />,
 ];
 
 const galleryFallback = [
@@ -88,6 +52,49 @@ function Stars() {
   );
 }
 
+function Eyebrow({ children }: { children: string }) {
+  return (
+    <span className="inline-flex items-center gap-2 text-sm uppercase tracking-luxe text-accent">
+      <span className="h-px w-8 bg-accent/50" />
+      {children}
+    </span>
+  );
+}
+
+function CheckIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className="h-5 w-5"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M20 6 9 17l-5-5" />
+    </svg>
+  );
+}
+
+function ArrowIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className="h-4 w-4"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M5 12h14M13 6l6 6-6 6" />
+    </svg>
+  );
+}
+
 function buildGallery(): string[] {
   const realPhotos = [
     ...getKittens().flatMap((kitten) => kitten.photos),
@@ -100,7 +107,7 @@ function buildGallery(): string[] {
 }
 
 export default function HomePage() {
-  const homepage = getSettings<HomepageSettings>("homepage");
+  const homepage = getHomepage();
   const contacts = getSettings<ContactsSettings>("contacts");
   const heroImage = homepage.hero_image?.trim()
     ? homepage.hero_image
@@ -112,108 +119,58 @@ export default function HomePage() {
 
   return (
     <div>
-      {/* Hero */}
-      <section className="relative overflow-hidden">
-        <div className="pointer-events-none absolute -left-24 top-10 h-72 w-72 rounded-full bg-accent/15 blur-3xl" />
-        <div className="pointer-events-none absolute right-0 top-40 h-80 w-80 rounded-full bg-accent-soft/15 blur-3xl" />
-
-        <div className="relative mx-auto grid w-full max-w-7xl items-center gap-12 px-4 py-16 sm:px-6 lg:grid-cols-2 lg:px-8 lg:py-24">
-          <Reveal>
-            <p className="inline-flex items-center gap-2 rounded-full border border-border bg-card/70 px-4 py-1.5 text-xs uppercase tracking-[0.3em] text-accent-soft">
-              Питомник с любовью
-            </p>
-            <h1 className="mt-6 font-serif text-5xl font-semibold leading-[1.04] text-foreground sm:text-6xl lg:text-7xl">
-              {homepage.hero_title}
-            </h1>
-            <p className="mt-7 max-w-md text-lg leading-8 text-muted">
-              {homepage.hero_subtitle}
-            </p>
-            <div className="mt-9 flex flex-wrap gap-4">
-              <Link
-                href="/kittens"
-                className="rounded-full bg-accent px-8 py-4 text-sm font-medium text-accent-foreground shadow-[0_14px_34px_-12px_rgba(154,107,63,0.6)] transition-transform hover:-translate-y-0.5"
-              >
-                Посмотреть котят
-              </Link>
-              <Link
-                href="/about"
-                className="rounded-full border border-border px-8 py-4 text-sm text-muted transition-colors hover:border-accent hover:text-accent"
-              >
-                О питомнике
-              </Link>
-            </div>
-            <div className="mt-9 flex flex-wrap gap-x-7 gap-y-2 text-sm text-muted">
-              <span>✓ Документы WCF</span>
-              <span>✓ Прививки по возрасту</span>
-              <span>✓ Договор</span>
-            </div>
-          </Reveal>
-
-          <Reveal delay={120} className="relative">
-            <div className="absolute -right-4 -top-4 hidden h-32 w-32 rounded-3xl border border-border sm:block" />
-            <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[2.5rem] shadow-[0_40px_70px_-25px_rgba(80,60,40,0.4)]">
-              <Image
-                src={heroImage}
-                alt="Ориентальная кошка питомника OrioKerg"
-                fill
-                priority
-                sizes="(min-width: 1024px) 45vw, 100vw"
-                className="object-cover object-[50%_20%]"
-              />
-            </div>
-            <div className="absolute -bottom-5 left-5 flex items-center gap-3 rounded-2xl bg-card px-5 py-4 shadow-[0_20px_40px_-18px_rgba(80,60,40,0.4)]">
-              <Stars />
-              <div className="text-sm">
-                <p className="font-medium text-foreground">4.9 / 5</p>
-                <p className="text-muted">120+ семей</p>
-              </div>
-            </div>
-          </Reveal>
-        </div>
-      </section>
+      <Hero
+        title={homepage.hero_title}
+        subtitle={homepage.hero_subtitle}
+        image={heroImage}
+        telegram={contacts.telegram}
+      />
 
       {/* Stats */}
-      <section className="border-y border-border bg-card/60">
+      <section className="border-y border-border bg-surface-2/60">
         <div className="mx-auto grid w-full max-w-7xl grid-cols-2 gap-8 px-4 py-12 sm:px-6 md:grid-cols-4 lg:px-8">
-          {stats.map((stat) => (
-            <div key={stat.label} className="text-center">
-              <p className="font-serif text-4xl font-semibold text-accent">
+          {homepage.stats.map((stat, index) => (
+            <Reveal
+              key={`${stat.label}-${index}`}
+              delay={index * 90}
+              className="px-2 text-center"
+            >
+              <p className="font-serif text-5xl font-semibold text-gold-gradient">
                 {stat.value}
+                {stat.suffix ? <span className="text-3xl">{stat.suffix}</span> : null}
               </p>
-              <p className="mt-1 text-sm text-muted">{stat.label}</p>
-            </div>
+              <p className="mt-2 text-sm text-muted">{stat.label}</p>
+            </Reveal>
           ))}
         </div>
       </section>
 
       {/* Featured kittens */}
-      <section className="mx-auto w-full max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-        <Reveal className="flex items-end justify-between gap-6">
+      <section className="mx-auto w-full max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
+        <Reveal className="flex flex-wrap items-end justify-between gap-6">
           <div>
-            <p className="text-sm uppercase tracking-[0.3em] text-accent">
-              В продаже
-            </p>
-            <h2 className="mt-3 font-serif text-4xl font-semibold text-foreground sm:text-5xl">
+            <Eyebrow>В продаже</Eyebrow>
+            <h2 className="mt-4 font-serif text-4xl font-semibold text-foreground sm:text-5xl">
               Наши котята
             </h2>
           </div>
           <Link
             href="/kittens"
-            className="hidden shrink-0 text-sm text-muted transition-colors hover:text-accent sm:block"
+            className="link-underline hidden shrink-0 text-sm text-muted hover:text-accent sm:block"
           >
             Смотреть всех →
           </Link>
         </Reveal>
 
         {featuredKittens.length === 0 ? (
-          <Reveal className="mt-12 rounded-[1.75rem] border border-dashed border-border bg-card p-10 text-center text-muted">
+          <Reveal className="mt-12 rounded-4xl border border-dashed border-border-strong bg-card p-12 text-center text-muted">
             Свободные котята скоро появятся. Загляните позже или напишите нам —
             расскажем о ближайших планах.
           </Reveal>
         ) : (
-          <div className="mt-12 grid gap-7 md:grid-cols-2 xl:grid-cols-3">
-            {featuredKittens.map((kitten, index) => (
-              <Reveal key={kitten.slug} delay={index * 100}>
+          <Stagger className="mt-12 grid gap-7 md:grid-cols-2 xl:grid-cols-3">
+            {featuredKittens.map((kitten) => (
+              <StaggerItem key={kitten.slug}>
                 <AnimalCard
                   name={kitten.name}
                   photo={kitten.photos[0]}
@@ -225,163 +182,230 @@ export default function HomePage() {
                   }
                   badge={{ label: kitten.gender }}
                 />
-              </Reveal>
+              </StaggerItem>
             ))}
-          </div>
+          </Stagger>
         )}
       </section>
 
       {/* Features */}
-      <section className="bg-card/60 border-y border-border">
-        <div className="mx-auto w-full max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+      <section className="border-y border-border bg-surface-2/50">
+        <div className="mx-auto w-full max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
           <Reveal className="max-w-2xl">
-            <p className="text-sm uppercase tracking-[0.3em] text-accent">
-              Почему мы
-            </p>
-            <h2 className="mt-3 font-serif text-4xl font-semibold text-foreground sm:text-5xl">
-              Забота, которой можно доверять
+            <Eyebrow>Почему мы</Eyebrow>
+            <h2 className="mt-4 font-serif text-4xl font-semibold text-foreground sm:text-5xl">
+              {homepage.features_title}
             </h2>
           </Reveal>
-          <div className="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
-            {features.map((feature, index) => (
-              <Reveal key={feature.title} delay={index * 80}>
-                <div className="h-full rounded-3xl border border-border bg-card p-7 shadow-[0_10px_30px_-16px_rgba(80,60,40,0.25)]">
+          <Stagger className="mt-14 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+            {homepage.features.map((feature, index) => (
+              <StaggerItem key={`${feature.title}-${index}`}>
+                <div className="h-full rounded-4xl border border-border bg-card p-7 shadow-soft transition-all duration-500 hover:-translate-y-1.5 hover:border-accent/40 hover:shadow-lift">
                   <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-accent/10 text-accent">
                     <svg
                       viewBox="0 0 24 24"
-                      className="h-6 w-6 fill-current"
+                      className="h-6 w-6"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.7"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                       aria-hidden="true"
                     >
-                      <path d="M12 9c-3.5 0-6 2.6-6 5.3 0 1.6 1.3 2.7 3 2.7.9 0 1.7-.3 3-.3s2.1.3 3 .3c1.7 0 3-1.1 3-2.7C18 11.6 15.5 9 12 9Zm-6.5-.5A1.8 1.8 0 1 0 4 6.4a4 4 0 0 0 1.5 2.1Zm13 0A4 4 0 0 0 20 6.4a1.8 1.8 0 1 0-1.5 2.1ZM9 7.2A1.8 1.8 0 1 0 7.4 4 4 4 0 0 0 9 7.2Zm6 0A4 4 0 0 0 16.6 4 1.8 1.8 0 1 0 15 7.2Z" />
+                      {featureIcons[index % featureIcons.length]}
                     </svg>
                   </div>
                   <h3 className="mt-5 text-lg font-medium text-foreground">
                     {feature.title}
                   </h3>
-                  <p className="mt-2 text-sm leading-7 text-muted">
-                    {feature.text}
-                  </p>
+                  <p className="mt-2 text-sm leading-7 text-muted">{feature.text}</p>
                 </div>
-              </Reveal>
+              </StaggerItem>
             ))}
+          </Stagger>
+        </div>
+      </section>
+
+      {/* Breed intro */}
+      <section className="mx-auto w-full max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
+        <div className="grid items-center gap-12 lg:grid-cols-2">
+          <Reveal direction="right" className="relative">
+            <div className="relative aspect-[5/6] overflow-hidden rounded-5xl shadow-lift">
+              <Image
+                src={gallery[1] ?? heroImage}
+                alt="Ориентальная кошка крупным планом"
+                fill
+                sizes="(min-width: 1024px) 45vw, 100vw"
+                className="object-cover"
+              />
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/30 to-transparent" />
+            </div>
+            <div className="absolute -left-4 -top-4 hidden h-28 w-28 rounded-4xl border border-border-strong lg:block" />
+          </Reveal>
+
+          <div>
+            <Reveal>
+              <Eyebrow>Порода</Eyebrow>
+              <h2 className="mt-4 font-serif text-4xl font-semibold text-foreground sm:text-5xl">
+                {homepage.breed_title}
+              </h2>
+              <p className="mt-5 max-w-lg text-lg leading-8 text-muted text-pretty">
+                {homepage.breed_text}
+              </p>
+            </Reveal>
+            <Stagger className="mt-8 space-y-4">
+              {homepage.breed_traits.map((trait, index) => (
+                <StaggerItem key={`${trait.title}-${index}`}>
+                  <div className="flex gap-4 rounded-3xl border border-border bg-card/70 p-5 shadow-soft">
+                    <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-accent/10 text-accent">
+                      <CheckIcon />
+                    </span>
+                    <div>
+                      <h3 className="font-medium text-foreground">{trait.title}</h3>
+                      <p className="mt-1 text-sm leading-7 text-muted">{trait.text}</p>
+                    </div>
+                  </div>
+                </StaggerItem>
+              ))}
+            </Stagger>
+            <Reveal delay={120}>
+              <Link
+                href="/breed"
+                className="mt-8 inline-flex items-center gap-2 rounded-full border border-border-strong bg-card/60 px-7 py-3.5 text-sm font-medium text-foreground transition-colors hover:border-accent hover:text-accent"
+              >
+                Узнать о породе больше
+                <ArrowIcon />
+              </Link>
+            </Reveal>
           </div>
         </div>
       </section>
 
       {/* Gallery */}
-      <section className="mx-auto w-full max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-        <Reveal>
-          <p className="text-sm uppercase tracking-[0.3em] text-accent">
-            Галерея
-          </p>
-          <h2 className="mt-3 font-serif text-4xl font-semibold text-foreground sm:text-5xl">
-            Жизнь в питомнике
-          </h2>
-        </Reveal>
-        <Reveal className="mt-10 grid grid-cols-2 gap-4 md:grid-cols-4 md:grid-rows-2">
-          <div className="relative col-span-2 row-span-2 aspect-square overflow-hidden rounded-3xl md:aspect-auto">
-            <Image
-              src={gallery[0]}
-              alt="Жизнь питомника OrioKerg"
-              fill
-              sizes="(min-width: 768px) 50vw, 100vw"
-              className="object-cover"
-            />
-          </div>
-          {gallery.slice(1).map((photo, index) => (
-            <div
-              key={`${photo}-${index}`}
-              className="relative aspect-square overflow-hidden rounded-3xl"
-            >
-              <Image
-                src={photo}
-                alt="Питомец OrioKerg"
-                fill
-                sizes="(min-width: 768px) 25vw, 50vw"
-                className="object-cover"
-              />
-            </div>
-          ))}
-        </Reveal>
-      </section>
-
-      {/* Steps */}
-      <section className="bg-foreground text-background">
-        <div className="mx-auto w-full max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-          <Reveal className="max-w-2xl">
-            <p className="text-sm uppercase tracking-[0.3em] text-accent-soft">
-              Просто
-            </p>
-            <h2 className="mt-3 font-serif text-4xl font-semibold sm:text-5xl">
-              Как забрать котёнка
+      <section className="border-y border-border bg-surface-2/50">
+        <div className="mx-auto w-full max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
+          <Reveal>
+            <Eyebrow>Галерея</Eyebrow>
+            <h2 className="mt-4 font-serif text-4xl font-semibold text-foreground sm:text-5xl">
+              Жизнь в питомнике
             </h2>
           </Reveal>
-          <div className="mt-12 grid gap-8 md:grid-cols-4">
-            {steps.map((step, index) => (
-              <Reveal key={step.title} delay={index * 80}>
-                <span className="font-serif text-5xl font-semibold text-accent-soft">
-                  0{index + 1}
+          <Reveal className="mt-12 grid grid-cols-2 gap-4 md:grid-cols-4 md:grid-rows-2">
+            <div className="group relative col-span-2 row-span-2 aspect-square overflow-hidden rounded-4xl md:aspect-auto">
+              <Image
+                src={gallery[0]}
+                alt="Жизнь питомника OrioKerg"
+                fill
+                sizes="(min-width: 768px) 50vw, 100vw"
+                className="object-cover transition-transform duration-[1200ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-105"
+              />
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/30 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+            </div>
+            {gallery.slice(1).map((photo, index) => (
+              <div
+                key={`${photo}-${index}`}
+                className="group relative aspect-square overflow-hidden rounded-4xl"
+              >
+                <Image
+                  src={photo}
+                  alt="Питомец OrioKerg"
+                  fill
+                  sizes="(min-width: 768px) 25vw, 50vw"
+                  className="object-cover transition-transform duration-[1200ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-110"
+                />
+              </div>
+            ))}
+          </Reveal>
+        </div>
+      </section>
+
+      {/* Steps — warm dark band */}
+      <section className="relative overflow-hidden bg-ink text-ink-foreground">
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute right-[-3%] top-1/2 hidden -translate-y-1/2 select-none font-serif text-[12rem] leading-none text-ink-foreground/[0.05] lg:block xl:text-[16rem]"
+        >
+          ✦
+        </span>
+        <div className="relative mx-auto w-full max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
+          <Reveal className="max-w-2xl">
+            <span className="inline-flex items-center gap-2 text-sm uppercase tracking-luxe text-accent-soft">
+              <span className="h-px w-8 bg-accent-soft/60" />
+              Просто
+            </span>
+            <h2 className="mt-4 font-serif text-4xl font-semibold sm:text-5xl">
+              {homepage.steps_title}
+            </h2>
+          </Reveal>
+          <Stagger className="mt-14 grid gap-10 md:grid-cols-4">
+            {homepage.steps.map((step, index) => (
+              <StaggerItem key={`${step.title}-${index}`}>
+                <span className="font-serif text-6xl font-semibold text-gold-gradient">
+                  {String(index + 1).padStart(2, "0")}
                 </span>
                 <h3 className="mt-4 text-lg font-medium">{step.title}</h3>
-                <p className="mt-2 text-sm leading-7 text-background/70">
+                <p className="mt-2 text-sm leading-7 text-ink-foreground/70">
                   {step.text}
                 </p>
-              </Reveal>
+              </StaggerItem>
             ))}
-          </div>
+          </Stagger>
         </div>
       </section>
 
       {/* Reviews */}
-      <section className="mx-auto w-full max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+      <section className="mx-auto w-full max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
         <Reveal className="text-center">
-          <p className="text-sm uppercase tracking-[0.3em] text-accent">
-            Отзывы
-          </p>
-          <h2 className="mt-3 font-serif text-4xl font-semibold text-foreground sm:text-5xl">
-            Что говорят семьи
+          <div className="flex justify-center">
+            <Eyebrow>Отзывы</Eyebrow>
+          </div>
+          <h2 className="mt-4 font-serif text-4xl font-semibold text-foreground sm:text-5xl">
+            {homepage.reviews_title}
           </h2>
         </Reveal>
-        <div className="mt-12 grid gap-6 md:grid-cols-3">
-          {reviews.map((review, index) => (
-            <Reveal key={review.name} delay={index * 100}>
-              <div className="h-full rounded-3xl border border-border bg-card p-7 shadow-[0_10px_30px_-16px_rgba(80,60,40,0.25)]">
+        <Stagger className="mt-14 grid gap-6 md:grid-cols-3">
+          {homepage.reviews.map((review, index) => (
+            <StaggerItem key={`${review.name}-${index}`}>
+              <figure className="flex h-full flex-col rounded-4xl border border-border bg-card p-7 shadow-soft">
                 <Stars />
-                <p className="mt-4 text-[15px] leading-7 text-foreground/80">
+                <blockquote className="mt-4 flex-1 text-[15px] leading-7 text-foreground/80">
                   «{review.text}»
-                </p>
-                <div className="mt-6 flex items-center gap-3">
-                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-accent text-accent-foreground">
-                    {review.name[0]}
+                </blockquote>
+                <figcaption className="mt-6 flex items-center gap-3">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-accent-soft to-accent-strong font-medium text-accent-foreground">
+                    {review.name.charAt(0) || "★"}
                   </span>
                   <div className="text-sm">
                     <p className="font-medium text-foreground">{review.name}</p>
                     <p className="text-muted">{review.city}</p>
                   </div>
-                </div>
-              </div>
-            </Reveal>
+                </figcaption>
+              </figure>
+            </StaggerItem>
           ))}
-        </div>
+        </Stagger>
       </section>
 
       {/* CTA */}
-      <section className="mx-auto w-full max-w-7xl px-4 pb-24 sm:px-6 lg:px-8">
+      <section className="mx-auto w-full max-w-7xl px-4 pb-28 sm:px-6 lg:px-8">
         <Reveal>
-          <div className="overflow-hidden rounded-[2.5rem] bg-accent px-6 py-20 text-center text-accent-foreground sm:px-10">
-            <h2 className="mx-auto max-w-2xl font-serif text-4xl font-semibold sm:text-5xl">
-              Хотите познакомиться с котёнком?
+          <div className="relative overflow-hidden rounded-5xl bg-gradient-to-br from-accent via-accent to-accent-strong px-6 py-20 text-center text-accent-foreground shadow-glow sm:px-10">
+            <span
+              aria-hidden="true"
+              className="pointer-events-none absolute -right-10 -top-10 h-48 w-48 rounded-full bg-accent-foreground/10 blur-2xl"
+            />
+            <h2 className="mx-auto max-w-2xl font-serif text-4xl font-semibold text-balance sm:text-5xl">
+              {homepage.cta_title}
             </h2>
             <p className="mx-auto mt-5 max-w-lg text-accent-foreground/85">
-              Напишите нам — расскажем о доступных малышах, пришлём фото и видео,
-              поможем выбрать вашего питомца.
+              {homepage.cta_text}
             </p>
             <div className="mt-10 flex flex-wrap justify-center gap-4">
               <a
                 href={contacts.telegram}
                 target="_blank"
                 rel="noreferrer"
-                className="rounded-full bg-card px-8 py-4 text-sm font-medium text-accent transition-transform hover:-translate-y-0.5"
+                className="rounded-full bg-card px-8 py-4 text-sm font-medium text-accent-strong transition-transform duration-200 hover:-translate-y-0.5"
               >
                 Написать в Telegram
               </a>

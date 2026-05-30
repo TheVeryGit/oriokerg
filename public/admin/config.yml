@@ -130,12 +130,93 @@ collections:
       - label: Главная страница
         name: homepage
         file: content/settings/homepage.md
-        description: Заголовок, подзаголовок и фото первого экрана.
+        description: Все тексты и блоки главной страницы.
         fields:
           - { name: hero_title, label: "Заголовок (первый экран)", widget: string }
           - { name: hero_subtitle, label: "Подзаголовок (первый экран)", widget: text }
           - { name: hero_image, label: "Фото на первом экране", widget: image, required: false, hint: "Если пусто — используется фото по умолчанию" }
-          - { name: intro_text, label: "Вступительный текст", widget: text }
+          - { name: intro_text, label: "Вступительный текст", widget: text, required: false }
+          - label: "Цифры (статистика)"
+            name: stats
+            widget: list
+            required: false
+            summary: "{{fields.value}}{{fields.suffix}} — {{fields.label}}"
+            hint: "Блок с цифрами под первым экраном. Если пусто — показываются значения по умолчанию."
+            fields:
+              - { name: value, label: Значение, widget: string, hint: "Например: 8, 120, WCF, 4.9" }
+              - { name: suffix, label: Приставка, widget: string, required: false, hint: "Например: + или « лет» (с пробелом). Можно оставить пустым." }
+              - { name: label, label: Подпись, widget: string }
+          - { name: features_title, label: "Заголовок блока «Почему мы»", widget: string, required: false }
+          - label: "Блок «Почему мы»"
+            name: features
+            widget: list
+            required: false
+            summary: "{{fields.title}}"
+            hint: "Иконки подбираются автоматически по порядку."
+            fields:
+              - { name: title, label: Заголовок, widget: string }
+              - { name: text, label: Текст, widget: text }
+          - { name: breed_title, label: "Заголовок блока о породе", widget: string, required: false }
+          - { name: breed_text, label: "Текст блока о породе", widget: text, required: false }
+          - label: "Качества породы (короткий блок на главной)"
+            name: breed_traits
+            widget: list
+            required: false
+            summary: "{{fields.title}}"
+            fields:
+              - { name: title, label: Заголовок, widget: string }
+              - { name: text, label: Текст, widget: text }
+          - { name: steps_title, label: "Заголовок блока «Как забрать котёнка»", widget: string, required: false }
+          - label: "Шаги «Как забрать котёнка»"
+            name: steps
+            widget: list
+            required: false
+            summary: "{{fields.title}}"
+            hint: "Номера 01, 02, 03… проставляются автоматически."
+            fields:
+              - { name: title, label: Заголовок, widget: string }
+              - { name: text, label: Текст, widget: text }
+          - { name: reviews_title, label: "Заголовок блока отзывов", widget: string, required: false }
+          - label: Отзывы
+            name: reviews
+            widget: list
+            required: false
+            summary: "{{fields.name}} — {{fields.city}}"
+            fields:
+              - { name: name, label: Имя, widget: string }
+              - { name: city, label: Город, widget: string, required: false }
+              - { name: text, label: Текст отзыва, widget: text }
+          - { name: cta_title, label: "Заголовок призыва (внизу страницы)", widget: string, required: false }
+          - { name: cta_text, label: "Текст призыва", widget: text, required: false }
+      - label: Страница «Порода»
+        name: breed
+        file: content/settings/breed.md
+        description: Тексты и блоки страницы о породе ориентал.
+        fields:
+          - { name: title, label: Заголовок, widget: string }
+          - { name: intro_text, label: Вступительный текст, widget: text }
+          - { name: hero_image, label: Фото, widget: image, required: false, hint: "Если пусто — фото по умолчанию" }
+          - { name: traits_title, label: "Заголовок блока «Характер и внешность»", widget: string, required: false }
+          - label: "Качества породы (карточки)"
+            name: traits
+            widget: list
+            required: false
+            summary: "{{fields.title}}"
+            fields:
+              - { name: title, label: Заголовок, widget: string }
+              - { name: text, label: Текст, widget: text }
+          - { name: care_title, label: "Заголовок блока «Уход»", widget: string, required: false }
+          - label: "Блок «Уход»"
+            name: care
+            widget: list
+            required: false
+            summary: "{{fields.title}}"
+            hint: "Номера проставляются автоматически."
+            fields:
+              - { name: title, label: Заголовок, widget: string }
+              - { name: text, label: Текст, widget: text }
+          - { name: cta_title, label: "Заголовок призыва", widget: string, required: false }
+          - { name: cta_text, label: "Текст призыва", widget: text, required: false }
       - label: О питомнике
         name: about
         file: content/settings/about.md

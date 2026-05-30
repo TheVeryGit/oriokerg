@@ -4,7 +4,7 @@ import type { ReactNode } from "react";
 
 export type AnimalCardBadge = {
   label: string;
-  tone?: "gold" | "muted";
+  tone?: "gold" | "muted" | "sold";
 };
 
 type AnimalCardProps = {
@@ -17,19 +17,13 @@ type AnimalCardProps = {
   href?: string;
 };
 
-function CardShell({
-  href,
-  children,
-}: {
-  href?: string;
-  children: ReactNode;
-}) {
+function CardShell({ href, children }: { href?: string; children: ReactNode }) {
   const className =
-    "group flex flex-col overflow-hidden rounded-[1.75rem] border border-border bg-card transition-all duration-300 hover:-translate-y-1.5 hover:border-accent/50 hover:shadow-[0_24px_55px_-22px_rgba(80,60,40,0.35)]";
+    "group relative flex flex-col overflow-hidden rounded-4xl border border-border bg-card shadow-soft transition-all duration-500 hover:-translate-y-2 hover:border-accent/40 hover:shadow-lift";
 
   if (href) {
     return (
-      <Link href={href} className={className}>
+      <Link href={href} className={`${className} cursor-pointer`}>
         {children}
       </Link>
     );
@@ -37,6 +31,12 @@ function CardShell({
 
   return <article className={className}>{children}</article>;
 }
+
+const badgeTone: Record<NonNullable<AnimalCardBadge["tone"]>, string> = {
+  gold: "bg-accent text-accent-foreground",
+  muted: "bg-card/90 text-foreground",
+  sold: "bg-ink/85 text-ink-foreground",
+};
 
 export function AnimalCard({
   name,
@@ -57,13 +57,13 @@ export function AnimalCard({
             width={900}
             height={1125}
             sizes="(min-width: 1280px) 30vw, (min-width: 768px) 45vw, 100vw"
-            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+            className="h-full w-full object-cover transition-transform duration-[1200ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.08]"
           />
         ) : (
-          <div className="flex h-full w-full items-center justify-center bg-accent/5">
+          <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-accent/5 to-surface-2">
             <svg
               viewBox="0 0 24 24"
-              className="h-12 w-12 text-accent/30"
+              className="h-14 w-14 text-accent/25"
               fill="currentColor"
               aria-hidden="true"
             >
@@ -72,37 +72,57 @@ export function AnimalCard({
           </div>
         )}
 
+        {/* Bottom scrim for depth */}
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-ink/35 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+
         {badge ? (
           <span
-            className={`absolute right-4 top-4 rounded-full px-3 py-1 text-xs backdrop-blur-md ${
-              badge.tone === "muted"
-                ? "bg-card/90 text-foreground"
-                : "bg-accent text-accent-foreground"
+            className={`absolute right-4 top-4 rounded-full px-3 py-1 text-xs font-medium backdrop-blur-md ${
+              badgeTone[badge.tone ?? "gold"]
             }`}
           >
             {badge.label}
           </span>
         ) : null}
+
+        {price ? (
+          <span className="absolute bottom-4 left-4 rounded-full bg-card/92 px-3.5 py-1.5 text-sm font-medium text-accent-strong shadow-soft backdrop-blur-md">
+            {price}
+          </span>
+        ) : null}
       </div>
 
       <div className="flex flex-1 flex-col p-6">
-        <div className="flex items-start justify-between gap-4">
-          <h3 className="font-serif text-2xl font-semibold text-foreground">
-            {name}
-          </h3>
-          {price ? (
-            <span className="shrink-0 text-lg text-accent-soft">{price}</span>
-          ) : null}
-        </div>
+        <h3 className="font-serif text-2xl font-semibold text-foreground">
+          {name}
+        </h3>
 
         {subtitle ? (
-          <p className="mt-2 text-sm text-muted">{subtitle}</p>
+          <p className="mt-1.5 text-sm text-muted">{subtitle}</p>
         ) : null}
 
         {meta ? (
           <p className="mt-4 border-t border-border pt-4 text-sm text-muted">
             {meta}
           </p>
+        ) : null}
+
+        {href ? (
+          <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-medium text-accent transition-all duration-300 group-hover:gap-3">
+            Подробнее
+            <svg
+              viewBox="0 0 24 24"
+              className="h-4 w-4"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M5 12h14M13 6l6 6-6 6" />
+            </svg>
+          </span>
         ) : null}
       </div>
     </CardShell>

@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 
 import { AnimalCard } from "@/components/AnimalCard";
+import { Stagger, StaggerItem } from "@/components/motion/Stagger";
 import type { CatEntry } from "@/lib/content";
 import { formatPrice } from "@/lib/format";
 
@@ -22,11 +23,9 @@ function matchesFilter(cat: CatEntry, filter: FilterKey) {
   if (filter === "all") {
     return true;
   }
-
   if (filter === "producers") {
     return cat.type === "Производитель";
   }
-
   return cat.type === "Котёнок в продаже";
 }
 
@@ -43,15 +42,15 @@ export function CatsCollection({ cats }: CatsCollectionProps) {
       <div className="flex flex-wrap gap-3">
         {filters.map((filter) => {
           const isActive = filter.key === activeFilter;
-
           return (
             <button
               key={filter.key}
               type="button"
-              className={`rounded-full border px-5 py-3 text-sm transition-all ${
+              aria-pressed={isActive}
+              className={`cursor-pointer rounded-full border px-5 py-2.5 text-sm transition-all duration-200 ${
                 isActive
-                  ? "border-accent bg-accent text-accent-foreground"
-                  : "border-border bg-card text-muted hover:border-accent hover:text-foreground"
+                  ? "border-accent bg-gradient-to-br from-accent to-accent-strong text-accent-foreground shadow-soft"
+                  : "border-border-strong bg-card text-muted hover:border-accent hover:text-foreground"
               }`}
               onClick={() => setActiveFilter(filter.key)}
             >
@@ -62,11 +61,11 @@ export function CatsCollection({ cats }: CatsCollectionProps) {
       </div>
 
       {filteredCats.length === 0 ? (
-        <div className="rounded-[1.75rem] border border-dashed border-border bg-card/60 p-10 text-center text-muted">
+        <div className="rounded-4xl border border-dashed border-border-strong bg-card p-12 text-center text-muted">
           В этой категории пока нет опубликованных карточек.
         </div>
       ) : (
-        <div className="grid gap-7 md:grid-cols-2 xl:grid-cols-3">
+        <Stagger className="grid gap-7 md:grid-cols-2 xl:grid-cols-3">
           {filteredCats.map((cat) => {
             const price = formatPrice(cat.price);
             const meta = [cat.gender, cat.available ? "Доступен" : "Недоступен"]
@@ -74,19 +73,20 @@ export function CatsCollection({ cats }: CatsCollectionProps) {
               .join(" · ");
 
             return (
-              <AnimalCard
-                key={cat.slug}
-                href={`/cats/${cat.slug}`}
-                name={cat.name}
-                photo={cat.photos[0]}
-                subtitle={cat.color}
-                price={price ? `${price} ₽` : undefined}
-                badge={{ label: cat.type }}
-                meta={meta}
-              />
+              <StaggerItem key={cat.slug}>
+                <AnimalCard
+                  href={`/cats/${cat.slug}`}
+                  name={cat.name}
+                  photo={cat.photos[0]}
+                  subtitle={cat.color}
+                  price={price ? `${price} ₽` : undefined}
+                  badge={{ label: cat.type, tone: "muted" }}
+                  meta={meta}
+                />
+              </StaggerItem>
             );
           })}
-        </div>
+        </Stagger>
       )}
     </div>
   );

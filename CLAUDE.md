@@ -19,12 +19,16 @@
 - `content/cats/*.md` — кошки и производители (коллекция `cats`)
 - `content/kittens/*.md` — котята в продаже (коллекция `kittens`)
 - `content/settings/contacts.md` — телефон, Telegram, WhatsApp, адрес
-- `content/settings/homepage.md` — тексты hero-блока главной
+- `content/settings/homepage.md` — **все блоки главной**: hero, цифры (`stats`),
+  «почему мы» (`features`), блок о породе (`breed_*`), шаги (`steps`), отзывы (`reviews`),
+  CTA. Списки редактируются в Decap.
+- `content/settings/breed.md` — страница «Порода» (интро, `traits`, `care`, CTA)
 - `content/settings/about.md` — страница «О питомнике» (title + markdown-тело + фото)
 
-`lib/content.ts` — единственный модуль доступа к контенту. Он нормализует данные
-(на случай кривых значений из CMS) и отдаёт типизированные сущности
-(`CatEntry`, `KittenEntry`, `ContactsSettings`, `HomepageSettings`, `AboutSettings`).
+`lib/content.ts` — единственный модуль доступа к контенту. Нормализует данные и отдаёт
+типизированные сущности (`CatEntry`, `KittenEntry`, `ContactsSettings`, `HomepageSettings`,
+`BreedSettings`, `AboutSettings`). Главную/породу читай через `getHomepage()`/`getBreed()`
+(они подставляют дефолты, если поле в CMS пустое — пустой контент не ломает вёрстку).
 
 Фото загружаются в `public/images/uploads/` (через админку), в markdown хранится путь.
 
@@ -34,9 +38,20 @@
 - `app/cats/page.tsx` + `app/cats/[slug]/page.tsx` — список кошек и карточка кошки.
   URL карточки = slug = имя md-файла. Есть `__placeholder__` для пустой коллекции,
   чтобы статическая сборка не падала.
-- `app/kittens/page.tsx` — список котят (отдельной карточки-страницы у котят нет)
+- `app/kittens/page.tsx` + `app/kittens/[slug]/page.tsx` — список котят и карточка котёнка
+  (карточка с галереей, ценой, статусом и CTA в мессенджеры). Тот же `__placeholder__`,
+  что и у кошек.
+- `app/breed/page.tsx` — страница о породе (контент из `content/settings/breed.md`)
 - `app/about/page.tsx`, `app/contacts/page.tsx`
-- `app/layout.tsx` — общий каркас, `components/Header.tsx` + `components/Footer.tsx`
+- `app/layout.tsx` — общий каркас: `components/Header.tsx` + `components/Footer.tsx`,
+  обёрнут в `components/motion/MotionProvider.tsx` (LazyMotion), есть `grain-layer`.
+
+> **Динамические роуты + статический экспорт:** `next dev` НЕ рендерит страницы
+> `[slug]` (выдаёт 500 «missing generateStaticParams») — это ограничение dev-режима
+> при `output: export`. Проверять карточки нужно через `npm run build` (папка `out/`),
+> а не дев-сервером. Cyrillic-slug приходит percent-encoded → в карточках декодируем
+> через `decodeURIComponent` (см. `decodeSlug`). Включён `trailingSlash: true`, чтобы
+> хост отдавал `/kittens/<slug>/` → `index.html`.
 
 ## Админка (Decap CMS)
 
@@ -62,33 +77,41 @@ npm run build   # статическая сборка в out/
 npm run lint    # проверка eslint
 ```
 
-## Дизайн-система («тёплая гамма»)
+## Дизайн-система («тёплая премиум-элегантность»)
 
-- **Палитра:** кремовый фон + коричневый акцент (`--accent`), тёмно-коричневый текст.
-  Все цвета — CSS-переменные в `app/globals.css`, проброшены в Tailwind-токены
-  (`bg-background`, `text-foreground`, `text-accent`, `bg-card`, `border-border`,
-  `text-muted`, `text-accent-soft`, `bg-accent`/`text-accent-foreground`).
-  **Используй токены, а не хардкод hex** — тогда смена палитры = правка только globals.
-- Контрастная тёмная секция делается через `bg-foreground text-background` (инверсия
-  токенов), а не хардкодом — см. блок «Как забрать котёнка» на главной.
-- **Шрифты:** Inter (`font-sans`, текст) + Cormorant Garamond (`font-serif`, заголовки),
-  подключены в `app/layout.tsx`, объявлены в `tailwind.config.ts`.
-- **Карточки животных:** общий компонент `components/AnimalCard.tsx` (фото 4:5, zoom
-  при наведении, бейдж статуса, цена). Используется на главной, котятах и кошках.
-- **Анимация появления:** `components/Reveal.tsx` (fade-up при скролле через
-  IntersectionObserver). Это клиентский компонент.
-- **Главная** (`app/page.tsx`) — секции: hero (2 колонки) → цифры → котята → «почему мы»
-  → галерея → шаги «как забрать котёнка» → отзывы → CTA.
-- **Hero-фото:** поле `hero_image` в настройках главной; если пусто — дефолт
-  `public/images/hero-cat.jpg` (`DEFAULT_HERO_IMAGE` в `lib/content.ts`).
-- **Галерея** берёт реальные фото из карточек котят/кошек; если их меньше 5 —
-  дополняет локальными заглушками `public/images/gallery/cat-1..5.jpg`.
-- **Статичный контент в коде** (пока не в CMS): массивы `stats`, `features`, `steps`,
-  `reviews` в `app/page.tsx`. Тексты/цифры/отзывы правятся там. При желании их можно
-  вынести в настройки Decap.
+Премиум-редизайн 2026-05 в рамках тёплой гаммы. **Всегда используй токены, а не хардкод hex.**
 
-> Все фото котов сейчас — **стоковые заглушки** (Unsplash, лицензия free). Заменяются
-> реальными через админку: фото в карточках → попадают и в галерею.
+- **Палитра** (CSS-переменные в `app/globals.css` → Tailwind-токены):
+  `--background` тёплая слоновая кость, `--surface`/`--surface-2` (карточки/секции),
+  `--foreground` эспрессо, `--muted`, `--border`/`--border-strong`,
+  `--accent`/`--accent-soft`/`--accent-strong` (карамель-золото),
+  `--ink`/`--ink-foreground` (тёплая тёмная секция — поклон референсу CATS, но тёплый).
+  Утилиты: `shadow-soft/lift/glow`, `text-gold-gradient`, `rule-gold`, `link-underline`,
+  `grain-layer` (зерно поверх фона), `tracking-luxe`, `rounded-4xl/5xl`.
+- **Шрифты:** Inter (`font-sans`) + Cormorant Garamond (`font-serif`), в `app/layout.tsx`.
+- **Анимации — Framer Motion** через `LazyMotion`+`domAnimation` (бандл лёгкий):
+  - Везде используем `m.*` (не `motion.*`), провайдер — `components/motion/MotionProvider.tsx`.
+  - `components/Reveal.tsx` — появление по скроллу (`whileInView`); `components/motion/Stagger.tsx`
+    (`Stagger`/`StaggerItem`) — каскад для сеток; `components/home/Hero.tsx` — оркестрованный
+    вход + parallax. Всё уважает `useReducedMotion` + глобальный `@media (prefers-reduced-motion)`.
+  - Анимируем только `transform`/`opacity`.
+- **Компоненты:** `AnimalCard` (фото 4:5, zoom, скрим, бейдж `gold/muted/sold`, чип цены,
+  hover-«Подробнее», ссылка через `href`); `PhotoGallery` (активное фото с fade, превью
+  с акцентной рамкой); `ContactButtons` (Telegram/WhatsApp, в WhatsApp прокидывается
+  `message` через `?text=`); `PageHeader` (eyebrow + serif h1 + intro); `Header`
+  (прозрачный→твёрдый при скролле, активная ссылка, кнопка «Выбрать котёнка», моб. меню);
+  `Footer` (колонки, соц-пиллы, призрачный вотермарк — `hidden` на мобиле).
+- **Декор спрятан на мобиле:** ✦ в тёмной секции (`hidden lg:block`) и вотермарк
+  в футере (`hidden sm:block`), чтобы не лезли на текст.
+- **Главная** (`app/page.tsx`): Hero → цифры → котята → «почему мы» → блок о породе →
+  галерея → шаги (тёмная секция) → отзывы → CTA.
+- **Галерея** берёт реальные фото из карточек; если меньше 5 — заглушки `public/images/gallery/cat-1..5.jpg`.
+- **Контент главной и /breed — в CMS** (не хардкод!): тексты/списки берутся через
+  `getHomepage()`/`getBreed()` из `lib/content.ts` с дефолтами-фолбэками. В коде остаются
+  только иконки фич (массив `featureIcons` в `app/page.tsx`, по индексу).
+
+> Все фото котов сейчас — **стоковые заглушки** (Unsplash, free). Заменяются реальными
+> через админку: фото в карточках → попадают и в галерею.
 
 ## Важно при разработке
 

@@ -32,17 +32,45 @@ export type ContactsSettings = {
   address?: string;
 };
 
+export type StatItem = { value: string; suffix: string; label: string };
+export type TextItem = { title: string; text: string };
+export type ReviewItem = { name: string; city: string; text: string };
+
 export type HomepageSettings = {
   hero_title: string;
   hero_subtitle: string;
   hero_image?: string;
   intro_text: string;
+  stats: StatItem[];
+  features_title: string;
+  features: TextItem[];
+  breed_title: string;
+  breed_text: string;
+  breed_traits: TextItem[];
+  steps_title: string;
+  steps: TextItem[];
+  reviews_title: string;
+  reviews: ReviewItem[];
+  cta_title: string;
+  cta_text: string;
 };
 
 export type AboutSettings = {
   title: string;
   body?: string;
   photo?: string;
+};
+
+export type BreedSettings = {
+  title: string;
+  intro_text: string;
+  hero_image?: string;
+  traits_title: string;
+  traits: TextItem[];
+  care_title: string;
+  care: TextItem[];
+  cta_title: string;
+  cta_text: string;
 };
 
 export const DEFAULT_HERO_IMAGE = "/images/hero-cat.jpg";
@@ -104,6 +132,23 @@ function normalizePhotos(value: unknown) {
       return null;
     })
     .filter((photo): photo is string => Boolean(photo));
+}
+
+function normalizeList<T>(
+  value: unknown,
+  mapItem: (raw: Record<string, unknown>) => T | null,
+): T[] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return value
+    .map((raw) =>
+      raw && typeof raw === "object"
+        ? mapItem(raw as Record<string, unknown>)
+        : null,
+    )
+    .filter((item): item is T => item !== null);
 }
 
 function readFileEntry(directoryName: string, fileName: string) {
@@ -175,6 +220,180 @@ export function getKittens(): KittenEntry[] {
       };
     })
     .sort((left, right) => left.name.localeCompare(right.name, "ru"));
+}
+
+/* ----------------------------- Default content ---------------------------- */
+/* Used as fallback when the corresponding CMS field is empty, so the site
+   never renders blank sections even before the owner fills everything in.   */
+
+const DEFAULT_HOMEPAGE: HomepageSettings = {
+  hero_title: "Ориентальные кошки с характером и родословной",
+  hero_subtitle:
+    "Здоровые, социализированные котята из питомника OrioKerg. Документы, прививки и поддержка на всю жизнь.",
+  hero_image: "",
+  intro_text:
+    "Спокойное и современное пространство для знакомства с нашими кошками, котятами и историей питомника.",
+  stats: [
+    { value: "8", suffix: " лет", label: "питомнику" },
+    { value: "120", suffix: "+", label: "счастливых семей" },
+    { value: "WCF", suffix: "", label: "регистрация" },
+    { value: "4.9", suffix: "", label: "средняя оценка" },
+  ],
+  features_title: "Забота, которой можно доверять",
+  features: [
+    {
+      title: "Здоровье под контролем",
+      text: "Тесты на генетические заболевания, наблюдение ветеринара и прививки по возрасту.",
+    },
+    {
+      title: "Социализация с рождения",
+      text: "Котята растут в доме среди людей и звуков — спокойные, ручные и ласковые.",
+    },
+    {
+      title: "Полный пакет документов",
+      text: "Метрика, договор и ветеринарный паспорт едут вместе с малышом.",
+    },
+    {
+      title: "Поддержка на всю жизнь",
+      text: "Консультируем по питанию, уходу и воспитанию столько, сколько нужно.",
+    },
+  ],
+  breed_title: "Ориентальная кошка",
+  breed_text:
+    "Изящные, преданные и невероятно общительные. Ориенталы выбирают одного человека и становятся настоящей тенью — рядом в любую минуту.",
+  breed_traits: [
+    { title: "Характер-компаньон", text: "Ориенталы привязываются к человеку, ходят следом и любят «разговаривать»." },
+    { title: "Грация и элегантность", text: "Точёный силуэт, миндалевидные глаза и шелковистая короткая шерсть." },
+    { title: "Высокий интеллект", text: "Быстро учатся, играют в апорт и обожают головоломки и внимание." },
+  ],
+  steps_title: "Как забрать котёнка",
+  steps: [
+    { title: "Знакомство", text: "Пишете нам — присылаем фото, видео и рассказываем о малышах." },
+    { title: "Бронь", text: "Выбираете котёнка и вносите бронь, чтобы он дождался переезда." },
+    { title: "Подготовка", text: "Прививки, документы и приучение к лотку и когтеточке." },
+    { title: "Переезд", text: "Передаём котёнка с пакетом документов и заботой о деталях." },
+  ],
+  reviews_title: "Что говорят семьи",
+  reviews: [
+    {
+      name: "Анна",
+      city: "Москва",
+      text: "Котёнок приехал здоровым, ласковым и совершенно ручным. Заводчик на связи до сих пор!",
+    },
+    {
+      name: "Дмитрий",
+      city: "Казань",
+      text: "Всё честно: показали родителей, документы, отвечали на любые вопросы. Рекомендую.",
+    },
+    {
+      name: "Елена",
+      city: "Санкт-Петербург",
+      text: "Наш питомец — чудо: воспитанный, чистоплотный, обожает всю семью. Спасибо OrioKerg!",
+    },
+  ],
+  cta_title: "Хотите познакомиться с котёнком?",
+  cta_text:
+    "Напишите нам — расскажем о доступных малышах, пришлём фото и видео, поможем выбрать вашего питомца.",
+};
+
+const DEFAULT_BREED: BreedSettings = {
+  title: "Ориентальная кошка",
+  intro_text:
+    "Аристократичная, преданная и невероятно живая. Ориенталы похожи на сиамских кошек силуэтом, но поражают бесконечным разнообразием окрасов — их более трёхсот.",
+  hero_image: "",
+  traits_title: "Характер и внешность",
+  traits: [
+    { title: "Преданность", text: "Выбирают «своего» человека и следуют за ним повсюду — настоящие кошки-компаньоны." },
+    { title: "Общительность", text: "Любят «разговаривать» мелодичным голосом и всегда участвуют в жизни семьи." },
+    { title: "Интеллект", text: "Сообразительны, легко учат трюки, играют в апорт и осваивают головоломки." },
+    { title: "Энергия", text: "Активны и игривы во взрослом возрасте — им нужны игры, внимание и компания." },
+    { title: "Элегантность", text: "Стройное тело, длинные линии, большие уши и выразительные миндалевидные глаза." },
+    { title: "Простой уход", text: "Короткая шелковистая шерсть почти не линяет — достаточно еженедельного вычёсывания." },
+  ],
+  care_title: "Что важно знать владельцу",
+  care: [
+    { title: "Питание", text: "Качественный корм или сбалансированный рацион, всегда свежая вода." },
+    { title: "Игры", text: "Активные игрушки, полки и комплексы — ориенталу важно движение." },
+    { title: "Тепло", text: "Короткая шерсть плохо греет: любят тёплые лежанки и солнечные места." },
+    { title: "Внимание", text: "Не переносят одиночество — лучше заводить пару или уделять много времени." },
+  ],
+  cta_title: "Готовы к встрече с ориенталом?",
+  cta_text:
+    "Расскажем о доступных котятах и поможем выбрать малыша, который подойдёт именно вам.",
+};
+
+const asStat = (raw: Record<string, unknown>): StatItem => ({
+  value: normalizeText(raw.value),
+  suffix: normalizeText(raw.suffix),
+  label: normalizeText(raw.label),
+});
+
+const asTextItem = (raw: Record<string, unknown>): TextItem | null => {
+  const title = normalizeText(raw.title);
+  const text = normalizeText(raw.text);
+  return title || text ? { title, text } : null;
+};
+
+const asReview = (raw: Record<string, unknown>): ReviewItem | null => {
+  const text = normalizeText(raw.text);
+  return text
+    ? { name: normalizeText(raw.name), city: normalizeText(raw.city), text }
+    : null;
+};
+
+export function getHomepage(): HomepageSettings {
+  const data = readSettingsEntry("homepage").data as Record<string, unknown>;
+  const stats = normalizeList(data.stats, asStat).filter((s) => s.value || s.label);
+  const features = normalizeList(data.features, asTextItem);
+  const breedTraits = normalizeList(data.breed_traits, asTextItem);
+  const steps = normalizeList(data.steps, asTextItem);
+  const reviews = normalizeList(data.reviews, asReview);
+
+  return {
+    hero_title: normalizeText(data.hero_title, DEFAULT_HOMEPAGE.hero_title),
+    hero_subtitle: normalizeText(data.hero_subtitle, DEFAULT_HOMEPAGE.hero_subtitle),
+    hero_image: normalizeText(data.hero_image),
+    intro_text: normalizeText(data.intro_text, DEFAULT_HOMEPAGE.intro_text),
+    stats: stats.length ? stats : DEFAULT_HOMEPAGE.stats,
+    features_title: normalizeText(data.features_title, DEFAULT_HOMEPAGE.features_title),
+    features: features.length ? features : DEFAULT_HOMEPAGE.features,
+    breed_title: normalizeText(data.breed_title, DEFAULT_HOMEPAGE.breed_title),
+    breed_text: normalizeText(data.breed_text, DEFAULT_HOMEPAGE.breed_text),
+    breed_traits: breedTraits.length ? breedTraits : DEFAULT_HOMEPAGE.breed_traits,
+    steps_title: normalizeText(data.steps_title, DEFAULT_HOMEPAGE.steps_title),
+    steps: steps.length ? steps : DEFAULT_HOMEPAGE.steps,
+    reviews_title: normalizeText(data.reviews_title, DEFAULT_HOMEPAGE.reviews_title),
+    reviews: reviews.length ? reviews : DEFAULT_HOMEPAGE.reviews,
+    cta_title: normalizeText(data.cta_title, DEFAULT_HOMEPAGE.cta_title),
+    cta_text: normalizeText(data.cta_text, DEFAULT_HOMEPAGE.cta_text),
+  };
+}
+
+export function getBreed(): BreedSettings {
+  let data: Record<string, unknown> = {};
+  try {
+    data = readSettingsEntry("breed").data as Record<string, unknown>;
+  } catch {
+    // breed.md may not exist yet — fall back to defaults entirely.
+  }
+  const traits = normalizeList(data.traits, asTextItem);
+  const care = normalizeList(data.care, asTextItem);
+
+  return {
+    title: normalizeText(data.title, DEFAULT_BREED.title),
+    intro_text: normalizeText(data.intro_text, DEFAULT_BREED.intro_text),
+    hero_image: normalizeText(data.hero_image),
+    traits_title: normalizeText(data.traits_title, DEFAULT_BREED.traits_title),
+    traits: traits.length ? traits : DEFAULT_BREED.traits,
+    care_title: normalizeText(data.care_title, DEFAULT_BREED.care_title),
+    care: care.length ? care : DEFAULT_BREED.care,
+    cta_title: normalizeText(data.cta_title, DEFAULT_BREED.cta_title),
+    cta_text: normalizeText(data.cta_text, DEFAULT_BREED.cta_text),
+  };
+}
+
+export function getKittenBySlug(slug: string) {
+  return getKittens().find((kitten) => kitten.slug === slug);
 }
 
 export function getSettings<T>(fileName: string): T {

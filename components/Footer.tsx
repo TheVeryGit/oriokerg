@@ -1,11 +1,34 @@
+import Link from "next/link";
+
 import type { ContactsSettings } from "@/lib/content";
 
 type FooterProps = {
   contacts: ContactsSettings;
 };
 
+const navColumns = [
+  {
+    title: "Питомник",
+    links: [
+      { href: "/about", label: "О питомнике" },
+      { href: "/breed", label: "Порода ориентал" },
+      { href: "/cats", label: "Наши кошки" },
+    ],
+  },
+  {
+    title: "Котята",
+    links: [
+      { href: "/kittens", label: "Котята в продаже" },
+      { href: "/contacts", label: "Как забрать" },
+      { href: "/contacts", label: "Контакты" },
+    ],
+  },
+];
+
 export function Footer({ contacts }: FooterProps) {
-  const contactLinks = [
+  const tel = `tel:${(contacts.phone ?? "").replace(/[^\d+]/g, "")}`;
+
+  const social = [
     {
       href: contacts.telegram,
       label: "Telegram",
@@ -21,7 +44,7 @@ export function Footer({ contacts }: FooterProps) {
       ),
     },
     {
-      href: `tel:${contacts.phone.replace(/[^\d+]/g, "")}`,
+      href: tel,
       label: "Телефон",
       icon: (
         <path d="M7.3 3.5c.4-1 1.5-1.5 2.5-1.1l2 1c.9.4 1.4 1.5 1.1 2.4l-.7 2c-.2.5 0 1.1.3 1.5l2 2c.4.4 1 .5 1.5.3l2-.7c1-.3 2 .1 2.4 1.1l1 2c.5 1 .1 2.1-.9 2.6l-1.6.7c-1.6.7-3.4.8-5 .2-2-.8-4.1-2.2-6.3-4.4-2.2-2.2-3.6-4.3-4.4-6.3-.6-1.6-.5-3.4.2-5l.7-1.6Z" />
@@ -30,49 +53,96 @@ export function Footer({ contacts }: FooterProps) {
   ];
 
   return (
-    <footer className="border-t border-border bg-card">
-      <div className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-4 py-10 sm:px-6 lg:px-8">
-        <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+    <footer className="relative mt-10 overflow-hidden bg-ink text-ink-foreground">
+      {/* Ghosted wordmark, like the reference — desktop only, subtle texture behind columns */}
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute bottom-2 left-1/2 hidden -translate-x-1/2 select-none whitespace-nowrap font-serif text-[15vw] font-semibold leading-none text-ink-foreground/[0.04] sm:block"
+      >
+        OrioKerg
+      </span>
+
+      <div className="relative mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+        <div className="grid gap-12 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr]">
           <div>
-            <p className="font-serif text-xl font-semibold tracking-[0.18em] text-foreground">
+            <p className="font-serif text-2xl font-semibold tracking-[0.18em]">
               OrioKerg
             </p>
-            <p className="mt-2 max-w-xl text-sm text-muted">
+            <p className="mt-3 max-w-xs text-sm leading-7 text-ink-foreground/70">
               Питомник ориентальных кошек. Здоровые котята с документами,
               прививками и поддержкой на всю жизнь.
             </p>
+            <div className="mt-6 flex items-center gap-3">
+              {social.map((item) => (
+                <a
+                  key={item.label}
+                  href={item.href}
+                  target={item.href?.startsWith("http") ? "_blank" : undefined}
+                  rel={item.href?.startsWith("http") ? "noreferrer" : undefined}
+                  aria-label={item.label}
+                  className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-ink-foreground/15 text-ink-foreground/80 transition-all hover:-translate-y-0.5 hover:border-accent-soft hover:text-accent-soft"
+                >
+                  <svg
+                    aria-hidden="true"
+                    viewBox="0 0 24 24"
+                    className="h-5 w-5 fill-current"
+                  >
+                    {item.icon}
+                  </svg>
+                </a>
+              ))}
+            </div>
           </div>
 
-          <div className="flex items-center gap-3">
-            {contactLinks.map((contact) => (
-              <a
-                key={contact.label}
-                href={contact.href}
-                target={contact.href.startsWith("http") ? "_blank" : undefined}
-                rel={contact.href.startsWith("http") ? "noreferrer" : undefined}
-                aria-label={contact.label}
-                className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-border bg-background text-muted transition-all hover:border-accent hover:text-accent"
-              >
-                <svg
-                  aria-hidden="true"
-                  viewBox="0 0 24 24"
-                  className="h-5 w-5 fill-current"
-                >
-                  {contact.icon}
-                </svg>
-              </a>
-            ))}
+          {navColumns.map((column) => (
+            <div key={column.title}>
+              <p className="text-xs uppercase tracking-luxe text-accent-soft">
+                {column.title}
+              </p>
+              <ul className="mt-5 space-y-3 text-sm">
+                {column.links.map((link) => (
+                  <li key={link.label}>
+                    <Link
+                      href={link.href}
+                      className="text-ink-foreground/70 transition-colors hover:text-ink-foreground"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+
+          <div>
+            <p className="text-xs uppercase tracking-luxe text-accent-soft">
+              Связаться
+            </p>
+            <a
+              href={contacts.telegram}
+              target="_blank"
+              rel="noreferrer"
+              className="mt-5 inline-flex w-full items-center justify-center rounded-full bg-gradient-to-br from-accent to-accent-strong px-6 py-3.5 text-sm font-medium text-accent-foreground shadow-glow transition-transform hover:-translate-y-0.5"
+            >
+              Написать в Telegram
+            </a>
+            <a
+              href={tel}
+              className="mt-3 block text-center text-sm text-ink-foreground/70 transition-colors hover:text-ink-foreground"
+            >
+              {contacts.phone}
+            </a>
+            {contacts.address ? (
+              <p className="mt-3 text-center text-sm text-ink-foreground/55">
+                {contacts.address}
+              </p>
+            ) : null}
           </div>
         </div>
 
-        <div className="flex flex-col gap-2 border-t border-border pt-6 text-sm text-muted md:flex-row md:items-center md:justify-between">
+        <div className="mt-14 flex flex-col gap-2 border-t border-ink-foreground/10 pt-6 text-sm text-ink-foreground/55 md:flex-row md:items-center md:justify-between">
           <p>&copy; {new Date().getFullYear()} OrioKerg. Все права защищены.</p>
-          <a
-            href={`tel:${contacts.phone.replace(/[^\d+]/g, "")}`}
-            className="transition-colors hover:text-accent"
-          >
-            {contacts.phone}
-          </a>
+          <p>Питомник ориентальных кошек · Россия</p>
         </div>
       </div>
     </footer>

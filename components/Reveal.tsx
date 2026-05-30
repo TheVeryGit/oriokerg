@@ -1,47 +1,57 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { m, useReducedMotion } from "framer-motion";
 import type { ReactNode } from "react";
 
 type RevealProps = {
   children: ReactNode;
+  /** Delay in milliseconds (kept for backwards-compatible call sites). */
   delay?: number;
   className?: string;
+  /** Initial offset in px along the chosen axis. */
+  distance?: number;
+  direction?: "up" | "down" | "left" | "right";
+  once?: boolean;
+  as?: "div" | "section" | "li" | "article";
 };
 
-export function Reveal({ children, delay = 0, className = "" }: RevealProps) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
+const EASE = [0.22, 1, 0.36, 1] as const;
 
-  useEffect(() => {
-    const node = ref.current;
-    if (!node) {
-      return;
-    }
+export function Reveal({
+  children,
+  delay = 0,
+  className = "",
+  distance = 26,
+  direction = "up",
+  once = true,
+  as = "div",
+}: RevealProps) {
+  const reduce = useReducedMotion();
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.15, rootMargin: "0px 0px -10% 0px" },
-    );
+  const offset =
+    direction === "up"
+      ? { y: distance }
+      : direction === "down"
+        ? { y: -distance }
+        : direction === "left"
+          ? { x: distance }
+          : { x: -distance };
 
-    observer.observe(node);
-    return () => observer.disconnect();
-  }, []);
+  const MotionTag = m[as];
+
+  if (reduce) {
+    return <MotionTag className={className}>{children}</MotionTag>;
+  }
 
   return (
-    <div
-      ref={ref}
-      className={`transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-        visible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
-      } ${className}`}
-      style={{ transitionDelay: `${delay}ms` }}
+    <MotionTag
+      className={className}
+      initial={{ opacity: 0, ...offset }}
+      whileInView={{ opacity: 1, x: 0, y: 0 }}
+      viewport={{ once, margin: "0px 0px -12% 0px" }}
+      transition={{ duration: 0.7, delay: delay / 1000, ease: EASE }}
     >
       {children}
-    </div>
+    </MotionTag>
   );
 }
