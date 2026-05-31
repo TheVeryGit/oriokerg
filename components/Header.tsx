@@ -5,14 +5,28 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
-const navigation = [
+type NavLink = { href: string; label: string };
+type NavGroup = { label: string; children: NavLink[] };
+type NavItem = NavLink | NavGroup;
+
+const navigation: NavItem[] = [
   { href: "/", label: "Главная" },
-  { href: "/about", label: "О питомнике" },
+  {
+    label: "О нас",
+    children: [
+      { href: "/about", label: "О питомнике" },
+      { href: "/breed", label: "Порода" },
+    ],
+  },
   { href: "/cats", label: "Наши кошки" },
   { href: "/kittens", label: "Котята" },
-  { href: "/breed", label: "Порода" },
+  { href: "/faq", label: "FAQ" },
   { href: "/contacts", label: "Контакты" },
 ];
+
+function isGroup(item: NavItem): item is NavGroup {
+  return "children" in item;
+}
 
 function isActive(pathname: string, href: string) {
   if (href === "/") return pathname === "/";
@@ -21,6 +35,7 @@ function isActive(pathname: string, href: string) {
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false);
+  const [openKey, setOpenKey] = useState<string | null>(null);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
   const reduce = useReducedMotion();
@@ -32,15 +47,16 @@ export function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Close mobile menu on route change
+  // Close menus on route change
   useEffect(() => {
     setIsOpen(false);
+    setOpenKey(null);
   }, [pathname]);
 
   return (
     <header className="sticky top-0 z-50">
       <div className="mx-auto w-full max-w-7xl px-3 pt-3 sm:px-4 sm:pt-4 lg:px-6">
-        {/* Floating pill — detached, opaque, clearly separated from content */}
+        {/* Floating pill */}
         <div
           className={`flex items-center justify-between gap-4 rounded-full border px-3 py-2 transition-all duration-300 sm:px-4 ${
             scrolled
@@ -65,6 +81,91 @@ export function Header() {
 
           <nav className="hidden items-center gap-7 lg:flex">
             {navigation.map((item) => {
+              if (isGroup(item)) {
+                const groupActive = item.children.some((c) =>
+                  isActive(pathname, c.href),
+                );
+                const dropdownOpen = openKey === item.label;
+                return (
+                  <div
+                    key={item.label}
+                    className="relative"
+                    onMouseEnter={() => setOpenKey(item.label)}
+                    onMouseLeave={() => setOpenKey(null)}
+                    onBlur={(e) => {
+                      if (!e.currentTarget.contains(e.relatedTarget as Node)) {
+                        setOpenKey(null);
+                      }
+                    }}
+                  >
+                    <button
+                      type="button"
+                      aria-haspopup="true"
+                      aria-expanded={dropdownOpen}
+                      data-active={groupActive}
+                      onClick={() =>
+                        setOpenKey(dropdownOpen ? null : item.label)
+                      }
+                      onKeyDown={(e) => {
+                        if (e.key === "Escape") setOpenKey(null);
+                      }}
+                      className={`link-underline inline-flex cursor-pointer items-center gap-1 text-sm transition-colors ${
+                        groupActive
+                          ? "text-foreground"
+                          : "text-muted hover:text-foreground"
+                      }`}
+                    >
+                      {item.label}
+                      <svg
+                        viewBox="0 0 24 24"
+                        className={`h-3.5 w-3.5 transition-transform duration-300 ${
+                          dropdownOpen ? "rotate-180" : ""
+                        }`}
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        aria-hidden="true"
+                      >
+                        <path d="M6 9l6 6 6-6" />
+                      </svg>
+                    </button>
+
+                    <AnimatePresence>
+                      {dropdownOpen ? (
+                        <m.div
+                          key="dropdown"
+                          initial={reduce ? false : { opacity: 0, y: 8 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={reduce ? { opacity: 0 } : { opacity: 0, y: 8 }}
+                          transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+                          className="absolute left-1/2 top-full z-50 mt-3 w-52 -translate-x-1/2 rounded-3xl border border-border bg-surface/95 p-2 shadow-lift backdrop-blur-xl"
+                        >
+                          {item.children.map((child) => {
+                            const active = isActive(pathname, child.href);
+                            return (
+                              <Link
+                                key={child.href}
+                                href={child.href}
+                                aria-current={active ? "page" : undefined}
+                                className={`block rounded-2xl px-4 py-2.5 text-sm transition-colors ${
+                                  active
+                                    ? "bg-accent/10 text-foreground"
+                                    : "text-muted hover:bg-accent/5 hover:text-foreground"
+                                }`}
+                              >
+                                {child.label}
+                              </Link>
+                            );
+                          })}
+                        </m.div>
+                      ) : null}
+                    </AnimatePresence>
+                  </div>
+                );
+              }
+
               const active = isActive(pathname, item.href);
               return (
                 <Link
@@ -124,7 +225,7 @@ export function Header() {
           </div>
         </div>
 
-        {/* Mobile menu — floating panel under the pill */}
+        {/* Mobile menu — floating panel */}
         <AnimatePresence>
           {isOpen ? (
             <m.nav
@@ -137,6 +238,32 @@ export function Header() {
             >
               <div className="mt-2 flex flex-col gap-1 rounded-3xl border border-border bg-surface/95 p-3 shadow-lift backdrop-blur-xl">
                 {navigation.map((item) => {
+                  if (isGroup(item)) {
+                    return (
+                      <div key={item.label} className="mt-1">
+                        <p className="px-4 pb-1 pt-2 text-xs uppercase tracking-luxe text-accent">
+                          {item.label}
+                        </p>
+                        {item.children.map((child) => {
+                          const active = isActive(pathname, child.href);
+                          return (
+                            <Link
+                              key={child.href}
+                              href={child.href}
+                              aria-current={active ? "page" : undefined}
+                              className={`rounded-2xl px-4 py-3 text-base transition-colors ${
+                                active
+                                  ? "bg-accent/10 text-foreground"
+                                  : "text-muted hover:bg-accent/5 hover:text-foreground"
+                              }`}
+                            >
+                              {child.label}
+                            </Link>
+                          );
+                        })}
+                      </div>
+                    );
+                  }
                   const active = isActive(pathname, item.href);
                   return (
                     <Link

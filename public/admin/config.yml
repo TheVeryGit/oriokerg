@@ -225,3 +225,17 @@ collections:
           - { name: title, label: Заголовок, widget: string }
           - { name: body, label: "Текст страницы", widget: markdown }
           - { name: photo, label: Фото, widget: image, required: false }
+      - label: Частые вопросы (FAQ)
+        name: faq
+        file: content/settings/faq.md
+        description: Вопросы и ответы на странице FAQ.
+        fields:
+          - { name: title, label: Заголовок, widget: string }
+          - { name: intro, label: Вступительный текст, widget: text, required: false }
+          - label: Вопросы
+            name: items
+            widget: list
+            summary: "{{fields.q}}"
+            fields:
+              - { name: q, label: Вопрос, widget: string }
+              - { name: a, label: Ответ, widget: text }

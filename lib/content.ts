@@ -73,6 +73,13 @@ export type BreedSettings = {
   cta_text: string;
 };
 
+export type FaqItem = { q: string; a: string };
+export type FaqSettings = {
+  title: string;
+  intro: string;
+  items: FaqItem[];
+};
+
 export const DEFAULT_HERO_IMAGE = "/images/hero-cat.jpg";
 
 const contentRoot = path.join(process.cwd(), "content");
@@ -389,6 +396,67 @@ export function getBreed(): BreedSettings {
     care: care.length ? care : DEFAULT_BREED.care,
     cta_title: normalizeText(data.cta_title, DEFAULT_BREED.cta_title),
     cta_text: normalizeText(data.cta_text, DEFAULT_BREED.cta_text),
+  };
+}
+
+const DEFAULT_FAQ: FaqSettings = {
+  title: "Частые вопросы",
+  intro:
+    "Собрали ответы на вопросы, которые чаще всего задают будущие владельцы. Не нашли свой — напишите нам, с радостью ответим.",
+  items: [
+    {
+      q: "Как забронировать котёнка?",
+      a: "Выбираете малыша и вносите предоплату — она закрепляет котёнка за вами. Остаток оплачивается при передаче. До переезда держим вас в курсе: фото, видео, новости о малыше.",
+    },
+    {
+      q: "Что входит в стоимость котёнка?",
+      a: "Метрика (родословная), ветеринарный паспорт с прививками по возрасту, договор купли-продажи, стартовый запас привычного корма и пожизненная поддержка по уходу и воспитанию.",
+    },
+    {
+      q: "В каком возрасте котята переезжают в новый дом?",
+      a: "Обычно с 3 месяцев — после необходимых прививок, приучения к лотку и когтеточке и базовой социализации. Так малыш переезжает здоровым и готовым к новой семье.",
+    },
+    {
+      q: "Делаете ли вы доставку в другие города и страны?",
+      a: "Да. Обсуждаем удобный способ индивидуально: передача лично, перевозка автомобилем, авиа или с проверенным зоокурьером. Поможем с оформлением документов для поездки.",
+    },
+    {
+      q: "Какие документы и гарантии вы даёте?",
+      a: "Метрика установленного образца, договор купли-продажи и гарантия здоровья на момент передачи. Все животные проходят ветеринарный осмотр.",
+    },
+    {
+      q: "Нужно ли стерилизовать котёнка?",
+      a: "Котята «для души» (пет-класс) передаются с условием кастрации/стерилизации в рекомендованном возрасте. Животные для разведения обсуждаются отдельно.",
+    },
+    {
+      q: "Чем кормить ориентального котёнка?",
+      a: "Первое время — тем же кормом, к которому малыш привык, чтобы избежать стресса. Дадим подробные рекомендации по питанию и поможем плавно перейти на ваш рацион.",
+    },
+    {
+      q: "Ладят ли ориенталы с детьми и другими животными?",
+      a: "Да — это общительные, социальные и привязчивые кошки. Они отлично уживаются с детьми и другими питомцами, если знакомить постепенно и с уважением.",
+    },
+  ],
+};
+
+const asFaqItem = (raw: Record<string, unknown>): FaqItem | null => {
+  const q = normalizeText(raw.q);
+  const a = normalizeText(raw.a);
+  return q && a ? { q, a } : null;
+};
+
+export function getFaq(): FaqSettings {
+  let data: Record<string, unknown> = {};
+  try {
+    data = readSettingsEntry("faq").data as Record<string, unknown>;
+  } catch {
+    // faq.md may not exist yet — fall back to defaults entirely.
+  }
+  const items = normalizeList(data.items, asFaqItem);
+  return {
+    title: normalizeText(data.title, DEFAULT_FAQ.title),
+    intro: normalizeText(data.intro, DEFAULT_FAQ.intro),
+    items: items.length ? items : DEFAULT_FAQ.items,
   };
 }
 

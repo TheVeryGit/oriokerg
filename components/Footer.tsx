@@ -20,7 +20,7 @@ const navColumns = [
     title: "Котята",
     links: [
       { href: "/kittens", label: "Котята в продаже" },
-      { href: "/contacts", label: "Как забрать" },
+      { href: "/faq", label: "Вопросы и ответы" },
       { href: "/contacts", label: "Контакты" },
     ],
   },

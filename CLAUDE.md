@@ -23,6 +23,7 @@
   «почему мы» (`features`), блок о породе (`breed_*`), шаги (`steps`), отзывы (`reviews`),
   CTA. Списки редактируются в Decap.
 - `content/settings/breed.md` — страница «Порода» (интро, `traits`, `care`, CTA)
+- `content/settings/faq.md` — страница FAQ (`title`, `intro`, список `items: {q, a}`), читается `getFaq()`
 - `content/settings/about.md` — страница «О питомнике» (title + markdown-тело + фото)
 
 `lib/content.ts` — единственный модуль доступа к контенту. Нормализует данные и отдаёт
@@ -42,6 +43,8 @@
   (карточка с галереей, ценой, статусом и CTA в мессенджеры). Тот же `__placeholder__`,
   что и у кошек.
 - `app/breed/page.tsx` — страница о породе (контент из `content/settings/breed.md`)
+- `app/faq/page.tsx` — FAQ: аккордеон (`components/FaqAccordion.tsx`, CSS-grid высота — ответы
+  остаются в DOM для SEO) + JSON-LD `FAQPage`. Контент — `getFaq()`.
 - `app/about/page.tsx`, `app/contacts/page.tsx`
 - `app/layout.tsx` — общий каркас: `components/Header.tsx` + `components/Footer.tsx`,
   обёрнут в `components/motion/MotionProvider.tsx` (LazyMotion), есть `grain-layer`.
