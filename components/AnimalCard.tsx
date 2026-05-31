@@ -7,11 +7,16 @@ export type AnimalCardBadge = {
   tone?: "gold" | "muted" | "sold";
 };
 
+export type AnimalCardPrice = { label?: string; value: string };
+
 type AnimalCardProps = {
   name: string;
   photo?: string;
   subtitle?: string;
+  /** Одна цена (строка) — для кошек и обратной совместимости. */
   price?: string | null;
+  /** Несколько ценовых строк (напр. «В любимцы» / «В разведение») — для котят. */
+  prices?: AnimalCardPrice[];
   badge?: AnimalCardBadge;
   meta?: string;
   href?: string;
@@ -43,10 +48,17 @@ export function AnimalCard({
   photo,
   subtitle,
   price,
+  prices,
   badge,
   meta,
   href,
 }: AnimalCardProps) {
+  const priceLines: AnimalCardPrice[] =
+    prices && prices.length > 0
+      ? prices
+      : price
+        ? [{ value: price }]
+        : [];
   return (
     <CardShell href={href}>
       <div className="relative aspect-[4/5] overflow-hidden">
@@ -85,10 +97,24 @@ export function AnimalCard({
           </span>
         ) : null}
 
-        {price ? (
-          <span className="absolute bottom-4 left-4 rounded-full bg-card/92 px-3.5 py-1.5 text-sm font-medium text-accent-strong shadow-soft backdrop-blur-md">
-            {price}
-          </span>
+        {priceLines.length > 0 ? (
+          <div className="absolute bottom-4 left-4 right-4 flex flex-col gap-1">
+            {priceLines.map((line, index) => (
+              <span
+                key={`${line.label ?? "price"}-${index}`}
+                className="flex w-fit max-w-full items-baseline gap-1.5 rounded-full border border-border bg-card px-3.5 py-1.5 text-sm shadow-lift"
+              >
+                {line.label ? (
+                  <span className="text-xs font-medium text-muted">
+                    {line.label}
+                  </span>
+                ) : null}
+                <span className="font-semibold text-accent-strong">
+                  {line.value}
+                </span>
+              </span>
+            ))}
+          </div>
         ) : null}
       </div>
 

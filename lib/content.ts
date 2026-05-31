@@ -21,7 +21,10 @@ export type CatEntry = BaseEntry & {
 };
 
 export type KittenEntry = BaseEntry & {
-  price?: number;
+  /** Цена «в любимцы» (пет-класс). */
+  pricePet?: number;
+  /** Цена «в разведение» (с правом разведения). */
+  priceBreed?: number;
   reserved: boolean;
 };
 
@@ -220,7 +223,12 @@ export function getKittens(): KittenEntry[] {
         name: normalizeText(entry.data.name, entry.slug),
         gender: normalizeText(entry.data.gender, "Кошка"),
         color: normalizeText(entry.data.color, "Не указан"),
-        price: normalizeNumber(entry.data.price),
+        // Старое поле `price` остаётся фолбэком для «в любимцы»,
+        // чтобы ранее созданные котята не потеряли цену.
+        pricePet:
+          normalizeNumber(entry.data.price_pet) ??
+          normalizeNumber(entry.data.price),
+        priceBreed: normalizeNumber(entry.data.price_breed),
         description: normalizeText(entry.data.description, entry.content),
         photos: normalizePhotos(entry.data.photos),
         reserved: normalizeBoolean(entry.data.reserved, false),

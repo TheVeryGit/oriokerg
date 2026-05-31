@@ -8,12 +8,8 @@ import { PhotoGallery } from "@/components/PhotoGallery";
 import { Reveal } from "@/components/Reveal";
 import { Stagger, StaggerItem } from "@/components/motion/Stagger";
 import type { ContactsSettings } from "@/lib/content";
-import {
-  formatPrice,
-  getKittenBySlug,
-  getKittens,
-  getSettings,
-} from "@/lib/content";
+import { getKittenBySlug, getKittens, getSettings } from "@/lib/content";
+import { kittenPriceLines } from "@/lib/format";
 
 type KittenPageProps = {
   params: { slug: string };
@@ -91,7 +87,7 @@ export default function KittenPage({ params }: KittenPageProps) {
   }
 
   const contacts = getSettings<ContactsSettings>("contacts");
-  const price = formatPrice(kitten.price);
+  const priceLines = kittenPriceLines(kitten.pricePet, kitten.priceBreed);
   const related = getKittens()
     .filter((item) => item.slug !== kitten.slug && !item.reserved)
     .slice(0, 3);
@@ -146,9 +142,21 @@ export default function KittenPage({ params }: KittenPageProps) {
                 {kitten.name}
               </h1>
 
-              <p className="mt-3 font-serif text-3xl font-semibold text-gold-gradient">
-                {price ? `${price} ₽` : "Цена по запросу"}
-              </p>
+              <div className="mt-4 space-y-2">
+                {priceLines.map((line, index) => (
+                  <div
+                    key={`${line.label ?? "price"}-${index}`}
+                    className="flex items-baseline justify-between gap-4 rounded-2xl bg-surface-2/60 px-4 py-2.5"
+                  >
+                    <span className="text-sm text-muted">
+                      {line.label ?? "Стоимость"}
+                    </span>
+                    <span className="font-serif text-2xl font-semibold text-gold-gradient">
+                      {line.value}
+                    </span>
+                  </div>
+                ))}
+              </div>
 
               <dl className="mt-7">
                 <InfoRow label="Пол" value={kitten.gender} />
@@ -201,11 +209,7 @@ export default function KittenPage({ params }: KittenPageProps) {
                   name={item.name}
                   photo={item.photos[0]}
                   subtitle={item.color}
-                  price={
-                    formatPrice(item.price)
-                      ? `${formatPrice(item.price)} ₽`
-                      : "Цена по запросу"
-                  }
+                  prices={kittenPriceLines(item.pricePet, item.priceBreed)}
                   badge={{ label: item.gender }}
                 />
               </StaggerItem>

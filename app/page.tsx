@@ -9,9 +9,9 @@ import { StepsScroller } from "@/components/home/StepsScroller";
 import { Reveal } from "@/components/Reveal";
 import { Stagger, StaggerItem } from "@/components/motion/Stagger";
 import type { ContactsSettings } from "@/lib/content";
+import { kittenPriceLines } from "@/lib/format";
 import {
   DEFAULT_HERO_IMAGE,
-  formatPrice,
   getCats,
   getHomepage,
   getKittens,
@@ -177,11 +177,7 @@ export default function HomePage() {
                   name={kitten.name}
                   photo={kitten.photos[0]}
                   subtitle={kitten.color}
-                  price={
-                    formatPrice(kitten.price)
-                      ? `${formatPrice(kitten.price)} ₽`
-                      : "Цена по запросу"
-                  }
+                  prices={kittenPriceLines(kitten.pricePet, kitten.priceBreed)}
                   badge={{ label: kitten.gender }}
                 />
               </StaggerItem>

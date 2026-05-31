@@ -5,7 +5,7 @@ import { useMemo, useState } from "react";
 import { AnimalCard } from "@/components/AnimalCard";
 import { Stagger, StaggerItem } from "@/components/motion/Stagger";
 import type { KittenEntry } from "@/lib/content";
-import { formatPrice } from "@/lib/format";
+import { kittenPriceLines } from "@/lib/format";
 
 type KittensCollectionProps = {
   kittens: KittenEntry[];
@@ -62,25 +62,22 @@ export function KittensCollection({ kittens }: KittensCollectionProps) {
         </div>
       ) : (
         <Stagger className="grid gap-7 md:grid-cols-2 xl:grid-cols-3">
-          {filtered.map((kitten) => {
-            const price = formatPrice(kitten.price);
-            return (
-              <StaggerItem key={kitten.slug}>
-                <AnimalCard
-                  href={`/kittens/${kitten.slug}`}
-                  name={kitten.name}
-                  photo={kitten.photos[0]}
-                  subtitle={kitten.color}
-                  price={price ? `${price} ₽` : "Цена по запросу"}
-                  badge={
-                    kitten.reserved
-                      ? { label: "Зарезервирован", tone: "sold" }
-                      : { label: kitten.gender }
-                  }
-                />
-              </StaggerItem>
-            );
-          })}
+          {filtered.map((kitten) => (
+            <StaggerItem key={kitten.slug}>
+              <AnimalCard
+                href={`/kittens/${kitten.slug}`}
+                name={kitten.name}
+                photo={kitten.photos[0]}
+                subtitle={kitten.color}
+                prices={kittenPriceLines(kitten.pricePet, kitten.priceBreed)}
+                badge={
+                  kitten.reserved
+                    ? { label: "Зарезервирован", tone: "sold" }
+                    : { label: kitten.gender }
+                }
+              />
+            </StaggerItem>
+          ))}
         </Stagger>
       )}
     </div>

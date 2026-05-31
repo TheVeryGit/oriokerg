@@ -47,7 +47,7 @@ collections:
     extension: md
     format: frontmatter
     summary: "{{name}} — {{color}}"
-    sortable_fields: [name, price]
+    sortable_fields: [name, price_pet]
     preview_path: kittens
     view_filters:
       - { label: Свободные, field: reserved, pattern: false }
@@ -60,7 +60,8 @@ collections:
         default: Кошка
         options: [Кот, Кошка]
       - { label: Окрас, name: color, widget: string, hint: "Например: красный тикированный" }
-      - { label: Цена, name: price, widget: number, hint: "В рублях" }
+      - { label: "Цена в любимцы (₽)", name: price_pet, widget: number, required: false, hint: "Стоимость котёнка как домашнего любимца (пет-класс). Можно не указывать." }
+      - { label: "Цена в разведение (₽)", name: price_breed, widget: number, required: false, hint: "Стоимость с правом разведения. Оставьте пустым, если не продаётся в разведение." }
       - { label: Описание, name: description, widget: text, required: false }
       - label: Фотографии
         name: photos
