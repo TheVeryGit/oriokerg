@@ -15,7 +15,7 @@ export function PhotoGallery({ photos, alt }: PhotoGalleryProps) {
 
   if (photos.length === 0) {
     return (
-      <div className="flex aspect-[4/3] items-center justify-center rounded-5xl border border-border bg-gradient-to-br from-accent/5 to-surface-2">
+      <div className="flex aspect-square items-center justify-center rounded-5xl border border-border bg-gradient-to-br from-accent/5 to-surface-2">
         <svg
           viewBox="0 0 24 24"
           className="h-16 w-16 text-accent/25"
@@ -32,7 +32,7 @@ export function PhotoGallery({ photos, alt }: PhotoGalleryProps) {
 
   return (
     <div className="space-y-4">
-      <div className="relative aspect-[4/3] overflow-hidden rounded-5xl border border-border bg-card shadow-lift">
+      <div className="relative aspect-square overflow-hidden rounded-5xl border border-border bg-card shadow-lift">
         <AnimatePresence mode="wait" initial={false}>
           <m.div
             key={activePhoto}

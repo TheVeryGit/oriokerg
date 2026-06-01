@@ -61,13 +61,13 @@ export function AnimalCard({
         : [];
   return (
     <CardShell href={href}>
-      <div className="relative aspect-[4/5] overflow-hidden">
+      <div className="relative aspect-square overflow-hidden">
         {photo ? (
           <Image
             src={photo}
             alt={name}
             width={900}
-            height={1125}
+            height={900}
             sizes="(min-width: 1280px) 30vw, (min-width: 768px) 45vw, 100vw"
             className="h-full w-full object-cover transition-transform duration-[1200ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.08]"
           />
