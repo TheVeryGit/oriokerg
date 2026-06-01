@@ -25,6 +25,9 @@ jobs:
       - name: Build static site
         run: npm run build
 
+      - name: Optimize images (WebP + resize)
+        run: npx next-export-optimize-images
+
       - name: Upload out directory via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:

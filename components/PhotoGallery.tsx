@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, m, useReducedMotion } from "framer-motion";
-import Image from "next/image";
+import Image from "next-export-optimize-images/image";
 import { useState } from "react";
 
 type PhotoGalleryProps = {

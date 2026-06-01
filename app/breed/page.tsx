@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Image from "next/image";
+import Image from "next-export-optimize-images/image";
 import Link from "next/link";
 
 import { Reveal } from "@/components/Reveal";
@@ -8,9 +8,9 @@ import type { ContactsSettings } from "@/lib/content";
 import { DEFAULT_HERO_IMAGE, getBreed, getSettings } from "@/lib/content";
 
 export const metadata: Metadata = {
-  title: "Порода ориентал",
+  title: "РџРѕСЂРѕРґР° РѕСЂРёРµРЅС‚Р°Р»",
   description:
-    "Ориентальная кошка: характер, внешность, уход и здоровье. Всё, что важно знать будущему владельцу.",
+    "РћСЂРёРµРЅС‚Р°Р»СЊРЅР°СЏ РєРѕС€РєР°: С…Р°СЂР°РєС‚РµСЂ, РІРЅРµС€РЅРѕСЃС‚СЊ, СѓС…РѕРґ Рё Р·РґРѕСЂРѕРІСЊРµ. Р’СЃС‘, С‡С‚Рѕ РІР°Р¶РЅРѕ Р·РЅР°С‚СЊ Р±СѓРґСѓС‰РµРјСѓ РІР»Р°РґРµР»СЊС†Сѓ.",
 };
 
 export default function BreedPage() {
@@ -27,7 +27,7 @@ export default function BreedPage() {
           <Reveal>
             <span className="inline-flex items-center gap-2 text-sm uppercase tracking-luxe text-accent">
               <span className="h-px w-8 bg-accent/50" />
-              Порода
+              РџРѕСЂРѕРґР°
             </span>
             <h1 className="mt-5 font-serif text-5xl font-semibold leading-[1.05] text-foreground sm:text-6xl">
               {breed.title}
@@ -39,14 +39,14 @@ export default function BreedPage() {
               href="/kittens"
               className="mt-8 inline-flex rounded-full bg-gradient-to-br from-accent to-accent-strong px-8 py-4 text-sm font-medium text-accent-foreground shadow-glow transition-transform hover:-translate-y-0.5"
             >
-              Посмотреть котят
+              РџРѕСЃРјРѕС‚СЂРµС‚СЊ РєРѕС‚СЏС‚
             </Link>
           </Reveal>
           <Reveal direction="left" className="relative">
             <div className="relative aspect-[4/5] overflow-hidden rounded-5xl shadow-lift">
               <Image
                 src={heroImage}
-                alt="Ориентальная кошка"
+                alt="РћСЂРёРµРЅС‚Р°Р»СЊРЅР°СЏ РєРѕС€РєР°"
                 fill
                 priority
                 sizes="(min-width: 1024px) 45vw, 100vw"
@@ -86,7 +86,7 @@ export default function BreedPage() {
         <Reveal className="max-w-2xl">
           <span className="inline-flex items-center gap-2 text-sm uppercase tracking-luxe text-accent">
             <span className="h-px w-8 bg-accent/50" />
-            Уход
+            РЈС…РѕРґ
           </span>
           <h2 className="mt-4 font-serif text-4xl font-semibold text-foreground sm:text-5xl">
             {breed.care_title}
@@ -126,13 +126,13 @@ export default function BreedPage() {
                 rel="noreferrer"
                 className="rounded-full bg-gradient-to-br from-accent to-accent-strong px-8 py-4 text-sm font-medium text-accent-foreground shadow-glow transition-transform hover:-translate-y-0.5"
               >
-                Написать в Telegram
+                РќР°РїРёСЃР°С‚СЊ РІ Telegram
               </a>
               <Link
                 href="/kittens"
                 className="rounded-full border border-ink-foreground/30 px-8 py-4 text-sm text-ink-foreground transition-colors hover:bg-ink-foreground/10"
               >
-                Смотреть котят
+                РЎРјРѕС‚СЂРµС‚СЊ РєРѕС‚СЏС‚
               </Link>
             </div>
           </div>
@@ -141,3 +141,4 @@ export default function BreedPage() {
     </div>
   );
 }
+

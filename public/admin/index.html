@@ -11,20 +11,166 @@
   <body>
     <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
     <script>
-      // Оформление панели предпросмотра в тёплой гамме сайта
       (function () {
-        if (!window.CMS || typeof window.CMS.registerPreviewStyle !== "function") {
-          return;
+        if (!window.CMS) return;
+
+        /* ─── Стили превью ─── */
+        if (typeof window.CMS.registerPreviewStyle === "function") {
+          window.CMS.registerPreviewStyle(
+            "@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600&display=swap');" +
+            "body{font-family:Inter,system-ui,sans-serif;color:#2e2620;background:#f7f1e7;padding:28px;line-height:1.7;}" +
+            "h1,h2,h3,h4{font-family:'Cormorant Garamond',Georgia,serif;color:#2e2620;font-weight:600;}" +
+            "h1{font-size:2.6rem;margin:0 0 .4em;} h2{font-size:2rem;}" +
+            "a{color:#9a6b3f;} img{max-width:100%;border-radius:16px;}",
+            { raw: true }
+          );
         }
 
-        var previewCss =
-          "@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600&display=swap');" +
-          "body{font-family:Inter,system-ui,sans-serif;color:#2e2620;background:#f7f1e7;padding:28px;line-height:1.7;}" +
-          "h1,h2,h3,h4{font-family:'Cormorant Garamond',Georgia,serif;color:#2e2620;font-weight:600;}" +
-          "h1{font-size:2.6rem;margin:0 0 .4em;} h2{font-size:2rem;}" +
-          "a{color:#9a6b3f;} img{max-width:100%;border-radius:16px;}";
+        /* ─── Превью карточки животного ─── */
+        if (typeof window.CMS.registerPreviewTemplate !== "function") return;
 
-        window.CMS.registerPreviewStyle(previewCss, { raw: true });
+        var h = window.h;
+        var createClass = window.createClass;
+
+        var AnimalCardPreview = createClass({
+          render: function () {
+            var entry = this.props.entry;
+            var getAsset = this.props.getAsset;
+
+            var name = entry.getIn(["data", "name"]) || "Имя не указано";
+            var photos = entry.getIn(["data", "photos"]);
+            var firstPhoto = null;
+
+            if (photos && photos.size > 0) {
+              var raw = photos.get(0);
+              // getAsset возвращает объект с .toString() → URL для локальных uploads
+              try { firstPhoto = getAsset(raw).toString(); } catch(e) { firstPhoto = raw; }
+              if (!firstPhoto) firstPhoto = raw;
+            }
+
+            var styles = {
+              wrap: {
+                fontFamily: "Inter, system-ui, sans-serif",
+                background: "#f7f1e7",
+                minHeight: "100vh",
+                padding: "24px",
+                color: "#2e2620",
+              },
+              title: {
+                fontFamily: "'Cormorant Garamond', Georgia, serif",
+                fontSize: "1.8rem",
+                fontWeight: 600,
+                marginBottom: "20px",
+              },
+              grid: {
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                gap: "20px",
+                marginBottom: "24px",
+              },
+              label: {
+                fontSize: "12px",
+                color: "#888",
+                marginBottom: "8px",
+                fontWeight: 500,
+              },
+              squareWrap: {
+                width: "100%",
+                paddingBottom: "100%",
+                position: "relative",
+                overflow: "hidden",
+                borderRadius: "20px",
+                background: "#e8e0d0",
+                border: "1px solid #d4c9b6",
+                boxShadow: "0 2px 12px rgba(0,0,0,0.08)",
+              },
+              squareImg: {
+                position: "absolute",
+                top: 0, left: 0,
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+              },
+              squarePlaceholder: {
+                position: "absolute",
+                top: "50%", left: "50%",
+                transform: "translate(-50%, -50%)",
+                textAlign: "center",
+                color: "#b8a898",
+                fontSize: "13px",
+              },
+              fullImg: {
+                width: "100%",
+                borderRadius: "16px",
+                display: "block",
+                boxShadow: "0 2px 12px rgba(0,0,0,0.08)",
+              },
+              hint: {
+                background: "#fff8ee",
+                border: "1px solid #e6c97a",
+                borderRadius: "12px",
+                padding: "12px 16px",
+                fontSize: "13px",
+                color: "#7a5c2e",
+                marginTop: "4px",
+              },
+              meta: {
+                marginTop: "20px",
+                padding: "16px",
+                background: "rgba(255,255,255,0.6)",
+                borderRadius: "16px",
+                border: "1px solid #e0d8ce",
+                fontSize: "14px",
+                lineHeight: 1.8,
+              },
+            };
+
+            var gender = entry.getIn(["data", "gender"]) || "";
+            var color = entry.getIn(["data", "color"]) || "";
+            var pricePet = entry.getIn(["data", "price_pet"]);
+            var priceBreed = entry.getIn(["data", "price_breed"]);
+            var reserved = entry.getIn(["data", "reserved"]);
+
+            return h("div", { style: styles.wrap },
+              h("p", { style: styles.title }, "Превью карточки: " + name),
+
+              h("div", { style: styles.grid },
+                // — Квадратный кроп (как на карточке)
+                h("div", {},
+                  h("p", { style: styles.label }, "📐 Как на карточке (1:1 crop, object-cover)"),
+                  h("div", { style: styles.squareWrap },
+                    firstPhoto
+                      ? h("img", { src: firstPhoto, style: styles.squareImg, alt: name })
+                      : h("div", { style: styles.squarePlaceholder }, h("div", {}, "🐱"), h("div", {}, "Фото не добавлено"))
+                  ),
+                  h("p", { style: styles.hint },
+                    "💡 Кот виден ровно так, как на сайте. Если уши или лапы обрезаны — разместите кота ближе к центру фото."
+                  )
+                ),
+
+                // — Оригинал
+                h("div", {},
+                  h("p", { style: styles.label }, "🖼 Исходное фото"),
+                  firstPhoto
+                    ? h("img", { src: firstPhoto, style: styles.fullImg, alt: name })
+                    : h("p", { style: { color: "#b8a898", fontSize: "13px" } }, "Фото не загружено")
+                )
+              ),
+
+              // — Мета-инфо
+              h("div", { style: styles.meta },
+                gender ? h("div", {}, h("b", {}, "Пол: "), gender) : null,
+                color ? h("div", {}, h("b", {}, "Окрас: "), color) : null,
+                pricePet ? h("div", {}, h("b", {}, "Цена в любимцы: "), pricePet.toLocaleString("ru-RU") + " ₽") : null,
+                priceBreed ? h("div", {}, h("b", {}, "Цена в разведение: "), priceBreed.toLocaleString("ru-RU") + " ₽") : null,
+                reserved !== undefined ? h("div", {}, h("b", {}, "Статус: "), reserved ? "🔴 Зарезервирован" : "🟢 Доступен") : null
+              )
+            );
+          },
+        });
+
+        window.CMS.registerPreviewTemplate("kittens", AnimalCardPreview);
+        window.CMS.registerPreviewTemplate("cats", AnimalCardPreview);
       })();
     </script>
   </body>

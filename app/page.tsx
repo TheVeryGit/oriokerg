@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import Image from "next/image";
+import Image from "next-export-optimize-images/image";
 import Link from "next/link";
 
 import { AnimalCard } from "@/components/AnimalCard";
@@ -128,7 +128,7 @@ export default function HomePage() {
         telegram={contacts.telegram}
       />
 
-      {/* Stats — emerald strip */}
+      {/* Stats вЂ” emerald strip */}
       <section className="bg-ink text-ink-foreground">
         <div className="mx-auto grid w-full max-w-7xl grid-cols-2 gap-8 px-4 py-14 sm:px-6 md:grid-cols-4 lg:px-8">
           {homepage.stats.map((stat, index) => (
@@ -151,23 +151,23 @@ export default function HomePage() {
       <section className="mx-auto w-full max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
         <Reveal className="flex flex-wrap items-end justify-between gap-6">
           <div>
-            <Eyebrow>В продаже</Eyebrow>
+            <Eyebrow>Р’ РїСЂРѕРґР°Р¶Рµ</Eyebrow>
             <h2 className="mt-4 font-serif text-display font-semibold text-foreground">
-              Наши котята
+              РќР°С€Рё РєРѕС‚СЏС‚Р°
             </h2>
           </div>
           <Link
             href="/kittens"
             className="link-underline hidden shrink-0 text-sm text-muted hover:text-accent sm:block"
           >
-            Смотреть всех →
+            РЎРјРѕС‚СЂРµС‚СЊ РІСЃРµС… в†’
           </Link>
         </Reveal>
 
         {featuredKittens.length === 0 ? (
           <Reveal className="mt-12 rounded-4xl border border-dashed border-border-strong bg-card p-12 text-center text-muted">
-            Свободные котята скоро появятся. Загляните позже или напишите нам —
-            расскажем о ближайших планах.
+            РЎРІРѕР±РѕРґРЅС‹Рµ РєРѕС‚СЏС‚Р° СЃРєРѕСЂРѕ РїРѕСЏРІСЏС‚СЃСЏ. Р—Р°РіР»СЏРЅРёС‚Рµ РїРѕР·Р¶Рµ РёР»Рё РЅР°РїРёС€РёС‚Рµ РЅР°Рј вЂ”
+            СЂР°СЃСЃРєР°Р¶РµРј Рѕ Р±Р»РёР¶Р°Р№С€РёС… РїР»Р°РЅР°С….
           </Reveal>
         ) : (
           <Stagger className="mt-12 grid gap-7 md:grid-cols-2 xl:grid-cols-3">
@@ -190,7 +190,7 @@ export default function HomePage() {
       <section className="border-y border-border bg-surface-2/50">
         <div className="mx-auto w-full max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
           <Reveal className="max-w-2xl">
-            <Eyebrow>Почему мы</Eyebrow>
+            <Eyebrow>РџРѕС‡РµРјСѓ РјС‹</Eyebrow>
             <h2 className="mt-4 font-serif text-display font-semibold text-foreground">
               {homepage.features_title}
             </h2>
@@ -264,7 +264,7 @@ export default function HomePage() {
             <div className="relative aspect-[5/6] overflow-hidden rounded-5xl shadow-lift">
               <Image
                 src={gallery[1] ?? heroImage}
-                alt="Ориентальная кошка крупным планом"
+                alt="РћСЂРёРµРЅС‚Р°Р»СЊРЅР°СЏ РєРѕС€РєР° РєСЂСѓРїРЅС‹Рј РїР»Р°РЅРѕРј"
                 fill
                 sizes="(min-width: 1024px) 45vw, 100vw"
                 className="object-cover"
@@ -276,7 +276,7 @@ export default function HomePage() {
 
           <div>
             <Reveal>
-              <Eyebrow>Порода</Eyebrow>
+              <Eyebrow>РџРѕСЂРѕРґР°</Eyebrow>
               <h2 className="mt-4 font-serif text-display font-semibold text-foreground">
                 {homepage.breed_title}
               </h2>
@@ -304,7 +304,7 @@ export default function HomePage() {
                 href="/breed"
                 className="mt-8 inline-flex items-center gap-2 rounded-full border border-border-strong bg-card/60 px-7 py-3.5 text-sm font-medium text-foreground transition-colors hover:border-accent hover:text-accent"
               >
-                Узнать о породе больше
+                РЈР·РЅР°С‚СЊ Рѕ РїРѕСЂРѕРґРµ Р±РѕР»СЊС€Рµ
                 <ArrowIcon />
               </Link>
             </Reveal>
@@ -316,16 +316,16 @@ export default function HomePage() {
       <section className="border-y border-border bg-surface-2/50">
         <div className="mx-auto w-full max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
           <Reveal>
-            <Eyebrow>Галерея</Eyebrow>
+            <Eyebrow>Р“Р°Р»РµСЂРµСЏ</Eyebrow>
             <h2 className="mt-4 font-serif text-display font-semibold text-foreground">
-              Жизнь в питомнике
+              Р–РёР·РЅСЊ РІ РїРёС‚РѕРјРЅРёРєРµ
             </h2>
           </Reveal>
           <Reveal className="mt-12 grid grid-cols-2 gap-4 md:grid-cols-4 md:grid-rows-2">
             <div className="group relative col-span-2 row-span-2 aspect-square overflow-hidden rounded-4xl md:aspect-auto">
               <Image
                 src={gallery[0]}
-                alt="Жизнь питомника OrioKerg"
+                alt="Р–РёР·РЅСЊ РїРёС‚РѕРјРЅРёРєР° OrioKerg"
                 fill
                 sizes="(min-width: 768px) 50vw, 100vw"
                 className="object-cover transition-transform duration-[1200ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-105"
@@ -339,7 +339,7 @@ export default function HomePage() {
               >
                 <Image
                   src={photo}
-                  alt="Питомец OrioKerg"
+                  alt="РџРёС‚РѕРјРµС† OrioKerg"
                   fill
                   sizes="(min-width: 768px) 25vw, 50vw"
                   className="object-cover transition-transform duration-[1200ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-110"
@@ -350,14 +350,14 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Steps — animated scroll-driven stepper */}
+      {/* Steps вЂ” animated scroll-driven stepper */}
       <StepsScroller title={homepage.steps_title} steps={homepage.steps} />
 
       {/* Reviews */}
       <section className="mx-auto w-full max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
         <Reveal className="text-center">
           <div className="flex justify-center">
-            <Eyebrow>Отзывы</Eyebrow>
+            <Eyebrow>РћС‚Р·С‹РІС‹</Eyebrow>
           </div>
           <h2 className="mt-4 font-serif text-display font-semibold text-foreground">
             {homepage.reviews_title}
@@ -369,11 +369,11 @@ export default function HomePage() {
               <figure className="flex h-full flex-col rounded-4xl border border-border bg-card p-7 shadow-soft">
                 <Stars />
                 <blockquote className="mt-4 flex-1 text-[15px] leading-7 text-foreground/80">
-                  «{review.text}»
+                  В«{review.text}В»
                 </blockquote>
                 <figcaption className="mt-6 flex items-center gap-3">
                   <span className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-accent-soft to-accent-strong font-medium text-accent-foreground">
-                    {review.name.charAt(0) || "★"}
+                    {review.name.charAt(0) || "в…"}
                   </span>
                   <div className="text-sm">
                     <p className="font-medium text-foreground">{review.name}</p>
@@ -417,7 +417,7 @@ export default function HomePage() {
                 className="inline-flex items-center gap-2.5 rounded-full border border-accent-foreground/40 px-8 py-4 text-sm text-accent-foreground transition-colors hover:bg-accent-foreground/10"
               >
                 <VkIcon className="h-5 w-5" />
-                ВКонтакте
+                Р’РљРѕРЅС‚Р°РєС‚Рµ
               </a>
             </div>
           </div>
@@ -426,3 +426,4 @@ export default function HomePage() {
     </div>
   );
 }
+

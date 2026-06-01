@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Image from "next/image";
+import Image from "next-export-optimize-images/image";
 import Link from "next/link";
 import { remark } from "remark";
 import html from "remark-html";
@@ -11,9 +11,9 @@ import type { AboutSettings, ContactsSettings } from "@/lib/content";
 import { getSettings, getSettingsContent } from "@/lib/content";
 
 export const metadata: Metadata = {
-  title: "О питомнике",
+  title: "Рћ РїРёС‚РѕРјРЅРёРєРµ",
   description:
-    "История питомника OrioKerg, подход к разведению и забота о котятах ориентальной породы.",
+    "РСЃС‚РѕСЂРёСЏ РїРёС‚РѕРјРЅРёРєР° OrioKerg, РїРѕРґС…РѕРґ Рє СЂР°Р·РІРµРґРµРЅРёСЋ Рё Р·Р°Р±РѕС‚Р° Рѕ РєРѕС‚СЏС‚Р°С… РѕСЂРёРµРЅС‚Р°Р»СЊРЅРѕР№ РїРѕСЂРѕРґС‹.",
 };
 
 export default async function AboutPage() {
@@ -25,7 +25,7 @@ export default async function AboutPage() {
 
   return (
     <div className="pb-24">
-      <PageHeader eyebrow="О питомнике" title={about.title} />
+      <PageHeader eyebrow="Рћ РїРёС‚РѕРјРЅРёРєРµ" title={about.title} />
 
       <div className="mx-auto mt-8 grid w-full max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-[1.1fr_0.9fr] lg:px-8">
         <Reveal>
@@ -67,17 +67,17 @@ export default async function AboutPage() {
             <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
               <div className="max-w-xl">
                 <h2 className="font-serif text-3xl font-semibold text-foreground sm:text-4xl">
-                  Познакомимся?
+                  РџРѕР·РЅР°РєРѕРјРёРјСЃСЏ?
                 </h2>
                 <p className="mt-3 text-muted">
-                  Расскажем о доступных котятах, покажем родителей и поможем
-                  выбрать малыша. Также загляните в раздел о породе.
+                  Р Р°СЃСЃРєР°Р¶РµРј Рѕ РґРѕСЃС‚СѓРїРЅС‹С… РєРѕС‚СЏС‚Р°С…, РїРѕРєР°Р¶РµРј СЂРѕРґРёС‚РµР»РµР№ Рё РїРѕРјРѕР¶РµРј
+                  РІС‹Р±СЂР°С‚СЊ РјР°Р»С‹С€Р°. РўР°РєР¶Рµ Р·Р°РіР»СЏРЅРёС‚Рµ РІ СЂР°Р·РґРµР» Рѕ РїРѕСЂРѕРґРµ.
                 </p>
                 <Link
                   href="/breed"
                   className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-accent transition-colors hover:text-accent-strong"
                 >
-                  О породе ориентал →
+                  Рћ РїРѕСЂРѕРґРµ РѕСЂРёРµРЅС‚Р°Р» в†’
                 </Link>
               </div>
               <ContactButtons
@@ -93,3 +93,4 @@ export default async function AboutPage() {
     </div>
   );
 }
+
