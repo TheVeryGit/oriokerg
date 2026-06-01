@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 
 import { ContactButtons } from "@/components/ContactButtons";
 import { FaqAccordion } from "@/components/FaqAccordion";
-import { PageHeader } from "@/components/PageHeader";
 import { Reveal } from "@/components/Reveal";
 import type { ContactsSettings } from "@/lib/content";
 import { getFaq, getSettings } from "@/lib/content";
@@ -11,7 +10,17 @@ export const metadata: Metadata = {
   title: "Частые вопросы",
   description:
     "Ответы на частые вопросы о покупке ориентального котёнка в питомнике OrioKerg: бронь, документы, доставка, уход и гарантии.",
+  alternates: { canonical: "/faq/" },
 };
+
+function pluralAnswers(n: number) {
+  const abs = n % 100;
+  const tail = abs % 10;
+  if (abs > 10 && abs < 20) return "ответов";
+  if (tail > 1 && tail < 5) return "ответа";
+  if (tail === 1) return "ответ";
+  return "ответов";
+}
 
 export default function FaqPage() {
   const faq = getFaq();
@@ -34,30 +43,57 @@ export default function FaqPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <PageHeader eyebrow="FAQ" title={faq.title} intro={faq.intro} />
+      <div className="relative overflow-hidden">
+        <div className="pointer-events-none absolute -right-16 -top-12 h-72 w-72 rounded-full bg-accent/12 blur-3xl" />
+        <div className="pointer-events-none absolute -left-20 top-40 hidden h-72 w-72 rounded-full bg-emerald/10 blur-3xl lg:block" />
 
-      <div className="mx-auto mt-10 w-full max-w-3xl px-4 sm:px-6 lg:px-8">
-        <Reveal>
-          <FaqAccordion items={faq.items} />
-        </Reveal>
+        <div className="mx-auto w-full max-w-7xl px-4 pt-16 sm:px-6 lg:px-8 lg:pt-20">
+          <div className="grid gap-10 lg:grid-cols-[0.82fr_1.5fr] lg:gap-14">
+            {/* Sidebar */}
+            <Reveal>
+              <div className="lg:sticky lg:top-28">
+                <span className="inline-flex items-center gap-2 text-sm uppercase tracking-luxe text-accent">
+                  <span className="h-px w-8 bg-accent/50" />
+                  FAQ
+                </span>
+                <h1 className="mt-5 font-serif text-4xl font-semibold leading-[1.06] text-foreground text-balance sm:text-5xl">
+                  {faq.title}
+                </h1>
+                {faq.intro ? (
+                  <p className="mt-5 text-lg leading-8 text-muted text-pretty">
+                    {faq.intro}
+                  </p>
+                ) : null}
 
-        <Reveal className="mt-12">
-          <div className="rounded-4xl border border-border bg-card p-8 text-center shadow-soft sm:p-10">
-            <h2 className="font-serif text-2xl font-semibold text-foreground sm:text-3xl">
-              Остались вопросы?
-            </h2>
-            <p className="mx-auto mt-3 max-w-md text-muted">
-              Напишите нам удобным способом — ответим быстро, подробно и с
-              удовольствием.
-            </p>
-            <ContactButtons
-              telegram={contacts.telegram}
-              vk={contacts.vk}
-              phone={contacts.phone}
-              className="mx-auto mt-7 max-w-md"
-            />
+                <p className="mt-6 inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-1.5 text-sm text-muted shadow-soft">
+                  <span className="h-1.5 w-1.5 rounded-full bg-accent" />
+                  {faq.items.length} {pluralAnswers(faq.items.length)}
+                </p>
+
+                <div className="mt-8 rounded-4xl border border-border bg-card p-6 shadow-soft sm:p-7">
+                  <h2 className="font-serif text-xl font-semibold text-foreground sm:text-2xl">
+                    Не нашли ответ?
+                  </h2>
+                  <p className="mt-2 text-sm leading-7 text-muted">
+                    Напишите нам удобным способом — ответим быстро, подробно и с
+                    удовольствием.
+                  </p>
+                  <ContactButtons
+                    telegram={contacts.telegram}
+                    vk={contacts.vk}
+                    phone={contacts.phone}
+                    className="mt-5 sm:flex-col"
+                  />
+                </div>
+              </div>
+            </Reveal>
+
+            {/* Questions */}
+            <Reveal delay={120}>
+              <FaqAccordion items={faq.items} />
+            </Reveal>
           </div>
-        </Reveal>
+        </div>
       </div>
     </div>
   );

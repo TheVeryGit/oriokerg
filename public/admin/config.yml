@@ -276,7 +276,19 @@ collections:
           - label: Вопросы
             name: items
             widget: list
-            summary: "{{fields.q}}"
+            summary: "[{{fields.category}}] {{fields.q}}"
             fields:
               - { name: q, label: Вопрос, widget: string }
               - { name: a, label: Ответ, widget: text }
+              - label: Категория
+                name: category
+                widget: select
+                required: false
+                default: Общее
+                options:
+                  - Бронь и оплата
+                  - Документы и гарантии
+                  - Уход и здоровье
+                  - Доставка
+                  - Общее
+                hint: "Группирует вопросы на странице по темам. Можно оставить «Общее»."
