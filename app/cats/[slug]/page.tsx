@@ -119,9 +119,9 @@ export default function CatPage({ params }: CatPageProps) {
           <PhotoGallery photos={cat.photos} alt={cat.name} />
         </Reveal>
 
-        <Reveal delay={120}>
-          <aside className="lg:sticky lg:top-28">
-            <div className="rounded-5xl border border-border bg-card p-8 shadow-lift">
+        <Reveal delay={120} className="h-full">
+          <aside className="h-full">
+            <div className="flex h-full flex-col rounded-5xl border border-border bg-card p-8 shadow-lift">
               <span className="inline-flex rounded-full bg-accent/12 px-3 py-1 text-xs font-medium text-accent-strong">
                 {cat.type}
               </span>
@@ -147,7 +147,7 @@ export default function CatPage({ params }: CatPageProps) {
                 telegram={contacts.telegram}
                 vk={contacts.vk}
                 phone={contacts.phone}
-                className="mt-7 sm:flex-col"
+                className="mt-auto pt-7 sm:flex-col"
               />
             </div>
           </aside>

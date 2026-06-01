@@ -25,6 +25,12 @@ export type KittenEntry = BaseEntry & {
   pricePet?: number;
   /** Цена «в разведение» (с правом разведения). */
   priceBreed?: number;
+  /** Дата рождения в ISO-формате (YYYY-MM-DD). Возраст считается на клиенте. */
+  birthDate?: string;
+  /** Кличка матери. */
+  mother?: string;
+  /** Кличка отца. */
+  father?: string;
   reserved: boolean;
 };
 
@@ -117,6 +123,24 @@ function normalizeNumber(value: unknown) {
 
 function normalizeBoolean(value: unknown, fallback: boolean) {
   return typeof value === "boolean" ? value : fallback;
+}
+
+/**
+ * Нормализует дату в ISO-строку `YYYY-MM-DD`. YAML-фронтматтер парсит
+ * `2026-04-01` как JS Date, а Decap при `format` может писать строку —
+ * учитываем оба случая.
+ */
+function normalizeDate(value: unknown): string | undefined {
+  if (value instanceof Date && !Number.isNaN(value.getTime())) {
+    return value.toISOString().slice(0, 10);
+  }
+  if (typeof value === "string" && value.trim() !== "") {
+    const parsed = new Date(value.trim());
+    if (!Number.isNaN(parsed.getTime())) {
+      return parsed.toISOString().slice(0, 10);
+    }
+  }
+  return undefined;
 }
 
 function normalizePhotos(value: unknown) {
@@ -229,6 +253,9 @@ export function getKittens(): KittenEntry[] {
           normalizeNumber(entry.data.price_pet) ??
           normalizeNumber(entry.data.price),
         priceBreed: normalizeNumber(entry.data.price_breed),
+        birthDate: normalizeDate(entry.data.birth_date),
+        mother: normalizeText(entry.data.mother) || undefined,
+        father: normalizeText(entry.data.father) || undefined,
         description: normalizeText(entry.data.description, entry.content),
         photos: normalizePhotos(entry.data.photos),
         reserved: normalizeBoolean(entry.data.reserved, false),

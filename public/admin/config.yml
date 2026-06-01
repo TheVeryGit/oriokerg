@@ -23,6 +23,10 @@ auth:
 
 locale: ru
 
+# Черновики: запись проходит «Черновик → Готово к публикации → Опубликовано».
+# Можно сохранить недописанное и вернуться позже; удаляется кнопкой в колонке.
+publish_mode: editorial_workflow
+
 logo_url: https://decapbridge.com/decapcms-with-bridge.svg
 site_url: https://oriokerg.ru
 display_url: https://oriokerg.ru
@@ -62,15 +66,27 @@ collections:
       - { label: Окрас, name: color, widget: string, hint: "Например: красный тикированный" }
       - { label: "Цена в любимцы (₽)", name: price_pet, widget: number, required: false, hint: "Стоимость котёнка как домашнего любимца (пет-класс). Можно не указывать." }
       - { label: "Цена в разведение (₽)", name: price_breed, widget: number, required: false, hint: "Стоимость с правом разведения. Оставьте пустым, если не продаётся в разведение." }
-      - { label: Описание, name: description, widget: text, required: false }
+      - label: Дата рождения
+        name: birth_date
+        widget: datetime
+        required: false
+        date_format: "DD.MM.YYYY"
+        time_format: false
+        format: "YYYY-MM-DD"
+        picker_utc: true
+        hint: "Возраст («2 месяца») посчитается на сайте автоматически. Можно не указывать."
+      - { label: "Мама (кличка)", name: mother, widget: string, required: false, hint: "Кличка матери — покажется в характеристиках. Необязательно." }
+      - { label: "Папа (кличка)", name: father, widget: string, required: false, hint: "Кличка отца — покажется в характеристиках. Необязательно." }
+      - { label: Описание, name: description, widget: text, required: false, hint: "Пара тёплых предложений о малыше: характер, привычки, чем выделяется." }
       - label: Фотографии
         name: photos
         widget: list
         required: false
+        label_singular: Фото
         summary: "Фото {{index}}"
-        hint: "Первое фото — обложка карточки"
+        hint: "Первое фото — обложка карточки (показывается квадратом). Проверьте обрезку в панели «Просмотр» справа — кот должен помещаться целиком. Перетаскивайте фото, чтобы поменять порядок."
         field: { label: Фото, name: photo, widget: image }
-      - { label: Зарезервирован, name: reserved, widget: boolean, default: false, hint: "Включите, если котёнок уже забронирован" }
+      - { label: Зарезервирован, name: reserved, widget: boolean, default: false, hint: "Включите, если котёнок уже забронирован — на карточке появится отметка." }
 
   - name: cats
     label: Кошки и производители
@@ -110,8 +126,9 @@ collections:
         name: photos
         widget: list
         required: false
+        label_singular: Фото
         summary: "Фото {{index}}"
-        hint: "Первое фото — обложка карточки"
+        hint: "Первое фото — обложка карточки (квадрат). Проверьте обрезку в панели «Просмотр» справа. Перетаскиванием меняется порядок."
         field: { label: Фото, name: photo, widget: image }
       - { label: Доступен, name: available, widget: boolean, default: true }
 
@@ -124,9 +141,21 @@ collections:
         file: content/settings/contacts.md
         description: Телефон и мессенджеры — используются на кнопках по всему сайту.
         fields:
-          - { name: phone, label: Телефон, widget: string, hint: "Например: +7 900 000 00 00" }
-          - { name: telegram, label: "Telegram (ссылка)", widget: string, hint: "Полная ссылка, например https://t.me/oriokerg" }
-          - { name: vk, label: "ВКонтакте (ссылка)", widget: string, hint: "Полная ссылка, например https://vk.com/oriokerg" }
+          - name: phone
+            label: Телефон
+            widget: string
+            hint: "Например: +7 900 000 00 00"
+            pattern: ["^[+0-9 ()\\-]{6,}$", "Только цифры, пробелы и + ( ) — например +7 900 000 00 00"]
+          - name: telegram
+            label: "Telegram (ссылка)"
+            widget: string
+            hint: "Полная ссылка, например https://t.me/oriokerg"
+            pattern: ["^https?://(t\\.me|telegram\\.me)/.+", "Ссылка должна начинаться с https://t.me/"]
+          - name: vk
+            label: "ВКонтакте (ссылка)"
+            widget: string
+            hint: "Полная ссылка, например https://vk.com/oriokerg"
+            pattern: ["^https?://(vk\\.com|vk\\.ru)/.+", "Ссылка должна начинаться с https://vk.com/"]
           - { name: address, label: "Адрес (необязательно)", widget: string, required: false }
       - label: Главная страница
         name: homepage

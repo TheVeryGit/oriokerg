@@ -130,6 +130,31 @@
             var pricePet = entry.getIn(["data", "price_pet"]);
             var priceBreed = entry.getIn(["data", "price_breed"]);
             var reserved = entry.getIn(["data", "reserved"]);
+            var birth = entry.getIn(["data", "birth_date"]);
+            var mother = entry.getIn(["data", "mother"]) || "";
+            var father = entry.getIn(["data", "father"]) || "";
+            var description = entry.getIn(["data", "description"]) || "";
+
+            // Возраст + дата рождения (живой расчёт от сегодняшней даты)
+            var ageText = "", birthText = "";
+            if (birth) {
+              var bd = new Date(birth);
+              if (!isNaN(bd.getTime())) {
+                birthText = bd.toLocaleDateString("ru-RU", { day: "numeric", month: "long", year: "numeric" });
+                var days = Math.floor((Date.now() - bd.getTime()) / 86400000);
+                var plural = function (n, f) {
+                  var a = Math.abs(n) % 100, t = a % 10;
+                  if (a > 10 && a < 20) return f[2];
+                  if (t > 1 && t < 5) return f[1];
+                  if (t === 1) return f[0];
+                  return f[2];
+                };
+                if (days < 0) ageText = "";
+                else if (days < 14) { var d = Math.max(days, 1); ageText = d + " " + plural(d, ["день", "дня", "дней"]); }
+                else if (days < 60) { var w = Math.round(days / 7); ageText = w + " " + plural(w, ["неделя", "недели", "недель"]); }
+                else { var m = Math.floor(days / 30.44); ageText = m + " " + plural(m, ["месяц", "месяца", "месяцев"]); }
+              }
+            }
 
             return h("div", { style: styles.wrap },
               h("p", { style: styles.title }, "Превью карточки: " + name),
@@ -161,9 +186,14 @@
               h("div", { style: styles.meta },
                 gender ? h("div", {}, h("b", {}, "Пол: "), gender) : null,
                 color ? h("div", {}, h("b", {}, "Окрас: "), color) : null,
+                ageText ? h("div", {}, h("b", {}, "Возраст: "), ageText) : null,
+                birthText ? h("div", {}, h("b", {}, "Дата рождения: "), birthText) : null,
+                mother ? h("div", {}, h("b", {}, "Мама: "), mother) : null,
+                father ? h("div", {}, h("b", {}, "Папа: "), father) : null,
                 pricePet ? h("div", {}, h("b", {}, "Цена в любимцы: "), pricePet.toLocaleString("ru-RU") + " ₽") : null,
                 priceBreed ? h("div", {}, h("b", {}, "Цена в разведение: "), priceBreed.toLocaleString("ru-RU") + " ₽") : null,
-                reserved !== undefined ? h("div", {}, h("b", {}, "Статус: "), reserved ? "🔴 Зарезервирован" : "🟢 Доступен") : null
+                reserved !== undefined ? h("div", {}, h("b", {}, "Статус: "), reserved ? "🔴 Зарезервирован" : "🟢 Доступен") : null,
+                description ? h("div", { style: { marginTop: "10px", paddingTop: "10px", borderTop: "1px solid #e0d8ce", color: "#6b5d4f" } }, description) : null
               )
             );
           },

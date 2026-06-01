@@ -2,14 +2,17 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import type { ReactNode } from "react";
+
 import { AnimalCard } from "@/components/AnimalCard";
 import { ContactButtons } from "@/components/ContactButtons";
+import { KittenAge } from "@/components/KittenAge";
 import { PhotoGallery } from "@/components/PhotoGallery";
 import { Reveal } from "@/components/Reveal";
 import { Stagger, StaggerItem } from "@/components/motion/Stagger";
 import type { ContactsSettings } from "@/lib/content";
 import { getKittenBySlug, getKittens, getSettings } from "@/lib/content";
-import { kittenPriceLines } from "@/lib/format";
+import { formatBirthDate, kittenPriceLines } from "@/lib/format";
 
 type KittenPageProps = {
   params: { slug: string };
@@ -48,11 +51,11 @@ export function generateMetadata({ params }: KittenPageProps): Metadata {
   };
 }
 
-function InfoRow({ label, value }: { label: string; value: string }) {
+function InfoRow({ label, value }: { label: string; value: ReactNode }) {
   return (
     <div className="flex items-center justify-between gap-4 border-b border-border py-3.5 last:border-0">
       <dt className="text-sm text-muted">{label}</dt>
-      <dd className="text-sm font-medium text-foreground">{value}</dd>
+      <dd className="text-right text-sm font-medium text-foreground">{value}</dd>
     </div>
   );
 }
@@ -120,9 +123,9 @@ export default function KittenPage({ params }: KittenPageProps) {
           <PhotoGallery photos={kitten.photos} alt={kitten.name} />
         </Reveal>
 
-        <Reveal delay={120}>
-          <aside className="lg:sticky lg:top-28">
-            <div className="rounded-5xl border border-border bg-card p-8 shadow-lift">
+        <Reveal delay={120} className="h-full">
+          <aside className="h-full">
+            <div className="flex h-full flex-col rounded-5xl border border-border bg-card p-8 shadow-lift">
               <div className="flex items-center gap-3">
                 <span
                   className={`rounded-full px-3 py-1 text-xs font-medium ${
@@ -161,6 +164,24 @@ export default function KittenPage({ params }: KittenPageProps) {
               <dl className="mt-7">
                 <InfoRow label="Пол" value={kitten.gender} />
                 <InfoRow label="Окрас" value={kitten.color} />
+                {kitten.birthDate ? (
+                  <InfoRow
+                    label="Возраст"
+                    value={<KittenAge birthDate={kitten.birthDate} />}
+                  />
+                ) : null}
+                {kitten.birthDate ? (
+                  <InfoRow
+                    label="Дата рождения"
+                    value={formatBirthDate(kitten.birthDate)}
+                  />
+                ) : null}
+                {kitten.mother ? (
+                  <InfoRow label="Мама" value={kitten.mother} />
+                ) : null}
+                {kitten.father ? (
+                  <InfoRow label="Папа" value={kitten.father} />
+                ) : null}
                 <InfoRow
                   label="Статус"
                   value={kitten.reserved ? "Зарезервирован" : "Свободен"}
@@ -171,7 +192,7 @@ export default function KittenPage({ params }: KittenPageProps) {
                 telegram={contacts.telegram}
                 vk={contacts.vk}
                 phone={contacts.phone}
-                className="mt-7 sm:flex-col"
+                className="mt-auto pt-7 sm:flex-col"
               />
               <p className="mt-4 text-center text-xs text-muted">
                 Ответим, пришлём фото и видео малыша
