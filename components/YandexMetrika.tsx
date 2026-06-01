@@ -11,12 +11,23 @@ declare global {
   }
 }
 
+/** По ссылке определяет, какая это цель (клик-обращение), либо null. */
+function goalForHref(href: string): string | null {
+  const h = href.toLowerCase();
+  if (h.startsWith("tel:")) return "phone";
+  if (h.startsWith("mailto:")) return "email";
+  if (h.includes("t.me") || h.includes("telegram.me")) return "telegram";
+  if (h.includes("vk.com") || h.includes("vk.ru")) return "vk";
+  return null;
+}
+
 /**
- * Учёт переходов между страницами при клиентской навигации (Next.js Link).
- * `init` уже засчитал первую загрузку — поэтому первый запуск пропускаем,
- * иначе главная посчиталась бы дважды.
+ * 1) Учёт переходов между страницами при клиентской навигации (Next.js Link).
+ *    `init` уже засчитал первую загрузку — первый запуск пропускаем.
+ * 2) Цели-обращения: глобально ловим клики по ссылкам Telegram/ВК/телефон/email
+ *    в любом месте сайта и шлём reachGoal — без правки каждой кнопки.
  */
-function PageviewTracker() {
+function MetrikaTracker() {
   const pathname = usePathname();
   const isFirst = useRef(true);
 
@@ -27,6 +38,18 @@ function PageviewTracker() {
     }
     window.ym?.(COUNTER_ID, "hit", window.location.href);
   }, [pathname]);
+
+  useEffect(() => {
+    const onClick = (event: MouseEvent) => {
+      const target = event.target as HTMLElement | null;
+      const link = target?.closest?.("a[href]") as HTMLAnchorElement | null;
+      if (!link) return;
+      const goal = goalForHref(link.getAttribute("href") ?? "");
+      if (goal) window.ym?.(COUNTER_ID, "reachGoal", goal);
+    };
+    document.addEventListener("click", onClick, { capture: true });
+    return () => document.removeEventListener("click", onClick, { capture: true });
+  }, []);
 
   return null;
 }
@@ -45,7 +68,7 @@ export function YandexMetrika() {
         ym(${COUNTER_ID}, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", accurateTrackBounce:true, trackLinks:true});`,
         }}
       />
-      <PageviewTracker />
+      <MetrikaTracker />
       <noscript>
         <div>
           <img
