@@ -120,6 +120,7 @@ export function Hero({ title, subtitle, image, telegram }: HeroProps) {
                 alt="Ориентальная кошка питомника OrioKerg"
                 fill
                 priority
+                placeholder="blur"
                 sizes="(min-width: 1024px) 45vw, 100vw"
                 className="object-cover object-[50%_20%]"
               />

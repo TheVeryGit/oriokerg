@@ -39,8 +39,8 @@ function CardShell({ href, children }: { href?: string; children: ReactNode }) {
 
 const badgeTone: Record<NonNullable<AnimalCardBadge["tone"]>, string> = {
   gold: "bg-accent text-accent-foreground",
-  muted: "bg-card/90 text-foreground",
-  sold: "bg-ink/85 text-ink-foreground",
+  muted: "bg-card text-foreground",
+  sold: "bg-ink text-ink-foreground",
 };
 
 export function AnimalCard({
@@ -68,6 +68,7 @@ export function AnimalCard({
             alt={name}
             width={900}
             height={900}
+            placeholder="blur"
             sizes="(min-width: 1280px) 30vw, (min-width: 768px) 45vw, 100vw"
             className="h-full w-full object-cover transition-transform duration-[1200ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.08]"
           />
@@ -89,7 +90,7 @@ export function AnimalCard({
 
         {badge ? (
           <span
-            className={`absolute right-4 top-4 rounded-full px-3 py-1 text-xs font-medium backdrop-blur-md ${
+            className={`absolute right-4 top-4 rounded-full px-3 py-1 text-xs font-medium shadow-soft ${
               badgeTone[badge.tone ?? "gold"]
             }`}
           >

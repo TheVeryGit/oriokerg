@@ -47,8 +47,8 @@ export function Header() {
         <div
           className={`flex items-center justify-between gap-4 rounded-full border px-3 py-2 transition-all duration-300 sm:px-4 ${
             scrolled
-              ? "border-border bg-surface/95 shadow-lift backdrop-blur-xl"
-              : "border-border/80 bg-surface/85 shadow-soft backdrop-blur-md"
+              ? "border-border bg-surface/[0.97] shadow-lift sm:bg-surface/95 sm:backdrop-blur-xl"
+              : "border-border/80 bg-surface/95 shadow-soft sm:bg-surface/85 sm:backdrop-blur-md"
           }`}
         >
           <Link
@@ -138,7 +138,7 @@ export function Header() {
               transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
               className="overflow-hidden lg:hidden"
             >
-              <div className="mt-2 flex flex-col gap-1 rounded-3xl border border-border bg-surface/95 p-3 shadow-lift backdrop-blur-xl">
+              <div className="mt-2 flex flex-col gap-1 rounded-3xl border border-border bg-surface p-3 shadow-lift">
                 {navigation.map((item) => {
                   const active = isActive(pathname, item.href);
                   return (

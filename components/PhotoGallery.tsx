@@ -48,6 +48,7 @@ export function PhotoGallery({ photos, alt }: PhotoGalleryProps) {
               width={1200}
               height={900}
               priority
+              placeholder="blur"
               sizes="(min-width: 1024px) 60vw, 100vw"
               className="h-full w-full object-cover"
             />
