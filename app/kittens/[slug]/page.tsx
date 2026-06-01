@@ -6,6 +6,7 @@ import type { ReactNode } from "react";
 
 import { AnimalCard } from "@/components/AnimalCard";
 import { ContactButtons } from "@/components/ContactButtons";
+import { JsonLd } from "@/components/JsonLd";
 import { KittenAge } from "@/components/KittenAge";
 import { PhotoGallery } from "@/components/PhotoGallery";
 import { Reveal } from "@/components/Reveal";
@@ -43,11 +44,21 @@ export async function generateStaticParams() {
 export function generateMetadata({ params }: KittenPageProps): Metadata {
   const kitten = getKittenBySlug(decodeSlug(params.slug));
   if (!kitten) return { title: "Котёнок" };
+  const description =
+    kitten.description ||
+    `Ориентальный котёнок ${kitten.name}, окрас: ${kitten.color}. Питомник OrioKerg.`;
+  const image = kitten.photos[0];
   return {
     title: `${kitten.name} — котёнок`,
-    description:
-      kitten.description ||
-      `Ориентальный котёнок ${kitten.name}, окрас: ${kitten.color}. Питомник OrioKerg.`,
+    description,
+    alternates: { canonical: `/kittens/${encodeURIComponent(kitten.slug)}/` },
+    openGraph: {
+      title: `${kitten.name} — ориентальный котёнок`,
+      description,
+      type: "article",
+      ...(image ? { images: [{ url: image, alt: kitten.name }] } : {}),
+    },
+    ...(image ? { twitter: { card: "summary_large_image", images: [image] } } : {}),
   };
 }
 
@@ -95,8 +106,36 @@ export default function KittenPage({ params }: KittenPageProps) {
     .filter((item) => item.slug !== kitten.slug && !item.reserved)
     .slice(0, 3);
 
+  const offerPrice = kitten.pricePet ?? kitten.priceBreed;
+  const productLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: kitten.name,
+    description:
+      kitten.description ||
+      `Ориентальный котёнок ${kitten.name}, окрас: ${kitten.color}.`,
+    category: "Ориентальная кошка",
+    ...(kitten.photos.length
+      ? { image: kitten.photos.map((p) => `https://oriokerg.ru${p}`) }
+      : {}),
+    ...(offerPrice
+      ? {
+          offers: {
+            "@type": "Offer",
+            price: offerPrice,
+            priceCurrency: "RUB",
+            availability: kitten.reserved
+              ? "https://schema.org/SoldOut"
+              : "https://schema.org/InStock",
+            url: `https://oriokerg.ru/kittens/${encodeURIComponent(kitten.slug)}/`,
+          },
+        }
+      : {}),
+  };
+
   return (
     <div className="mx-auto w-full max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
+      <JsonLd data={productLd} />
       <Reveal>
         <Link
           href="/kittens"

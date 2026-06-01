@@ -38,11 +38,21 @@ export async function generateStaticParams() {
 export function generateMetadata({ params }: CatPageProps): Metadata {
   const cat = getCatBySlug(decodeSlug(params.slug));
   if (!cat) return { title: "Кошка" };
+  const description =
+    cat.description ||
+    `${cat.name}: ${cat.type}, окрас ${cat.color}. Питомник OrioKerg.`;
+  const image = cat.photos[0];
   return {
     title: `${cat.name} — ${cat.type}`,
-    description:
-      cat.description ||
-      `${cat.name}: ${cat.type}, окрас ${cat.color}. Питомник OrioKerg.`,
+    description,
+    alternates: { canonical: `/cats/${encodeURIComponent(cat.slug)}/` },
+    openGraph: {
+      title: `${cat.name} — ${cat.type}`,
+      description,
+      type: "article",
+      ...(image ? { images: [{ url: image, alt: cat.name }] } : {}),
+    },
+    ...(image ? { twitter: { card: "summary_large_image", images: [image] } } : {}),
   };
 }
 

@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
+import { JsonLd } from "@/components/JsonLd";
 import { MotionProvider } from "@/components/motion/MotionProvider";
 import type { ContactsSettings } from "@/lib/content";
 import { getSettings } from "@/lib/content";
@@ -34,6 +35,9 @@ export const metadata: Metadata = {
   },
   description:
     "Питомник OrioKerg: здоровые социализированные ориентальные котята с документами, прививками и поддержкой на всю жизнь.",
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
     title: "OrioKerg — питомник ориентальных кошек",
     description:
@@ -41,6 +45,20 @@ export const metadata: Metadata = {
     type: "website",
     locale: "ru_RU",
     siteName: "OrioKerg",
+    url: "https://oriokerg.ru",
+    images: [
+      {
+        url: "/images/uploads/oriokerg-hero.png",
+        alt: "Ориентальные котята питомника OrioKerg",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "OrioKerg — питомник ориентальных кошек",
+    description:
+      "Здоровые социализированные ориентальные котята с документами, прививками и поддержкой на всю жизнь.",
+    images: ["/images/uploads/oriokerg-hero.png"],
   },
 };
 
@@ -57,11 +75,39 @@ type RootLayoutProps = {
 export default function RootLayout({ children }: RootLayoutProps) {
   const contacts = getSettings<ContactsSettings>("contacts");
 
+  const sameAs = [contacts.telegram, contacts.vk].filter(
+    (url): url is string => typeof url === "string" && url.startsWith("http"),
+  );
+  const organizationLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "OrioKerg",
+    alternateName: "Питомник OrioKerg",
+    url: "https://oriokerg.ru",
+    logo: "https://oriokerg.ru/icon.svg",
+    image: "https://oriokerg.ru/images/uploads/oriokerg-hero.png",
+    description:
+      "Питомник ориентальных кошек OrioKerg: здоровые социализированные котята с документами и поддержкой.",
+    ...(sameAs.length ? { sameAs } : {}),
+    ...(contacts.phone
+      ? {
+          contactPoint: {
+            "@type": "ContactPoint",
+            telephone: contacts.phone,
+            contactType: "sales",
+            areaServed: "RU",
+            availableLanguage: "Russian",
+          },
+        }
+      : {}),
+  };
+
   return (
     <html lang="ru" suppressHydrationWarning>
       <body
         className={`${sans.variable} ${serif.variable} relative min-h-screen bg-background text-foreground`}
       >
+        <JsonLd data={organizationLd} />
         {/* Mark JS as ready BEFORE paint so reveal animations can hide content;
             without JS this class is never added and all content stays visible. */}
         <script
