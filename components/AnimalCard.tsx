@@ -2,6 +2,8 @@ import Image from "next-export-optimize-images/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
 
+import { AgeBadge } from "@/components/AgeBadge";
+
 export type AnimalCardBadge = {
   label: string;
   tone?: "gold" | "muted" | "sold";
@@ -20,6 +22,8 @@ type AnimalCardProps = {
   badge?: AnimalCardBadge;
   meta?: string;
   href?: string;
+  /** ISO-дата рождения (котята) — показывает бейдж возраста на фото. */
+  birthDate?: string;
 };
 
 function CardShell({ href, children }: { href?: string; children: ReactNode }) {
@@ -52,6 +56,7 @@ export function AnimalCard({
   badge,
   meta,
   href,
+  birthDate,
 }: AnimalCardProps) {
   const priceLines: AnimalCardPrice[] =
     prices && prices.length > 0
@@ -87,6 +92,13 @@ export function AnimalCard({
 
         {/* Bottom scrim for depth */}
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-ink/35 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+
+        {birthDate ? (
+          <AgeBadge
+            birthDate={birthDate}
+            className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full border border-border bg-card/95 px-3 py-1 text-xs font-medium text-foreground shadow-soft"
+          />
+        ) : null}
 
         {badge ? (
           <span

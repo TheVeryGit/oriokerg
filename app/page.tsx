@@ -174,9 +174,11 @@ export default function HomePage() {
             {featuredKittens.map((kitten) => (
               <StaggerItem key={kitten.slug}>
                 <AnimalCard
+                  href={`/kittens/${kitten.slug}`}
                   name={kitten.name}
                   photo={kitten.photos[0]}
                   subtitle={kitten.color}
+                  birthDate={kitten.birthDate}
                   prices={kittenPriceLines(kitten.pricePet, kitten.priceBreed)}
                   badge={{ label: kitten.gender }}
                 />

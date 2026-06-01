@@ -69,6 +69,7 @@ export function KittensCollection({ kittens }: KittensCollectionProps) {
                 name={kitten.name}
                 photo={kitten.photos[0]}
                 subtitle={kitten.color}
+                birthDate={kitten.birthDate}
                 prices={kittenPriceLines(kitten.pricePet, kitten.priceBreed)}
                 badge={
                   kitten.reserved

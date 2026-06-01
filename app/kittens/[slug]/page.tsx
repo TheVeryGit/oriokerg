@@ -272,6 +272,7 @@ export default function KittenPage({ params }: KittenPageProps) {
                   name={item.name}
                   photo={item.photos[0]}
                   subtitle={item.color}
+                  birthDate={item.birthDate}
                   prices={kittenPriceLines(item.pricePet, item.priceBreed)}
                   badge={{ label: item.gender }}
                 />
