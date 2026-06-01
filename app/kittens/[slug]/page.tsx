@@ -167,12 +167,15 @@ export default function KittenPage({ params }: KittenPageProps) {
             <div className="flex h-full flex-col rounded-5xl border border-border bg-card p-8 shadow-lift">
               <div className="flex items-center gap-3">
                 <span
-                  className={`rounded-full px-3 py-1 text-xs font-medium ${
+                  className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium ${
                     kitten.reserved
                       ? "bg-ink/85 text-ink-foreground"
-                      : "bg-accent/12 text-accent-strong"
+                      : "bg-emerald/12 text-emerald"
                   }`}
                 >
+                  {!kitten.reserved ? (
+                    <span className="h-1.5 w-1.5 rounded-full bg-emerald" />
+                  ) : null}
                   {kitten.reserved ? "Зарезервирован" : "Свободен"}
                 </span>
                 <span className="text-xs uppercase tracking-luxe text-muted">

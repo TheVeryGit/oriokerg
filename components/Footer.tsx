@@ -91,7 +91,7 @@ export function Footer({ contacts }: FooterProps) {
               href={contacts.telegram}
               target="_blank"
               rel="noreferrer"
-              className="mt-5 inline-flex w-full items-center justify-center rounded-full bg-gradient-to-br from-accent to-accent-strong px-6 py-3.5 text-sm font-medium text-accent-foreground shadow-glow transition-transform hover:-translate-y-0.5"
+              className="beam-btn mt-5 inline-flex w-full items-center justify-center rounded-full bg-gradient-to-br from-accent to-accent-strong px-6 py-3.5 text-sm font-medium text-accent-foreground shadow-glow transition-transform hover:-translate-y-0.5"
             >
               Написать в Telegram
             </a>

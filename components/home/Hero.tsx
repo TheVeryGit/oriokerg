@@ -73,7 +73,7 @@ export function Hero({ title, subtitle, image, telegram }: HeroProps) {
           <div style={fade(290)} className="mt-9 flex animate-fade-up flex-wrap gap-4">
             <Link
               href="/kittens"
-              className="rounded-full bg-gradient-to-br from-accent to-accent-strong px-8 py-4 text-sm font-medium text-accent-foreground shadow-glow transition-transform duration-200 hover:-translate-y-0.5"
+              className="beam-btn rounded-full bg-gradient-to-br from-accent to-accent-strong px-8 py-4 text-sm font-medium text-accent-foreground shadow-glow transition-transform duration-200 hover:-translate-y-0.5"
             >
               Посмотреть котят
             </Link>
@@ -95,7 +95,7 @@ export function Hero({ title, subtitle, image, telegram }: HeroProps) {
               <span key={point} className="inline-flex items-center gap-2">
                 <svg
                   viewBox="0 0 24 24"
-                  className="h-4 w-4 text-accent"
+                  className="h-4 w-4 text-emerald"
                   fill="none"
                   stroke="currentColor"
                   strokeWidth="2.2"

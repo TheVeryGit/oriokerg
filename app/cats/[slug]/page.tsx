@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next-export-optimize-images/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import type { ReactNode } from "react";
 
 import { ContactButtons } from "@/components/ContactButtons";
 import { PhotoGallery } from "@/components/PhotoGallery";
@@ -56,7 +57,7 @@ export function generateMetadata({ params }: CatPageProps): Metadata {
   };
 }
 
-function InfoRow({ label, value }: { label: string; value: string }) {
+function InfoRow({ label, value }: { label: string; value: ReactNode }) {
   return (
     <div className="flex items-center justify-between gap-4 border-b border-border py-3.5 last:border-0">
       <dt className="text-sm text-muted">{label}</dt>
@@ -149,7 +150,16 @@ export default function CatPage({ params }: CatPageProps) {
                 <InfoRow label="Окрас" value={cat.color} />
                 <InfoRow
                   label="Статус"
-                  value={cat.available ? "Доступна" : "Недоступна"}
+                  value={
+                    cat.available ? (
+                      <span className="inline-flex items-center gap-1.5 text-emerald">
+                        <span className="h-1.5 w-1.5 rounded-full bg-emerald" />
+                        Доступна
+                      </span>
+                    ) : (
+                      "Недоступна"
+                    )
+                  }
                 />
               </dl>
 

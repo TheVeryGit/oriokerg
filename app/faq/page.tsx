@@ -70,11 +70,15 @@ export default function FaqPage() {
                   {faq.items.length} {pluralAnswers(faq.items.length)}
                 </p>
 
-                <div className="mt-8 rounded-4xl border border-border bg-card p-6 shadow-soft sm:p-7">
-                  <h2 className="font-serif text-xl font-semibold text-foreground sm:text-2xl">
+                <div className="relative mt-8 overflow-hidden rounded-4xl bg-ink p-6 text-ink-foreground shadow-lift sm:p-7">
+                  <span
+                    aria-hidden="true"
+                    className="pointer-events-none absolute -right-10 -top-12 h-40 w-40 rounded-full bg-emerald-soft/20 blur-3xl"
+                  />
+                  <h2 className="relative font-serif text-xl font-semibold sm:text-2xl">
                     Не нашли ответ?
                   </h2>
-                  <p className="mt-2 text-sm leading-7 text-muted">
+                  <p className="relative mt-2 text-sm leading-7 text-ink-foreground/70">
                     Напишите нам удобным способом — ответим быстро, подробно и с
                     удовольствием.
                   </p>
@@ -82,7 +86,7 @@ export default function FaqPage() {
                     telegram={contacts.telegram}
                     vk={contacts.vk}
                     phone={contacts.phone}
-                    className="mt-5 sm:flex-col"
+                    className="relative mt-5 sm:flex-col"
                   />
                 </div>
               </div>
