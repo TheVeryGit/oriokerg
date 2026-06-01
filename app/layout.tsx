@@ -6,6 +6,7 @@ import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { JsonLd } from "@/components/JsonLd";
 import { MotionProvider } from "@/components/motion/MotionProvider";
+import { YandexMetrika } from "@/components/YandexMetrika";
 import type { ContactsSettings } from "@/lib/content";
 import { getSettings } from "@/lib/content";
 
@@ -108,6 +109,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         className={`${sans.variable} ${serif.variable} relative min-h-screen bg-background text-foreground`}
       >
         <JsonLd data={organizationLd} />
+        <YandexMetrika />
         {/* Mark JS as ready BEFORE paint so reveal animations can hide content;
             without JS this class is never added and all content stays visible. */}
         <script
