@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 
+import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { ContactButtons } from "@/components/ContactButtons";
 import { PhotoGallery } from "@/components/PhotoGallery";
 import { Reveal } from "@/components/Reveal";
@@ -105,24 +106,13 @@ export default function CatPage({ params }: CatPageProps) {
   return (
     <div className="mx-auto w-full max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
       <Reveal>
-        <Link
-          href="/cats"
-          className="inline-flex items-center gap-2 text-sm text-muted transition-colors hover:text-accent"
-        >
-          <svg
-            viewBox="0 0 24 24"
-            className="h-4 w-4"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            aria-hidden="true"
-          >
-            <path d="M19 12H5M11 18l-6-6 6-6" />
-          </svg>
-          Все кошки
-        </Link>
+        <Breadcrumbs
+          items={[
+            { name: "Главная", href: "/" },
+            { name: "Наши кошки", href: "/cats" },
+            { name: cat.name },
+          ]}
+        />
       </Reveal>
 
       <div className="mt-8 grid gap-10 lg:grid-cols-[1.25fr_0.75fr]">
