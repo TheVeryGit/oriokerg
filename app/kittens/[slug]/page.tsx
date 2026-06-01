@@ -10,6 +10,7 @@ import { JsonLd } from "@/components/JsonLd";
 import { KittenAge } from "@/components/KittenAge";
 import { PhotoGallery } from "@/components/PhotoGallery";
 import { Reveal } from "@/components/Reveal";
+import { ShareButtons } from "@/components/ShareButtons";
 import { Stagger, StaggerItem } from "@/components/motion/Stagger";
 import type { ContactsSettings } from "@/lib/content";
 import { getKittenBySlug, getKittens, getSettings } from "@/lib/content";
@@ -137,24 +138,27 @@ export default function KittenPage({ params }: KittenPageProps) {
     <div className="mx-auto w-full max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
       <JsonLd data={productLd} />
       <Reveal>
-        <Link
-          href="/kittens"
-          className="inline-flex items-center gap-2 text-sm text-muted transition-colors hover:text-accent"
-        >
-          <svg
-            viewBox="0 0 24 24"
-            className="h-4 w-4"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            aria-hidden="true"
+        <div className="flex items-center justify-between gap-4">
+          <Link
+            href="/kittens"
+            className="inline-flex items-center gap-2 text-sm text-muted transition-colors hover:text-accent"
           >
-            <path d="M19 12H5M11 18l-6-6 6-6" />
-          </svg>
-          Все котята
-        </Link>
+            <svg
+              viewBox="0 0 24 24"
+              className="h-4 w-4"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M19 12H5M11 18l-6-6 6-6" />
+            </svg>
+            Все котята
+          </Link>
+          <ShareButtons title={`${kitten.name} — ориентальный котёнок`} />
+        </div>
       </Reveal>
 
       <div className="mt-8 grid gap-10 lg:grid-cols-[1.25fr_0.75fr]">
