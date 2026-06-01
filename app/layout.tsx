@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Manrope } from "next/font/google";
 import type { ReactNode } from "react";
 
+import { CookieConsent } from "@/components/CookieConsent";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { JsonLd } from "@/components/JsonLd";
@@ -133,6 +134,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
             </main>
             <Footer contacts={contacts} />
           </div>
+          <CookieConsent />
         </MotionProvider>
       </body>
     </html>

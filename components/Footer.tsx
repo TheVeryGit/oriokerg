@@ -111,7 +111,16 @@ export function Footer({ contacts }: FooterProps) {
 
         <div className="mt-14 flex flex-col gap-2 border-t border-ink-foreground/10 pt-6 text-sm text-ink-foreground/55 md:flex-row md:items-center md:justify-between">
           <p>&copy; {new Date().getFullYear()} OrioKerg. Все права защищены.</p>
-          <p>Питомник ориентальных кошек · Россия</p>
+          <div className="flex items-center gap-4">
+            <Link
+              href="/privacy"
+              className="transition-colors hover:text-ink-foreground"
+            >
+              Политика конфиденциальности
+            </Link>
+            <span className="hidden md:inline">·</span>
+            <span>Россия</span>
+          </div>
         </div>
       </div>
     </footer>

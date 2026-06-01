@@ -157,6 +157,17 @@ collections:
             hint: "Полная ссылка, например https://vk.com/oriokerg"
             pattern: ["^https?://(vk\\.com|vk\\.ru)/.+", "Ссылка должна начинаться с https://vk.com/"]
           - { name: address, label: "Адрес (необязательно)", widget: string, required: false }
+          - name: email
+            label: "E-mail для обращений"
+            widget: string
+            required: false
+            hint: "Нужен для политики конфиденциальности — сюда пишут по вопросам перс. данных. Например: info@oriokerg.ru"
+            pattern: ["^$|^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$", "Введите корректный e-mail или оставьте пустым"]
+          - name: operator
+            label: "Оператор данных (для политики конфиденциальности)"
+            widget: string
+            required: false
+            hint: "Как вас указать в политике: имя или «ИП Фамилия И.О.», «самозанятый Фамилия И.О.». Если пусто — будет обезличенно «владелец сайта oriokerg.ru»."
       - label: Главная страница
         name: homepage
         file: content/settings/homepage.md

@@ -39,6 +39,10 @@ export type ContactsSettings = {
   telegram: string;
   vk: string;
   address?: string;
+  /** Кто оператор перс. данных (для политики конфиденциальности). */
+  operator?: string;
+  /** E-mail для обращений по перс. данным. */
+  email?: string;
 };
 
 export type StatItem = { value: string; suffix: string; label: string };
