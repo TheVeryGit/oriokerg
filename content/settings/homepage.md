@@ -2,7 +2,7 @@
 hero_title: Ориентальные кошки с характером и родословной
 hero_subtitle: Здоровые, социализированные котята из питомника OrioKerg.
   Документы, прививки и поддержка на всю жизнь.
-hero_image: /images/uploads/chatgpt-image-31-мая-2026-г.-19_22_35.png
+hero_image: /images/uploads/oriokerg-hero.png
 intro_text: Спокойное и современное пространство для знакомства с нашими
   кошками, котятами и историей питомника.
 stats:

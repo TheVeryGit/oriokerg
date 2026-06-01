@@ -9,6 +9,6 @@ mother: Глафира
 father: Клинт Иствуд
 description: Величие!
 photos:
-  - /images/uploads/chatgpt-image-1-июн.-2026-г.-20_54_43.png
+  - /images/uploads/bredli-kuper.png
 reserved: false
 ---
