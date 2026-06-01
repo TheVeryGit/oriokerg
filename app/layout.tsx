@@ -52,6 +52,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: "/images/uploads/oriokerg-hero.png",
+        width: 1254,
+        height: 1254,
         alt: "Ориентальные котята питомника OrioKerg",
       },
     ],
