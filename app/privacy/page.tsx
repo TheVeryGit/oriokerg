@@ -36,7 +36,8 @@ function Section({
 
 export default function PrivacyPage() {
   const contacts = getSettings<ContactsSettings>("contacts");
-  const operator = contacts.operator?.trim() || `Владелец сайта ${DOMAIN}`;
+  const operator =
+    contacts.operator?.trim() || `Администрация сайта OrioKerg (${DOMAIN})`;
   const email = contacts.email?.trim();
 
   return (
