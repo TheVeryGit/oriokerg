@@ -70,6 +70,7 @@ export default function BreedPage() {
             {breed.traits.map((trait, index) => (
               <StaggerItem key={`${trait.title}-${index}`}>
                 <div className="h-full rounded-4xl border border-border bg-card p-7 shadow-soft transition-all duration-500 hover:-translate-y-1.5 hover:border-accent/40 hover:shadow-lift">
+                  <span className="mb-4 block h-1 w-9 rounded-full bg-emerald/70" />
                   <h3 className="font-serif text-2xl font-semibold text-foreground">
                     {trait.title}
                   </h3>

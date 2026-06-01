@@ -3,6 +3,7 @@ import Image from "next-export-optimize-images/image";
 import Link from "next/link";
 
 import { AnimalCard } from "@/components/AnimalCard";
+import { CountUpValue } from "@/components/CountUpValue";
 import { TelegramIcon, VkIcon } from "@/components/icons";
 import { Hero } from "@/components/home/Hero";
 import { StepsScroller } from "@/components/home/StepsScroller";
@@ -138,7 +139,7 @@ export default function HomePage() {
               className="px-2 text-center"
             >
               <p className="font-serif text-6xl font-semibold text-gold-gradient sm:text-7xl">
-                {stat.value}
+                <CountUpValue value={stat.value} />
                 {stat.suffix ? <span className="text-4xl">{stat.suffix}</span> : null}
               </p>
               <p className="mt-3 text-sm text-ink-foreground/70">{stat.label}</p>
