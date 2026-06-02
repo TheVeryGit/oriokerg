@@ -16,6 +16,8 @@ type BaseEntry = {
 
 export type CatEntry = BaseEntry & {
   type: string;
+  /** Телосложение ориентала: классический / современный / экстремальный. */
+  bodyType?: string;
   price?: number;
   available: boolean;
 };
@@ -31,6 +33,8 @@ export type KittenEntry = BaseEntry & {
   mother?: string;
   /** Кличка отца. */
   father?: string;
+  /** Телосложение ориентала: классический / современный / экстремальный. */
+  bodyType?: string;
   reserved: boolean;
 };
 
@@ -224,6 +228,7 @@ export function getCats(): CatEntry[] {
         slug: entry.slug,
         name: normalizeText(entry.data.name, entry.slug),
         type: normalizeText(entry.data.type, "Производитель"),
+        bodyType: normalizeText(entry.data.body_type) || undefined,
         gender: normalizeText(entry.data.gender, "Кошка"),
         color: normalizeText(entry.data.color, "Не указан"),
         price: normalizeNumber(entry.data.price),
@@ -260,6 +265,7 @@ export function getKittens(): KittenEntry[] {
         birthDate: normalizeDate(entry.data.birth_date),
         mother: normalizeText(entry.data.mother) || undefined,
         father: normalizeText(entry.data.father) || undefined,
+        bodyType: normalizeText(entry.data.body_type) || undefined,
         description: normalizeText(entry.data.description, entry.content),
         photos: normalizePhotos(entry.data.photos),
         reserved: normalizeBoolean(entry.data.reserved, false),

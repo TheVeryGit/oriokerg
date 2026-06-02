@@ -3,7 +3,7 @@
 import { m, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import Image from "next-export-optimize-images/image";
 import Link from "next/link";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { CSSProperties } from "react";
 
 type HeroProps = {
@@ -33,16 +33,26 @@ export function Hero({ title, subtitle, image, telegram }: HeroProps) {
   const imageY = useTransform(scrollYProgress, [0, 1], ["0%", reduce ? "0%" : "14%"]);
   const decoY = useTransform(scrollYProgress, [0, 1], ["0%", reduce ? "0%" : "-30%"]);
 
+  // Параллакс только на десктопе: на мобиле трансформы на скролле дают джанк.
+  const [parallax, setParallax] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 1024px)");
+    const update = () => setParallax(mq.matches && !reduce);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, [reduce]);
+
   return (
     <section ref={sectionRef} className="relative overflow-hidden">
       <m.div
         aria-hidden="true"
-        style={{ y: decoY }}
+        style={{ y: parallax ? decoY : 0 }}
         className="pointer-events-none absolute -left-24 top-6 h-72 w-72 rounded-full bg-accent/15 blur-3xl"
       />
       <m.div
         aria-hidden="true"
-        style={{ y: decoY }}
+        style={{ y: parallax ? decoY : 0 }}
         className="pointer-events-none absolute right-0 top-44 h-80 w-80 rounded-full bg-accent-soft/20 blur-3xl"
       />
 
@@ -114,7 +124,7 @@ export function Hero({ title, subtitle, image, telegram }: HeroProps) {
         <div style={fade(160)} className="relative animate-fade-up">
           <div className="absolute -right-4 -top-4 hidden h-32 w-32 rounded-4xl border border-border-strong sm:block" />
           <div className="relative aspect-[4/5] w-full overflow-hidden rounded-5xl shadow-lift">
-            <m.div style={{ y: imageY }} className="absolute inset-0 -bottom-[14%]">
+            <m.div style={{ y: parallax ? imageY : 0 }} className="absolute inset-0 -bottom-[14%]">
               <Image
                 src={image}
                 alt="Ориентальная кошка питомника OrioKerg"

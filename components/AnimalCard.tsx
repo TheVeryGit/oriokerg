@@ -6,7 +6,7 @@ import { AgeBadge } from "@/components/AgeBadge";
 
 export type AnimalCardBadge = {
   label: string;
-  tone?: "gold" | "muted" | "sold";
+  tone?: "gold" | "muted" | "sold" | "free";
 };
 
 export type AnimalCardPrice = { label?: string; value: string };
@@ -45,6 +45,7 @@ const badgeTone: Record<NonNullable<AnimalCardBadge["tone"]>, string> = {
   gold: "bg-accent text-accent-foreground",
   muted: "bg-card text-foreground",
   sold: "bg-ink text-ink-foreground",
+  free: "bg-emerald text-ink-foreground",
 };
 
 export function AnimalCard({
@@ -109,41 +110,40 @@ export function AnimalCard({
             {badge.label}
           </span>
         ) : null}
-
-        {priceLines.length > 0 ? (
-          <div className="absolute bottom-4 left-4 right-4 flex flex-col gap-1">
-            {priceLines.map((line, index) => (
-              <span
-                key={`${line.label ?? "price"}-${index}`}
-                className="flex w-fit max-w-full items-baseline gap-1.5 rounded-full border border-border bg-card px-3.5 py-1.5 text-sm shadow-lift"
-              >
-                {line.label ? (
-                  <span className="text-xs font-medium text-muted">
-                    {line.label}
-                  </span>
-                ) : null}
-                <span className="font-semibold text-accent-strong">
-                  {line.value}
-                </span>
-              </span>
-            ))}
-          </div>
-        ) : null}
       </div>
 
-      <div className="flex flex-1 flex-col p-6">
+      <div className="flex flex-1 flex-col p-5 sm:p-6">
         <h3 className="font-serif text-2xl font-semibold text-foreground">
           {name}
         </h3>
 
         {subtitle ? (
-          <p className="mt-1.5 text-sm text-muted">{subtitle}</p>
+          <p className="mt-1 text-sm text-muted">{subtitle}</p>
+        ) : null}
+
+        {priceLines.length > 0 ? (
+          <div className="mt-4 flex flex-wrap items-end gap-x-5 gap-y-1.5">
+            {priceLines.map((line, index) => (
+              <div key={`${line.label ?? "price"}-${index}`}>
+                {line.label ? (
+                  <span className="block text-[11px] uppercase tracking-wide text-muted">
+                    {line.label}
+                  </span>
+                ) : null}
+                <span
+                  className={`font-serif font-semibold text-accent-strong ${
+                    index === 0 ? "text-xl" : "text-base text-foreground/80"
+                  }`}
+                >
+                  {line.value}
+                </span>
+              </div>
+            ))}
+          </div>
         ) : null}
 
         {meta ? (
-          <p className="mt-4 border-t border-border pt-4 text-sm text-muted">
-            {meta}
-          </p>
+          <p className="mt-3 text-sm text-muted">{meta}</p>
         ) : null}
 
         {href ? (

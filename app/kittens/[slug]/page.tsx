@@ -138,15 +138,34 @@ export default function KittenPage({ params }: KittenPageProps) {
   return (
     <div className="mx-auto w-full max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
       <JsonLd data={productLd} />
+      <Breadcrumbs
+        visual={false}
+        items={[
+          { name: "Главная", href: "/" },
+          { name: "Котята", href: "/kittens" },
+          { name: kitten.name },
+        ]}
+      />
       <Reveal>
         <div className="flex items-center justify-between gap-4">
-          <Breadcrumbs
-            items={[
-              { name: "Главная", href: "/" },
-              { name: "Котята", href: "/kittens" },
-              { name: kitten.name },
-            ]}
-          />
+          <Link
+            href="/kittens"
+            className="inline-flex items-center gap-2 text-sm text-muted transition-colors hover:text-accent"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              className="h-4 w-4"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M19 12H5M11 18l-6-6 6-6" />
+            </svg>
+            Все котята
+          </Link>
           <ShareButtons title={`${kitten.name} — ориентальный котёнок`} />
         </div>
       </Reveal>
@@ -200,6 +219,9 @@ export default function KittenPage({ params }: KittenPageProps) {
               <dl className="mt-7">
                 <InfoRow label="Пол" value={kitten.gender} />
                 <InfoRow label="Окрас" value={kitten.color} />
+                {kitten.bodyType ? (
+                  <InfoRow label="Тип" value={kitten.bodyType} />
+                ) : null}
                 {kitten.birthDate ? (
                   <InfoRow
                     label="Возраст"
@@ -265,10 +287,10 @@ export default function KittenPage({ params }: KittenPageProps) {
                   href={`/kittens/${item.slug}`}
                   name={item.name}
                   photo={item.photos[0]}
-                  subtitle={item.color}
+                  subtitle={[item.gender, item.color].filter(Boolean).join(" · ")}
                   birthDate={item.birthDate}
                   prices={kittenPriceLines(item.pricePet, item.priceBreed)}
-                  badge={{ label: item.gender }}
+                  badge={{ label: "Свободен", tone: "free" }}
                 />
               </StaggerItem>
             ))}

@@ -238,10 +238,11 @@
   padding: 1.6px;
   background: conic-gradient(
     from var(--beam-angle),
-    transparent 0deg 248deg,
-    rgb(var(--accent-foreground) / 0.35) 300deg,
-    rgb(var(--accent-foreground) / 0.95) 330deg,
-    rgb(var(--accent-foreground) / 0.35) 348deg,
+    transparent 0deg,
+    rgb(var(--accent-foreground) / 0) 150deg,
+    rgb(var(--accent-foreground) / 0.5) 250deg,
+    rgb(var(--accent-foreground) / 0.95) 300deg,
+    rgb(var(--accent-foreground) / 0.5) 350deg,
     transparent 360deg
   );
   -webkit-mask:
@@ -256,11 +257,23 @@
 .beam-btn:hover::before,
 .beam-btn:focus-visible::before {
   opacity: 1;
-  animation: beam-spin 2.2s linear infinite;
+  animation: beam-spin 3s linear infinite;
 }
 @keyframes beam-spin {
   to {
     --beam-angle: 360deg;
+  }
+}
+
+/* Mobile scroll performance: fixed background + blended grain overlay force a
+   full-viewport repaint/composite on every scroll frame → джанк на телефоне.
+   На мобиле отключаем (визуально почти незаметно, скролл — плавный). */
+@media (max-width: 1023px) {
+  body {
+    background-attachment: scroll;
+  }
+  .grain-layer {
+    display: none;
   }
 }
 

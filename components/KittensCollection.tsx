@@ -68,13 +68,13 @@ export function KittensCollection({ kittens }: KittensCollectionProps) {
                 href={`/kittens/${kitten.slug}`}
                 name={kitten.name}
                 photo={kitten.photos[0]}
-                subtitle={kitten.color}
+                subtitle={[kitten.gender, kitten.color].filter(Boolean).join(" · ")}
                 birthDate={kitten.birthDate}
                 prices={kittenPriceLines(kitten.pricePet, kitten.priceBreed)}
                 badge={
                   kitten.reserved
                     ? { label: "Зарезервирован", tone: "sold" }
-                    : { label: kitten.gender }
+                    : { label: "Свободен", tone: "free" }
                 }
               />
             </StaggerItem>

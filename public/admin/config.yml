@@ -64,6 +64,12 @@ collections:
         default: Кошка
         options: [Кот, Кошка]
       - { label: Окрас, name: color, widget: string, hint: "Например: красный тикированный" }
+      - label: "Тип (телосложение)"
+        name: body_type
+        widget: select
+        required: false
+        options: [Классический, Современный, Экстремальный]
+        hint: "Тип ориентала: классический мягче, современный стройнее, экстремальный максимально утончённый. Можно не указывать."
       - { label: "Цена в любимцы (₽)", name: price_pet, widget: number, required: false, hint: "Стоимость котёнка как домашнего любимца (пет-класс). Можно не указывать." }
       - { label: "Цена в разведение (₽)", name: price_breed, widget: number, required: false, hint: "Стоимость с правом разведения. Оставьте пустым, если не продаётся в разведение." }
       - label: Дата рождения
@@ -120,6 +126,12 @@ collections:
         default: Кошка
         options: [Кот, Кошка]
       - { label: Окрас, name: color, widget: string, hint: "Например: красный тикированный" }
+      - label: "Тип (телосложение)"
+        name: body_type
+        widget: select
+        required: false
+        options: [Классический, Современный, Экстремальный]
+        hint: "Тип ориентала: классический мягче, современный стройнее, экстремальный максимально утончённый. Можно не указывать."
       - { label: Цена, name: price, widget: number, required: false, hint: "В рублях. Можно не указывать." }
       - { label: Описание, name: description, widget: text, required: false }
       - label: Фотографии

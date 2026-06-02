@@ -6,8 +6,18 @@ type Crumb = { name: string; href?: string };
 
 const SITE = "https://oriokerg.ru";
 
-/** Хлебные крошки + микроразметка BreadcrumbList (Schema.org). */
-export function Breadcrumbs({ items }: { items: Crumb[] }) {
+/**
+ * Микроразметка BreadcrumbList (Schema.org). По умолчанию рисует и видимые
+ * крошки; с `visual={false}` отдаёт только JSON-LD (когда на странице своя
+ * навигация — напр. кнопка «назад»).
+ */
+export function Breadcrumbs({
+  items,
+  visual = true,
+}: {
+  items: Crumb[];
+  visual?: boolean;
+}) {
   const ld = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -18,6 +28,8 @@ export function Breadcrumbs({ items }: { items: Crumb[] }) {
       ...(item.href ? { item: `${SITE}${item.href}/` } : {}),
     })),
   };
+
+  if (!visual) return <JsonLd data={ld} />;
 
   return (
     <nav aria-label="Хлебные крошки">
