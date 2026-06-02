@@ -23,7 +23,7 @@ function Eyebrow() {
   return (
     <span className="inline-flex items-center gap-2 text-sm uppercase tracking-luxe text-emerald-soft">
       <span className="h-px w-8 bg-emerald-soft/60" />
-      Просто
+      Как это устроено
     </span>
   );
 }
@@ -87,12 +87,10 @@ export function StepsScroller({ title, steps }: StepsScrollerProps) {
 
   return (
     <section ref={ref} className="relative bg-ink text-ink-foreground">
-      {/* Mobile: simple stacked steps (no scroll-jacking) */}
-      <div className="lg:hidden">
-        <StaticSteps title={title} steps={steps} />
-      </div>
-
-      {/* Desktop: pinned scroll-driven stepper */}
+      {/* Десктоп: закреплённый скролл-степпер. Мобайл/reduced-motion уходят
+          в StaticSteps через ранний return выше — здесь дубль не нужен
+          (иначе шаги задваивались в DOM). hidden lg:block страхует первый
+          кадр на мобиле до гидрации. */}
       <div className="hidden lg:block lg:h-[280vh]">
         <div className="sticky top-0 flex h-screen items-center overflow-hidden">
           <div className="mx-auto grid w-full max-w-7xl grid-cols-[0.9fr_1.1fr] items-center gap-16 px-8">
