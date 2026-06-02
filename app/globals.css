@@ -265,15 +265,19 @@
   }
 }
 
-/* Mobile scroll performance: fixed background + blended grain overlay force a
-   full-viewport repaint/composite on every scroll frame → джанк на телефоне.
-   На мобиле отключаем (визуально почти незаметно, скролл — плавный). */
+/* Mobile scroll performance: fixed background + blended grain overlay + крупные
+   blur-blobs force full-viewport repaint/composite on every scroll frame →
+   джанк на телефоне. На мобиле отключаем (визуально почти незаметно). */
 @media (max-width: 1023px) {
   body {
     background-attachment: scroll;
   }
   .grain-layer {
     display: none;
+  }
+  /* Декоративные «блобы» — на мобиле скрываем (filter:blur очень дорогой). */
+  .mobile-no-decor {
+    display: none !important;
   }
 }
 

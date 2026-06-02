@@ -8,7 +8,7 @@ import {
   useScroll,
   useTransform,
 } from "framer-motion";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type Step = { title: string; text: string };
 
@@ -56,6 +56,15 @@ export function StepsScroller({ title, steps }: StepsScrollerProps) {
   const reduce = useReducedMotion();
   const ref = useRef<HTMLElement>(null);
   const [active, setActive] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 1023px)");
+    const update = () => setIsMobile(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
 
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -68,7 +77,7 @@ export function StepsScroller({ title, steps }: StepsScrollerProps) {
     setActive(idx);
   });
 
-  if (reduce) {
+  if (reduce || isMobile) {
     return (
       <section className="relative overflow-hidden bg-ink text-ink-foreground">
         <StaticSteps title={title} steps={steps} />

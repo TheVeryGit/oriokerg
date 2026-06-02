@@ -9,8 +9,8 @@ export const metadata: Metadata = {
 export default function NotFound() {
   return (
     <div className="relative overflow-hidden">
-      <div className="pointer-events-none absolute -right-20 -top-16 h-72 w-72 rounded-full bg-accent/12 blur-3xl" />
-      <div className="pointer-events-none absolute -left-20 top-48 h-72 w-72 rounded-full bg-emerald/10 blur-3xl" />
+      <div className="mobile-no-decor pointer-events-none absolute -right-20 -top-16 h-72 w-72 rounded-full bg-accent/12 blur-3xl" />
+      <div className="mobile-no-decor pointer-events-none absolute -left-20 top-48 h-72 w-72 rounded-full bg-emerald/10 blur-3xl" />
 
       <div className="mx-auto flex w-full max-w-2xl flex-col items-center px-4 py-24 text-center sm:px-6 lg:py-32">
         <span className="flex h-20 w-20 items-center justify-center rounded-full bg-accent/10 text-accent">

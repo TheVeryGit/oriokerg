@@ -10,7 +10,7 @@ type PageHeaderProps = {
 export function PageHeader({ eyebrow, title, intro }: PageHeaderProps) {
   return (
     <section className="relative overflow-hidden">
-      <div className="pointer-events-none absolute -right-16 -top-10 h-64 w-64 rounded-full bg-accent/12 blur-3xl" />
+      <div className="mobile-no-decor pointer-events-none absolute -right-16 -top-10 h-64 w-64 rounded-full bg-accent/12 blur-3xl" />
       <div className="mx-auto w-full max-w-7xl px-4 pb-4 pt-16 sm:px-6 lg:px-8 lg:pt-20">
         <Reveal className="max-w-3xl">
           <span className="inline-flex items-center gap-2 text-sm uppercase tracking-luxe text-accent">

@@ -1,6 +1,5 @@
 "use client";
 
-import { AnimatePresence, m, useReducedMotion } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -26,7 +25,6 @@ export function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
-  const reduce = useReducedMotion();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -127,45 +125,44 @@ export function Header() {
           </div>
         </div>
 
-        {/* Mobile menu — floating panel */}
-        <AnimatePresence>
-          {isOpen ? (
-            <m.nav
-              key="mobile-nav"
-              initial={reduce ? false : { height: 0, opacity: 0 }}
-              animate={{ height: "auto", opacity: 1 }}
-              exit={reduce ? { opacity: 0 } : { height: 0, opacity: 0 }}
-              transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
-              className="overflow-hidden lg:hidden"
-            >
-              <div className="mt-2 flex flex-col gap-1 rounded-3xl border border-border bg-surface p-3 shadow-lift">
-                {navigation.map((item) => {
-                  const active = isActive(pathname, item.href);
-                  return (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      aria-current={active ? "page" : undefined}
-                      className={`rounded-2xl px-4 py-3 text-base transition-colors ${
-                        active
-                          ? "bg-accent/10 text-foreground"
-                          : "text-muted hover:bg-accent/5 hover:text-foreground"
-                      }`}
-                    >
-                      {item.label}
-                    </Link>
-                  );
-                })}
+        {/* Mobile menu — pure CSS transform/opacity (GPU-плавный) */}
+        <nav
+          aria-hidden={!isOpen}
+          className={`origin-top transition-[opacity,transform] duration-200 ease-out lg:hidden ${
+            isOpen
+              ? "pointer-events-auto opacity-100 [transform:translate3d(0,0,0)_scaleY(1)]"
+              : "pointer-events-none opacity-0 [transform:translate3d(0,-8px,0)_scaleY(0.98)]"
+          }`}
+          style={{ willChange: "transform, opacity" }}
+        >
+          <div className="mt-2 flex flex-col gap-1 rounded-3xl border border-border bg-surface p-3 shadow-lift">
+            {navigation.map((item) => {
+              const active = isActive(pathname, item.href);
+              return (
                 <Link
-                  href="/kittens"
-                  className="beam-btn mt-1 rounded-full bg-gradient-to-br from-accent to-accent-strong px-6 py-3.5 text-center text-sm font-medium text-accent-foreground shadow-glow"
+                  key={item.href}
+                  href={item.href}
+                  tabIndex={isOpen ? 0 : -1}
+                  aria-current={active ? "page" : undefined}
+                  className={`rounded-2xl px-4 py-3 text-base transition-colors ${
+                    active
+                      ? "bg-accent/10 text-foreground"
+                      : "text-muted hover:bg-accent/5 hover:text-foreground"
+                  }`}
                 >
-                  Выбрать котёнка
+                  {item.label}
                 </Link>
-              </div>
-            </m.nav>
-          ) : null}
-        </AnimatePresence>
+              );
+            })}
+            <Link
+              href="/kittens"
+              tabIndex={isOpen ? 0 : -1}
+              className="beam-btn mt-1 rounded-full bg-gradient-to-br from-accent to-accent-strong px-6 py-3.5 text-center text-sm font-medium text-accent-foreground shadow-glow"
+            >
+              Выбрать котёнка
+            </Link>
+          </div>
+        </nav>
       </div>
     </header>
   );

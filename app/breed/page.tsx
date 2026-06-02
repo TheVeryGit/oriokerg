@@ -22,7 +22,7 @@ export default function BreedPage() {
     <div>
       {/* Intro */}
       <section className="relative overflow-hidden">
-        <div className="pointer-events-none absolute -right-20 top-10 h-72 w-72 rounded-full bg-accent/15 blur-3xl" />
+        <div className="mobile-no-decor pointer-events-none absolute -right-20 top-10 h-72 w-72 rounded-full bg-accent/15 blur-3xl" />
         <div className="mx-auto grid w-full max-w-7xl items-center gap-12 px-4 py-20 sm:px-6 lg:grid-cols-2 lg:px-8">
           <Reveal>
             <span className="inline-flex items-center gap-2 text-sm uppercase tracking-luxe text-accent">

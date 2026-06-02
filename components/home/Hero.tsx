@@ -48,12 +48,12 @@ export function Hero({ title, subtitle, image, telegram }: HeroProps) {
       <m.div
         aria-hidden="true"
         style={{ y: parallax ? decoY : 0 }}
-        className="pointer-events-none absolute -left-24 top-6 h-72 w-72 rounded-full bg-accent/15 blur-3xl"
+        className="mobile-no-decor pointer-events-none absolute -left-24 top-6 h-72 w-72 rounded-full bg-accent/15 blur-3xl"
       />
       <m.div
         aria-hidden="true"
         style={{ y: parallax ? decoY : 0 }}
-        className="pointer-events-none absolute right-0 top-44 h-80 w-80 rounded-full bg-accent-soft/20 blur-3xl"
+        className="mobile-no-decor pointer-events-none absolute right-0 top-44 h-80 w-80 rounded-full bg-accent-soft/20 blur-3xl"
       />
 
       <div className="relative mx-auto grid w-full max-w-7xl items-center gap-12 px-4 py-16 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:px-8 lg:py-24">

@@ -6,7 +6,6 @@ import { CookieConsent } from "@/components/CookieConsent";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { JsonLd } from "@/components/JsonLd";
-import { MobileContactButton } from "@/components/MobileContactButton";
 import { MotionProvider } from "@/components/motion/MotionProvider";
 import { YandexMetrika } from "@/components/YandexMetrika";
 import type { ContactsSettings } from "@/lib/content";
@@ -137,7 +136,6 @@ export default function RootLayout({ children }: RootLayoutProps) {
             </main>
             <Footer contacts={contacts} />
           </div>
-          <MobileContactButton telegram={contacts.telegram} />
           <CookieConsent />
         </MotionProvider>
       </body>
