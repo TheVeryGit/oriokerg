@@ -9,7 +9,12 @@ export type AnimalCardBadge = {
   tone?: "gold" | "muted" | "sold" | "free";
 };
 
-export type AnimalCardPrice = { label?: string; value: string };
+export type AnimalCardPrice = {
+  label?: string;
+  value: string;
+  /** "elite" — золотая капсула с иконкой ✦ (для цены «в разведение»). */
+  tone?: "default" | "elite";
+};
 
 type AnimalCardProps = {
   name: string;
@@ -94,13 +99,6 @@ export function AnimalCard({
         {/* Bottom scrim for depth */}
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-ink/35 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
 
-        {birthDate ? (
-          <AgeBadge
-            birthDate={birthDate}
-            className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full border border-border bg-card/95 px-3 py-1 text-xs font-medium text-foreground shadow-soft"
-          />
-        ) : null}
-
         {badge ? (
           <span
             className={`absolute right-4 top-4 rounded-full px-3 py-1 text-xs font-medium shadow-soft ${
@@ -113,32 +111,59 @@ export function AnimalCard({
       </div>
 
       <div className="flex flex-1 flex-col p-5 sm:p-6">
-        <h3 className="font-serif text-2xl font-semibold text-foreground">
-          {name}
-        </h3>
+        {/* Title row: имя + чип возраста справа */}
+        <div className="flex items-start justify-between gap-3">
+          <h3 className="font-serif text-2xl font-semibold leading-tight text-foreground">
+            {name}
+          </h3>
+          {birthDate ? (
+            <AgeBadge
+              birthDate={birthDate}
+              className="mt-1 inline-flex shrink-0 items-center gap-1 rounded-full bg-emerald/10 px-2.5 py-1 text-xs font-medium text-emerald"
+            />
+          ) : null}
+        </div>
 
         {subtitle ? (
           <p className="mt-1 text-sm text-muted">{subtitle}</p>
         ) : null}
 
         {priceLines.length > 0 ? (
-          <div className="mt-4 flex flex-wrap items-end gap-x-5 gap-y-1.5">
-            {priceLines.map((line, index) => (
-              <div key={`${line.label ?? "price"}-${index}`}>
-                {line.label ? (
-                  <span className="block text-[11px] uppercase tracking-wide text-muted">
-                    {line.label}
-                  </span>
-                ) : null}
-                <span
-                  className={`font-serif font-semibold text-accent-strong ${
-                    index === 0 ? "text-xl" : "text-base text-foreground/80"
+          <div className="mt-4 space-y-2">
+            {priceLines.map((line, index) => {
+              const elite = line.tone === "elite";
+              return (
+                <div
+                  key={`${line.label ?? "price"}-${index}`}
+                  className={`flex items-center justify-between gap-3 rounded-full px-4 py-2.5 text-sm ${
+                    elite
+                      ? "bg-gradient-to-r from-accent to-accent-strong text-accent-foreground shadow-glow"
+                      : "border border-border bg-surface-2/40 text-foreground"
                   }`}
                 >
-                  {line.value}
-                </span>
-              </div>
-            ))}
+                  <span
+                    className={`inline-flex items-center gap-1.5 ${elite ? "" : "text-muted"}`}
+                  >
+                    {elite ? (
+                      <svg
+                        viewBox="0 0 24 24"
+                        className="h-3.5 w-3.5"
+                        fill="currentColor"
+                        aria-hidden="true"
+                      >
+                        <path d="M12 2 13.6 8.4 20 10l-6.4 1.6L12 18l-1.6-6.4L4 10l6.4-1.6L12 2Z" />
+                      </svg>
+                    ) : null}
+                    {line.label ?? "Цена"}
+                  </span>
+                  <span
+                    className={`font-semibold tabular-nums ${elite ? "" : "text-accent-strong"}`}
+                  >
+                    {line.value}
+                  </span>
+                </div>
+              );
+            })}
           </div>
         ) : null}
 

@@ -287,7 +287,7 @@ export default function KittenPage({ params }: KittenPageProps) {
                   href={`/kittens/${item.slug}`}
                   name={item.name}
                   photo={item.photos[0]}
-                  subtitle={[item.gender, item.color].filter(Boolean).join(" · ")}
+                  subtitle={item.gender}
                   birthDate={item.birthDate}
                   prices={kittenPriceLines(item.pricePet, item.priceBreed)}
                   badge={{ label: "Свободен", tone: "free" }}

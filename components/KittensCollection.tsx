@@ -68,7 +68,7 @@ export function KittensCollection({ kittens }: KittensCollectionProps) {
                 href={`/kittens/${kitten.slug}`}
                 name={kitten.name}
                 photo={kitten.photos[0]}
-                subtitle={[kitten.gender, kitten.color].filter(Boolean).join(" · ")}
+                subtitle={kitten.gender}
                 birthDate={kitten.birthDate}
                 prices={kittenPriceLines(kitten.pricePet, kitten.priceBreed)}
                 badge={

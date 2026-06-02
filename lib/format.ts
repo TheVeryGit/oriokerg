@@ -51,12 +51,16 @@ export function formatAge(iso?: string, now: Date = new Date()) {
   return `${m} ${pluralRu(m, ["месяц", "месяца", "месяцев"])}`;
 }
 
-export type PriceLine = { label?: string; value: string };
+export type PriceLine = {
+  label?: string;
+  value: string;
+  tone?: "default" | "elite";
+};
 
 /**
  * Строит до двух ценовых строк для котёнка: «В любимцы» (pet) и
- * «В разведение» (breed). Если ни одной цены нет — одна строка
- * «Цена по запросу». Используется и на карточках, и на детальной.
+ * «В разведение» (breed, помечается tone:"elite"). Если ни одной
+ * цены нет — одна строка «Цена по запросу».
  */
 export function kittenPriceLines(
   pricePet?: number,
@@ -67,7 +71,8 @@ export function kittenPriceLines(
   const breed = formatPrice(priceBreed);
 
   if (pet) lines.push({ label: "В любимцы", value: `${pet} ₽` });
-  if (breed) lines.push({ label: "В разведение", value: `${breed} ₽` });
+  if (breed)
+    lines.push({ label: "В разведение", value: `${breed} ₽`, tone: "elite" });
   if (lines.length === 0) lines.push({ value: "Цена по запросу" });
 
   return lines;
