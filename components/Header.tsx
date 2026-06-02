@@ -40,7 +40,7 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50">
-      <div className="mx-auto w-full max-w-7xl px-3 pt-3 sm:px-4 sm:pt-4 lg:px-6">
+      <div className="relative mx-auto w-full max-w-7xl px-3 pt-3 sm:px-4 sm:pt-4 lg:px-6">
         {/* Floating pill */}
         <div
           className={`flex items-center justify-between gap-4 rounded-full border px-3 py-2 transition-all duration-300 sm:px-4 ${
@@ -125,15 +125,15 @@ export function Header() {
           </div>
         </div>
 
-        {/* Mobile menu — pure CSS transform/opacity (GPU-плавный) */}
+        {/* Mobile menu — абсолютный оверлей (не занимает место в потоке когда
+            закрыт). GPU-плавно через opacity + translate. */}
         <nav
           aria-hidden={!isOpen}
-          className={`origin-top transition-[opacity,transform] duration-200 ease-out lg:hidden ${
+          className={`absolute inset-x-3 top-full z-50 origin-top transition-[opacity,transform] duration-200 ease-out sm:inset-x-4 lg:hidden ${
             isOpen
-              ? "pointer-events-auto opacity-100 [transform:translate3d(0,0,0)_scaleY(1)]"
-              : "pointer-events-none opacity-0 [transform:translate3d(0,-8px,0)_scaleY(0.98)]"
+              ? "pointer-events-auto translate-y-0 opacity-100"
+              : "pointer-events-none -translate-y-2 opacity-0"
           }`}
-          style={{ willChange: "transform, opacity" }}
         >
           <div className="mt-2 flex flex-col gap-1 rounded-3xl border border-border bg-surface p-3 shadow-lift">
             {navigation.map((item) => {
