@@ -3,37 +3,39 @@
 @tailwind utilities;
 
 :root {
-  /* Warm premium palette — gold + emerald.
+  /* «Библиотека старой знати»: пергамент + махагони + оксблад + латунь.
      Tokens are space-separated RGB CHANNELS (not hex) so Tailwind opacity
      modifiers (bg-card/70, bg-surface-2/50, …) actually work. Use them in raw
      CSS as rgb(var(--token)). */
-  --background: 250 246 239; /* warm ivory */
-  --surface: 255 253 249; /* card */
-  --surface-2: 239 228 209; /* alt sections / sand */
+  --background: 242 234 216; /* пергамент */
+  --surface: 250 244 230; /* карточка — светлее пергамента */
+  --surface-2: 232 222 198; /* альт-секции / тёплый песок */
   --card: var(--surface);
-  --foreground: 34 28 21; /* deep espresso text */
-  --muted: 110 92 75; /* warm taupe (AA on ivory) */
-  --border: 231 217 196;
-  --border-strong: 216 196 166;
+  --foreground: 42 26 24; /* махагони (тёмный текст) */
+  --muted: 107 84 72; /* тёплый коричневый (AA на пергаменте) */
+  --border: 228 216 190;
+  --border-strong: 205 183 143;
 
-  /* Champagne gold. `main` (#D6AE5C) — кнопки/иконки/декор (AA Large, блеск
-     работает на восприятие «дорого»). `strong` (#8E6A2A) — мелкий текст,
-     цены, ссылки (AA Normal ~4.6:1 на кремовом). */
-  --accent: 214 174 92;
-  --accent-soft: 242 222 164;
-  --accent-strong: 142 106 42;
-  --accent-foreground: 255 249 240;
+  /* Оксблад (винный) — главный акцент. `main` (#6B1F2B) — кнопки/иконки.
+     `strong` (#5C1A24) — мелкий текст, цены, ссылки (AA ~8:1 на пергаменте).
+     `soft` (#C0726B) — светлый розо-винный для тёмных секций и градиентов. */
+  --accent: 107 31 43;
+  --accent-soft: 192 114 107;
+  --accent-strong: 92 26 36;
+  --accent-foreground: 250 244 230;
 
-  /* Emerald — the second colour that breaks the warm monotone. */
-  --emerald: 31 86 64;
-  --emerald-soft: 140 192 166;
+  /* Латунь/бронза — второй (металлический) цвет. Имя токена историческое
+     (--emerald), значение — латунь. `main` (#8A6E3E) тёмный для текста на
+     пергаменте; `soft` (#C7AC74) светлый для тёмных секций/заливок. */
+  --emerald: 138 110 62;
+  --emerald-soft: 199 172 116;
 
-  /* Dark sections are deep emerald. */
-  --ink: 20 53 40;
-  --ink-soft: 28 71 52;
-  --ink-foreground: 238 240 230;
+  /* Тёмные секции — глубокий махагони (кожаная библиотека). */
+  --ink: 42 26 24;
+  --ink-soft: 61 41 37;
+  --ink-foreground: 242 234 216;
 
-  --shadow-color: 50 50 38;
+  --shadow-color: 58 40 28;
 }
 
 @layer base {
@@ -49,9 +51,9 @@
     min-height: 100vh;
     color: rgb(var(--foreground));
     background:
-      radial-gradient(circle at 12% -5%, rgba(214, 174, 92, 0.12), transparent 38%),
-      radial-gradient(circle at 95% 8%, rgba(242, 222, 164, 0.1), transparent 34%),
-      linear-gradient(180deg, #f9f4ea 0%, #f4ecdf 100%);
+      radial-gradient(circle at 12% -5%, rgba(184, 153, 104, 0.14), transparent 38%),
+      radial-gradient(circle at 95% 8%, rgba(107, 31, 43, 0.07), transparent 34%),
+      linear-gradient(180deg, #f4ecdb 0%, #ece1c8 100%);
     background-attachment: fixed;
     font-family: var(--font-sans), system-ui, sans-serif;
     text-rendering: optimizeLegibility;
@@ -98,9 +100,10 @@
     font-family: var(--font-serif), Georgia, serif;
   }
 
-  /* Caramel gradient text for accents */
+  /* Brass/латунь metallic gradient text. Светлый конец читается на тёмной
+     махагони-полосе, тёмный — на светлом пергаменте. */
   .text-gold-gradient {
-    background: linear-gradient(118deg, rgb(var(--accent-soft)) 0%, rgb(var(--accent)) 48%, rgb(var(--accent-strong)) 100%);
+    background: linear-gradient(118deg, #d6bd84 0%, #b08f4a 48%, #6f5320 100%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -130,7 +133,7 @@
   }
 
   .shadow-glow {
-    box-shadow: 0 18px 40px -16px rgba(214, 174, 92, 0.55);
+    box-shadow: 0 18px 40px -16px rgba(107, 31, 43, 0.45);
   }
 
   /* Hairline gradient divider */
