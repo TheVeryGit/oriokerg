@@ -63,7 +63,7 @@ export function Hero({ title, subtitle, image, telegram }: HeroProps) {
             className="inline-flex animate-fade-up items-center gap-2 rounded-full border border-border bg-card/70 px-4 py-1.5 text-xs uppercase tracking-luxe text-accent-strong"
           >
             <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-            Питомник с любовью
+            Питомник WCF · документы · поддержка
           </p>
 
           <h1

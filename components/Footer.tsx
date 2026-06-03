@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { PhoneIcon, TelegramIcon, VkIcon, telHref } from "@/components/icons";
 import type { ContactsSettings } from "@/lib/content";
+import { isRealPhone } from "@/lib/format";
 
 type FooterProps = {
   contacts: ContactsSettings;
@@ -28,11 +29,14 @@ const navColumns = [
 
 export function Footer({ contacts }: FooterProps) {
   const tel = telHref(contacts.phone);
+  const phoneOk = isRealPhone(contacts.phone);
 
   const social = [
     { href: contacts.telegram, label: "Telegram", Icon: TelegramIcon, external: true },
     { href: contacts.vk, label: "ВКонтакте", Icon: VkIcon, external: true },
-    { href: tel, label: "Телефон", Icon: PhoneIcon, external: false },
+    ...(phoneOk
+      ? [{ href: tel, label: "Телефон", Icon: PhoneIcon, external: false }]
+      : []),
   ];
 
   return (
@@ -95,12 +99,14 @@ export function Footer({ contacts }: FooterProps) {
             >
               Написать в Telegram
             </a>
-            <a
-              href={tel}
-              className="mt-3 block text-center text-sm text-ink-foreground/70 transition-colors hover:text-ink-foreground"
-            >
-              {contacts.phone}
-            </a>
+            {phoneOk ? (
+              <a
+                href={tel}
+                className="mt-3 block text-center text-sm text-ink-foreground/70 transition-colors hover:text-ink-foreground"
+              >
+                {contacts.phone}
+              </a>
+            ) : null}
             {contacts.address ? (
               <p className="mt-3 text-center text-sm text-ink-foreground/55">
                 {contacts.address}

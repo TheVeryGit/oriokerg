@@ -1,4 +1,5 @@
 import { PhoneIcon, TelegramIcon, VkIcon, telHref } from "@/components/icons";
+import { isRealPhone } from "@/lib/format";
 
 type ContactButtonsProps = {
   telegram?: string;
@@ -39,7 +40,7 @@ export function ContactButtons({
           ВКонтакте
         </a>
       ) : null}
-      {phone ? (
+      {isRealPhone(phone) ? (
         <a
           href={telHref(phone)}
           className="inline-flex flex-1 items-center justify-center gap-2.5 rounded-full border border-border-strong bg-card px-6 py-3.5 text-sm font-medium text-foreground transition-colors hover:border-accent hover:text-accent"

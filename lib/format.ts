@@ -1,3 +1,15 @@
+/**
+ * Настоящий ли телефон (не пустой и не заглушка вида +7 900 000 00 00).
+ * Пока номер не настоящий — телефон не показываем, чтобы фейк не бил по доверию.
+ */
+export function isRealPhone(phone?: string | null): phone is string {
+  if (!phone) return false;
+  const digits = phone.replace(/\D/g, "");
+  if (digits.length < 7) return false;
+  if (/0{6,}/.test(digits)) return false; // 6+ нулей подряд = явная заглушка
+  return true;
+}
+
 export function formatPrice(price?: number) {
   if (typeof price !== "number") {
     return null;
