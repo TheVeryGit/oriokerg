@@ -43,9 +43,14 @@
 
             if (photos && photos.size > 0) {
               var raw = photos.get(0);
-              // getAsset возвращает объект с .toString() → URL для локальных uploads
-              try { firstPhoto = getAsset(raw).toString(); } catch(e) { firstPhoto = raw; }
-              if (!firstPhoto) firstPhoto = raw;
+              // Фото в list-виджете может прийти как Map {photo: путь} — разворачиваем.
+              if (raw && typeof raw.get === "function") raw = raw.get("photo");
+              // ВАЖНО: передаём объект getAsset НАПРЯМУЮ (не .toString()).
+              // Decap сам подставит blob-URL только что загруженного файла и
+              // перерисует превью, когда asset подгрузится. Прежний .toString()
+              // с откатом на боевой /images/uploads/... показывал битую картинку
+              // до деплоя (файла там ещё нет).
+              try { firstPhoto = raw ? getAsset(raw) : null; } catch (e) { firstPhoto = null; }
             }
 
             var styles = {
