@@ -10,6 +10,41 @@ export function isRealPhone(phone?: string | null): phone is string {
   return true;
 }
 
+/**
+ * Приводит номер к 11 цифрам РФ-формата (7XXXXXXXXXX), как бы он ни был введён:
+ * с +7 / 8 / без кода, со скобками, пробелами, дефисами. Возвращает null,
+ * если это не похоже на российский номер (тогда показываем как есть).
+ */
+function ruPhoneDigits(phone?: string | null): string | null {
+  if (!phone) return null;
+  let d = phone.replace(/\D/g, "");
+  if (d.length === 11 && d[0] === "8") d = "7" + d.slice(1);
+  if (d.length === 10) d = "7" + d; // ввели без кода страны
+  if (d.length !== 11 || d[0] !== "7") return null;
+  return d;
+}
+
+/**
+ * Красивый телефон для показа: «+7 (900) 123-45-67».
+ * Не РФ-формат — возвращаем исходную строку (обрезав пробелы), ничего не ломаем.
+ */
+export function formatPhone(phone?: string | null): string {
+  const d = ruPhoneDigits(phone);
+  if (!d) return (phone ?? "").trim();
+  const n = d.slice(1);
+  return `+7 (${n.slice(0, 3)}) ${n.slice(3, 6)}-${n.slice(6, 8)}-${n.slice(8, 10)}`;
+}
+
+/**
+ * E.164 для tel:-ссылок и schema.org: «+7XXXXXXXXXX».
+ * Фолбэк — очищенные цифры с ведущим + (для нестандартных номеров).
+ */
+export function phoneE164(phone?: string | null): string {
+  const d = ruPhoneDigits(phone);
+  if (d) return "+" + d;
+  return (phone ?? "").replace(/[^\d+]/g, "");
+}
+
 export function formatPrice(price?: number) {
   if (typeof price !== "number") {
     return null;

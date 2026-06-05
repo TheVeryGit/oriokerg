@@ -1,5 +1,7 @@
 import type { SVGProps } from "react";
 
+import { phoneE164 } from "@/lib/format";
+
 type IconProps = SVGProps<SVGSVGElement>;
 
 /** Telegram — official glyph (Simple Icons). */
@@ -29,7 +31,7 @@ export function PhoneIcon(props: IconProps) {
   );
 }
 
-/** Builds a clean tel: href from a display phone string. */
+/** Builds a clean tel: href (E.164) from any entered phone string. */
 export function telHref(phone?: string) {
-  return `tel:${(phone ?? "").replace(/[^\d+]/g, "")}`;
+  return `tel:${phoneE164(phone)}`;
 }

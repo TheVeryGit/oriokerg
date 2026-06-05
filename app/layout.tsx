@@ -10,7 +10,7 @@ import { MotionProvider } from "@/components/motion/MotionProvider";
 import { YandexMetrika } from "@/components/YandexMetrika";
 import type { ContactsSettings } from "@/lib/content";
 import { getSettings } from "@/lib/content";
-import { isRealPhone } from "@/lib/format";
+import { isRealPhone, phoneE164 } from "@/lib/format";
 
 import "./globals.css";
 
@@ -98,7 +98,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
       ? {
           contactPoint: {
             "@type": "ContactPoint",
-            telephone: contacts.phone,
+            telephone: phoneE164(contacts.phone),
             contactType: "sales",
             areaServed: "RU",
             availableLanguage: "Russian",

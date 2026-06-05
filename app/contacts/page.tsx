@@ -7,7 +7,7 @@ import { Reveal } from "@/components/Reveal";
 import { Stagger, StaggerItem } from "@/components/motion/Stagger";
 import type { ContactsSettings } from "@/lib/content";
 import { getSettings } from "@/lib/content";
-import { isRealPhone } from "@/lib/format";
+import { formatPhone, isRealPhone } from "@/lib/format";
 
 export const metadata: Metadata = {
   title: "Контакты",
@@ -44,7 +44,7 @@ export default function ContactsPage() {
           {
             href: telHref(contacts.phone),
             label: "Телефон",
-            value: contacts.phone,
+            value: formatPhone(contacts.phone),
             Icon: PhoneIcon,
             external: false,
           },

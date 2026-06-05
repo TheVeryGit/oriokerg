@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { PhoneIcon, TelegramIcon, VkIcon, telHref } from "@/components/icons";
 import type { ContactsSettings } from "@/lib/content";
-import { isRealPhone } from "@/lib/format";
+import { formatPhone, isRealPhone } from "@/lib/format";
 
 type FooterProps = {
   contacts: ContactsSettings;
@@ -104,7 +104,7 @@ export function Footer({ contacts }: FooterProps) {
                 href={tel}
                 className="mt-3 block text-center text-sm text-ink-foreground/70 transition-colors hover:text-ink-foreground"
               >
-                {contacts.phone}
+                {formatPhone(contacts.phone)}
               </a>
             ) : null}
             {contacts.address ? (
