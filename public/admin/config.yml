@@ -97,7 +97,7 @@ collections:
   - name: cats
     label: Кошки и производители
     label_singular: Кошку
-    description: Производители питомника и подрастающие животные. Страница «Наши кошки».
+    description: Мамы и папы наших помётов. Показываются на странице «Наши кошки».
     folder: content/cats
     create: true
     identifier_field: name
@@ -108,18 +108,9 @@ collections:
     sortable_fields: [name, price]
     preview_path: "cats/{{slug}}"
     view_filters:
-      - { label: Производители, field: type, pattern: Производитель }
-      - { label: Котята в продаже, field: type, pattern: Котёнок в продаже }
       - { label: Доступные, field: available, pattern: true }
-    view_groups:
-      - { label: По типу, field: type }
     fields:
       - { label: Имя, name: name, widget: string, hint: "Кличка животного" }
-      - label: Тип
-        name: type
-        widget: select
-        default: Производитель
-        options: [Производитель, Котёнок в продаже]
       - label: Пол
         name: gender
         widget: select

@@ -38,7 +38,7 @@ export default function NotFound() {
         <div className="mt-9 flex flex-wrap items-center justify-center gap-4">
           <Link
             href="/kittens"
-            className="beam-btn rounded-full bg-gradient-to-br from-accent to-accent-strong px-7 py-3.5 text-sm font-medium text-accent-foreground shadow-glow transition-transform duration-200 hover:-translate-y-0.5"
+            className="rounded-full bg-gradient-to-br from-accent to-accent-strong px-7 py-3.5 text-sm font-medium text-accent-foreground shadow-glow transition-transform duration-200 hover:-translate-y-0.5"
           >
             Посмотреть котят
           </Link>

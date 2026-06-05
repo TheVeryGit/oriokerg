@@ -83,7 +83,7 @@ export function Hero({ title, subtitle, image, telegram }: HeroProps) {
           <div style={fade(290)} className="mt-9 flex animate-fade-up flex-wrap gap-4">
             <Link
               href="/kittens"
-              className="beam-btn rounded-full bg-gradient-to-br from-accent to-accent-strong px-8 py-4 text-sm font-medium text-accent-foreground shadow-glow transition-transform duration-200 hover:-translate-y-0.5"
+              className="rounded-full bg-gradient-to-br from-accent to-accent-strong px-8 py-4 text-sm font-medium text-accent-foreground shadow-glow transition-transform duration-200 hover:-translate-y-0.5"
             >
               Посмотреть котят
             </Link>
