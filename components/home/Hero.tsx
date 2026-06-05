@@ -163,28 +163,6 @@ export function Hero({ title, subtitle, image, telegram }: HeroProps) {
             </m.div>
             <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/55 via-transparent to-transparent" />
           </div>
-
-          <div
-            style={fade(560)}
-            className="absolute -bottom-5 left-5 flex animate-fade-up items-center gap-3 rounded-lg border border-border bg-card/90 px-5 py-4 shadow-lift backdrop-blur"
-          >
-            <div className="flex gap-0.5 text-accent">
-              {Array.from({ length: 5 }).map((_, index) => (
-                <svg
-                  key={index}
-                  viewBox="0 0 20 20"
-                  className="h-4 w-4 fill-current"
-                  aria-hidden="true"
-                >
-                  <path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L10 15l-5.2 2.6 1-5.8L1.5 7.7l5.9-.9L10 1.5z" />
-                </svg>
-              ))}
-            </div>
-            <div className="text-sm">
-              <p className="font-medium text-foreground">4.9 / 5</p>
-              <p className="text-muted">120+ семей</p>
-            </div>
-          </div>
         </div>
       </div>
     </section>
