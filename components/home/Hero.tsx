@@ -22,6 +22,24 @@ function fade(delay: number): CSSProperties {
   return { animationDelay: `${delay}ms` };
 }
 
+/** Рендер заголовка с золотым курсивным акцентом: слово в *звёздочках*
+ *  («…с *характером* и…») подсвечивается золотом. Без маркера — обычный текст. */
+function renderTitle(title: string) {
+  return title.split(/(\*[^*]+\*)/g).map((part, index) => {
+    if (part.startsWith("*") && part.endsWith("*") && part.length > 2) {
+      return (
+        <em
+          key={index}
+          className="font-medium italic text-gold-gradient"
+        >
+          {part.slice(1, -1)}
+        </em>
+      );
+    }
+    return <span key={index}>{part}</span>;
+  });
+}
+
 export function Hero({ title, subtitle, image, telegram }: HeroProps) {
   const reduce = useReducedMotion();
   const sectionRef = useRef<HTMLElement>(null);
@@ -66,7 +84,7 @@ export function Hero({ title, subtitle, image, telegram }: HeroProps) {
             style={fade(120)}
             className="mt-6 animate-fade-up font-serif text-[2.75rem] font-semibold leading-[1.03] text-foreground text-balance sm:text-6xl lg:text-7xl"
           >
-            {title}
+            {renderTitle(title)}
           </h1>
 
           <p

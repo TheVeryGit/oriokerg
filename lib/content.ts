@@ -279,7 +279,7 @@ export function getKittens(): KittenEntry[] {
    never renders blank sections even before the owner fills everything in.   */
 
 const DEFAULT_HOMEPAGE: HomepageSettings = {
-  hero_title: "Ориентальные кошки с характером и родословной",
+  hero_title: "Ориентальные кошки с *характером* и родословной",
   hero_subtitle:
     "Здоровые, социализированные котята из питомника OrioKerg. Документы, прививки и поддержка на всю жизнь.",
   hero_image: "",
