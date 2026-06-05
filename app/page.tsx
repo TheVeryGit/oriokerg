@@ -27,22 +27,50 @@ const galleryFallback = [
 ];
 
 // «Больше, чем просто котёнок» — что входит в покупку (Слайд 5, в стиле сайта).
+// icon — внутренние элементы SVG (viewBox 0 0 24 24, stroke), тематические.
 const guarantees = [
   {
     title: "Здоровье под контролем",
     text: "Котёнок привит по возрасту, с ветеринарным паспортом и осмотром перед переездом.",
+    icon: (
+      <>
+        <path d="M12 20.5C7 17 3.5 13.8 3.5 9.8 3.5 7 5.6 5 8.2 5c1.7 0 3 .9 3.8 2 .8-1.1 2.1-2 3.8-2 2.6 0 4.7 2 4.7 4.8 0 4-3.5 7.2-8.5 10.7Z" />
+        <path d="M7.5 12h2l1-1.6 1.8 3.2 1-1.6h2.7" />
+      </>
+    ),
   },
   {
     title: "Документы WCF",
     text: "Метрика или родословная и договор купли-продажи — всё оформлено официально.",
+    icon: (
+      <>
+        <path d="M14 3H7a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V7z" />
+        <path d="M14 3v4h4" />
+        <path d="M9 12h6M9 16h4" />
+      </>
+    ),
   },
   {
     title: "Поддержка на всю жизнь",
     text: "Консультируем по питанию, воспитанию и здоровью столько, сколько нужно.",
+    icon: (
+      <>
+        <circle cx="12" cy="12" r="8" />
+        <circle cx="12" cy="12" r="3" />
+        <path d="M5 5l3.6 3.6M19 5l-3.6 3.6M5 19l3.6-3.6M19 19l-3.6-3.6" />
+      </>
+    ),
   },
   {
     title: "Готов к переезду",
     text: "Социализированный, приучённый к лотку малыш, привыкший к семье, детям и собаке.",
+    icon: (
+      <>
+        <path d="M4 11.5 12 5l8 6.5" />
+        <path d="M6 10.5V19h12v-8.5" />
+        <path d="M10 19v-4h4v4" />
+      </>
+    ),
   },
 ];
 
@@ -69,23 +97,6 @@ function Eyebrow({ children }: { children: string }) {
       <span className="h-px w-8 bg-accent/50" />
       {children}
     </span>
-  );
-}
-
-function CheckIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      className="h-5 w-5"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <path d="M20 6 9 17l-5-5" />
-    </svg>
   );
 }
 
@@ -360,9 +371,10 @@ export default function HomePage() {
         </Stagger>
       </section>
 
-      {/* What you get — editorial guarantees strip */}
-      <section className="border-y border-border bg-surface">
-        <div className="mx-auto w-full max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-24">
+      {/* What you get — editorial guarantees strip (тонкая линия сверху, без
+          фон-полосы — чтобы не «слипалось» с CTA ниже) */}
+      <section className="border-t border-border">
+        <div className="mx-auto w-full max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
           <Reveal className="max-w-2xl">
             <Eyebrow>Гарантии</Eyebrow>
             <h2 className="mt-4 font-serif text-display font-semibold text-foreground">
@@ -372,8 +384,19 @@ export default function HomePage() {
           <Stagger className="mt-14 grid gap-x-10 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
             {guarantees.map((item) => (
               <StaggerItem key={item.title} className="flex gap-4">
-                <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-accent/10 text-accent">
-                  <CheckIcon />
+                <span className="mt-0.5 flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-accent/10 text-accent">
+                  <svg
+                    viewBox="0 0 24 24"
+                    className="h-6 w-6"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.7"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    {item.icon}
+                  </svg>
                 </span>
                 <div>
                   <h3 className="font-serif text-lg font-semibold text-foreground">
