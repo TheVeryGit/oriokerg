@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Cormorant_Garamond, Manrope } from "next/font/google";
+import { Manrope, Playfair_Display } from "next/font/google";
 import type { ReactNode } from "react";
 
 import { CookieConsent } from "@/components/CookieConsent";
@@ -22,9 +22,10 @@ const sans = Manrope({
   variable: "--font-sans",
 });
 
-const serif = Cormorant_Garamond({
+// Playfair Display — high-contrast didone («Vogue»-драма), полная кириллица.
+const serif = Playfair_Display({
   subsets: ["latin", "cyrillic"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "500", "600", "700", "800", "900"],
   style: ["normal", "italic"],
   display: "swap",
   variable: "--font-serif",
@@ -68,7 +69,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#f2ead8",
+  themeColor: "#0c0b0d",
   width: "device-width",
   initialScale: 1,
 };

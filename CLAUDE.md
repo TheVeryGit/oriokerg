@@ -80,9 +80,12 @@ npm run build   # статическая сборка в out/
 npm run lint    # проверка eslint
 ```
 
-## Дизайн-система («тёплая премиум-элегантность»)
+## Дизайн-система («Editorial Noir» — тёмный журнальный люкс)
 
-Премиум-редизайн 2026-05 в рамках тёплой гаммы. **Всегда используй токены, а не хардкод hex.**
+Редизайн 2026-06: тёмный графитовый холст + золото-акцент, крупная контрастная
+типографика (Playfair Display). **Всегда используй токены, а не хардкод hex** —
+вся тема задаётся значениями токенов в `:root`, поэтому весь сайт перекрашивается
+из одного места.
 
 > **Важно про токены:** цвета в `:root` заданы как **RGB-каналы** (`--surface: 255 253 249`),
 > а в `tailwind.config` обёрнуты в `rgb(var(--x) / <alpha-value>)`. Это нужно, чтобы работали
@@ -99,7 +102,7 @@ npm run lint    # проверка eslint
   Утилиты: `shadow-soft/lift/glow`, `text-gold-gradient`, `text-display`/`text-display-lg`
   (крупная редакторская типографика, clamp), `rule-gold`, `link-underline`,
   `grain-layer` (зерно), `tracking-luxe`, `rounded-4xl/5xl`.
-- **Шрифты:** Manrope (`font-sans`, текст) + Cormorant Garamond (`font-serif`), в `app/layout.tsx`.
+- **Шрифты:** Manrope (`font-sans`, текст) + Playfair Display (`font-serif`, заголовки — didone «Vogue»-драма), в `app/layout.tsx`.
 - **Анимации — Framer Motion** через `LazyMotion`+`domAnimation` (бандл лёгкий):
   - Везде используем `m.*` (не `motion.*`), провайдер — `components/motion/MotionProvider.tsx`.
   - **Появление — НЕ через Framer-mount** (он не срабатывает на первой загрузке static export):

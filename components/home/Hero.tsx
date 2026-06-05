@@ -58,12 +58,8 @@ export function Hero({ title, subtitle, image, telegram }: HeroProps) {
 
       <div className="relative mx-auto grid w-full max-w-7xl items-center gap-12 px-4 py-16 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:px-8 lg:py-24">
         <div>
-          <p
-            style={fade(40)}
-            className="inline-flex animate-fade-up items-center gap-2 rounded-full border border-border bg-card/70 px-4 py-1.5 text-xs uppercase tracking-luxe text-accent-strong"
-          >
-            <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-            Питомник WCF · документы · поддержка
+          <p style={fade(40)} className="kicker animate-fade-up">
+            Питомник ориентальных кошек · WCF
           </p>
 
           <h1
@@ -122,8 +118,20 @@ export function Hero({ title, subtitle, image, telegram }: HeroProps) {
         </div>
 
         <div style={fade(160)} className="relative animate-fade-up">
-          <div className="absolute -right-4 -top-4 hidden h-32 w-32 rounded-4xl border border-border-strong sm:block" />
-          <div className="relative aspect-[4/5] w-full overflow-hidden rounded-5xl shadow-lift">
+          {/* Вертикальный «том» — журнальная деталь */}
+          <span className="absolute -left-9 top-4 hidden rotate-180 text-[0.66rem] uppercase tracking-[0.4em] text-muted [writing-mode:vertical-rl] lg:block">
+            OrioKerg — Vol. 01
+          </span>
+          {/* Золотые угловые скобки рамки */}
+          <span
+            aria-hidden="true"
+            className="absolute -left-3 -top-3 z-10 hidden h-16 w-16 border-l border-t border-accent sm:block lg:h-20 lg:w-20"
+          />
+          <span
+            aria-hidden="true"
+            className="absolute -bottom-3 -right-3 z-10 hidden h-16 w-16 border-b border-r border-accent sm:block lg:h-20 lg:w-20"
+          />
+          <div className="relative aspect-[4/5] w-full overflow-hidden rounded-sm shadow-lift">
             <m.div style={{ y: parallax ? imageY : 0 }} className="absolute inset-0 -bottom-[14%]">
               <Image
                 src={image}
@@ -132,15 +140,15 @@ export function Hero({ title, subtitle, image, telegram }: HeroProps) {
                 priority
                 placeholder="blur"
                 sizes="(min-width: 1024px) 45vw, 100vw"
-                className="object-cover object-[50%_20%]"
+                className="animate-hero-zoom object-cover object-[50%_28%]"
               />
             </m.div>
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/25 via-transparent to-transparent" />
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/55 via-transparent to-transparent" />
           </div>
 
           <div
             style={fade(560)}
-            className="absolute -bottom-5 left-5 flex animate-fade-up items-center gap-3 rounded-4xl bg-card px-5 py-4 shadow-lift"
+            className="absolute -bottom-5 left-5 flex animate-fade-up items-center gap-3 rounded-sm border border-border bg-card/90 px-5 py-4 shadow-lift backdrop-blur"
           >
             <div className="flex gap-0.5 text-accent">
               {Array.from({ length: 5 }).map((_, index) => (
