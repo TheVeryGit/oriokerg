@@ -26,6 +26,26 @@ const galleryFallback = [
   "/images/gallery/cat-5.jpg",
 ];
 
+// «Больше, чем просто котёнок» — что входит в покупку (Слайд 5, в стиле сайта).
+const guarantees = [
+  {
+    title: "Здоровье под контролем",
+    text: "Котёнок привит по возрасту, с ветеринарным паспортом и осмотром перед переездом.",
+  },
+  {
+    title: "Документы WCF",
+    text: "Метрика или родословная и договор купли-продажи — всё оформлено официально.",
+  },
+  {
+    title: "Поддержка на всю жизнь",
+    text: "Консультируем по питанию, воспитанию и здоровью столько, сколько нужно.",
+  },
+  {
+    title: "Готов к переезду",
+    text: "Социализированный, приучённый к лотку малыш, привыкший к семье, детям и собаке.",
+  },
+];
+
 function Stars() {
   return (
     <div className="flex gap-0.5 text-accent">
@@ -49,6 +69,23 @@ function Eyebrow({ children }: { children: string }) {
       <span className="h-px w-8 bg-accent/50" />
       {children}
     </span>
+  );
+}
+
+function CheckIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className="h-5 w-5"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M20 6 9 17l-5-5" />
+    </svg>
   );
 }
 
@@ -321,6 +358,33 @@ export default function HomePage() {
             </StaggerItem>
           ))}
         </Stagger>
+      </section>
+
+      {/* What you get — editorial guarantees strip */}
+      <section className="border-y border-border bg-surface">
+        <div className="mx-auto w-full max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-24">
+          <Reveal className="max-w-2xl">
+            <Eyebrow>Гарантии</Eyebrow>
+            <h2 className="mt-4 font-serif text-display font-semibold text-foreground">
+              Больше, чем просто котёнок
+            </h2>
+          </Reveal>
+          <Stagger className="mt-14 grid gap-x-10 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
+            {guarantees.map((item) => (
+              <StaggerItem key={item.title} className="flex gap-4">
+                <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-accent/10 text-accent">
+                  <CheckIcon />
+                </span>
+                <div>
+                  <h3 className="font-serif text-lg font-semibold text-foreground">
+                    {item.title}
+                  </h3>
+                  <p className="mt-2 text-sm leading-7 text-muted">{item.text}</p>
+                </div>
+              </StaggerItem>
+            ))}
+          </Stagger>
+        </div>
       </section>
 
       {/* CTA */}

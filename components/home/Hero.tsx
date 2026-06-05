@@ -77,7 +77,7 @@ export function Hero({ title, subtitle, image, telegram }: HeroProps) {
       <div className="relative mx-auto grid w-full max-w-7xl items-center gap-12 px-4 py-16 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:px-8 lg:py-24">
         <div>
           <p style={fade(40)} className="kicker animate-fade-up">
-            Питомник ориентальных кошек · WCF
+            Элегантность · Интеллект · Безусловная любовь
           </p>
 
           <h1
