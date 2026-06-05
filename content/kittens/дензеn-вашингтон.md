@@ -10,6 +10,6 @@ mother: Глафира
 father: Клинт Иствуд
 description: Пупсик
 photos:
-  - /images/uploads/дензеn-вашингтон.png
+  - /images/uploads/denzel-vashington.png
 reserved: false
 ---
