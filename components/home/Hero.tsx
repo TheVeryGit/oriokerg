@@ -149,7 +149,7 @@ export function Hero({ title, subtitle, image, telegram }: HeroProps) {
             aria-hidden="true"
             className="absolute -bottom-3 -right-3 z-10 hidden h-16 w-16 border-b border-r border-accent sm:block lg:h-20 lg:w-20"
           />
-          <div className="relative aspect-[4/5] w-full overflow-hidden rounded-sm shadow-lift">
+          <div className="relative aspect-[4/5] w-full overflow-hidden rounded-lg shadow-lift">
             <m.div style={{ y: parallax ? imageY : 0 }} className="absolute inset-0 -bottom-[14%]">
               <Image
                 src={image}
@@ -166,7 +166,7 @@ export function Hero({ title, subtitle, image, telegram }: HeroProps) {
 
           <div
             style={fade(560)}
-            className="absolute -bottom-5 left-5 flex animate-fade-up items-center gap-3 rounded-sm border border-border bg-card/90 px-5 py-4 shadow-lift backdrop-blur"
+            className="absolute -bottom-5 left-5 flex animate-fade-up items-center gap-3 rounded-lg border border-border bg-card/90 px-5 py-4 shadow-lift backdrop-blur"
           >
             <div className="flex gap-0.5 text-accent">
               {Array.from({ length: 5 }).map((_, index) => (

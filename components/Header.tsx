@@ -135,7 +135,7 @@ export function Header() {
               : "pointer-events-none -translate-y-2 opacity-0"
           }`}
         >
-          <div className="mt-2 flex flex-col gap-1 rounded-3xl border border-border bg-surface p-3 shadow-lift">
+          <div className="mt-2 flex flex-col gap-1 rounded-lg border border-border bg-surface p-3 shadow-lift">
             {navigation.map((item) => {
               const active = isActive(pathname, item.href);
               return (
@@ -144,7 +144,7 @@ export function Header() {
                   href={item.href}
                   tabIndex={isOpen ? 0 : -1}
                   aria-current={active ? "page" : undefined}
-                  className={`rounded-2xl px-4 py-3 text-base transition-colors ${
+                  className={`rounded-lg px-4 py-3 text-base transition-colors ${
                     active
                       ? "bg-accent/10 text-foreground"
                       : "text-muted hover:bg-accent/5 hover:text-foreground"

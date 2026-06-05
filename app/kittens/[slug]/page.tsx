@@ -204,7 +204,7 @@ export default function KittenPage({ params }: KittenPageProps) {
                 {priceLines.map((line, index) => (
                   <div
                     key={`${line.label ?? "price"}-${index}`}
-                    className="flex items-baseline justify-between gap-4 rounded-2xl bg-surface-2/60 px-4 py-2.5"
+                    className="flex items-baseline justify-between gap-4 rounded-lg bg-surface-2/60 px-4 py-2.5"
                   >
                     <span className="text-sm text-muted">
                       {line.label ?? "Стоимость"}

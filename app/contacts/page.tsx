@@ -70,7 +70,7 @@ export default function ContactsPage() {
                 rel={card.external ? "noreferrer" : undefined}
                 className="group flex h-full flex-col rounded-4xl border border-border bg-card p-8 shadow-soft transition-all duration-500 hover:-translate-y-1.5 hover:border-accent/40 hover:shadow-lift"
               >
-                <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-accent-soft to-accent-strong text-accent-foreground shadow-soft transition-transform duration-300 group-hover:scale-105">
+                <span className="flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-br from-accent-soft to-accent-strong text-accent-foreground shadow-soft transition-transform duration-300 group-hover:scale-105">
                   <card.Icon className="h-6 w-6" />
                 </span>
                 <h2 className="mt-6 font-serif text-2xl font-semibold text-foreground">

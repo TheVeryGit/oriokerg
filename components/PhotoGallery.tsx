@@ -67,7 +67,7 @@ export function PhotoGallery({ photos, alt }: PhotoGalleryProps) {
                 type="button"
                 aria-label={`Показать фото ${index + 1}`}
                 aria-pressed={isActive}
-                className={`relative aspect-square cursor-pointer overflow-hidden rounded-2xl border-2 bg-card transition-all duration-300 ${
+                className={`relative aspect-square cursor-pointer overflow-hidden rounded-lg border-2 bg-card transition-all duration-300 ${
                   isActive
                     ? "border-accent shadow-soft"
                     : "border-transparent opacity-70 hover:opacity-100"

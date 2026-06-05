@@ -193,7 +193,7 @@ export default function HomePage() {
       <section className="mx-auto w-full max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
         <div className="grid items-center gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
           <Reveal direction="right" className="relative">
-            <div className="relative aspect-[5/6] overflow-hidden rounded-sm shadow-lift">
+            <div className="relative aspect-[5/6] overflow-hidden rounded-lg shadow-lift">
               <Image
                 src={gallery[1] ?? heroImage}
                 alt="Ориентальная кошка крупным планом"
@@ -218,7 +218,7 @@ export default function HomePage() {
                 {homepage.breed_text}
               </p>
             </Reveal>
-            <Stagger className="mt-8 overflow-hidden rounded-sm border border-border">
+            <Stagger className="mt-8 overflow-hidden rounded-lg border border-border">
               {homepage.breed_traits.map((trait, index) => (
                 <StaggerItem
                   key={`${trait.title}-${index}`}

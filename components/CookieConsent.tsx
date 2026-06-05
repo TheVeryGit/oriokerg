@@ -34,7 +34,7 @@ export function CookieConsent() {
 
   return (
     <div className="fixed inset-x-3 bottom-3 z-40 sm:inset-x-auto sm:left-4 sm:right-4 sm:bottom-4">
-      <div className="mx-auto flex max-w-3xl flex-col gap-3 rounded-3xl border border-border bg-card p-4 shadow-lift sm:flex-row sm:items-center sm:gap-4 sm:p-5">
+      <div className="mx-auto flex max-w-3xl flex-col gap-3 rounded-lg border border-border bg-card p-4 shadow-lift sm:flex-row sm:items-center sm:gap-4 sm:p-5">
         <p className="text-sm leading-6 text-muted">
           Мы используем файлы cookie и сервис Яндекс.Метрика для аналитики и
           улучшения сайта. Оставаясь здесь, вы соглашаетесь с{" "}

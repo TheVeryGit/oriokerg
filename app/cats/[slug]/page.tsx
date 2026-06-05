@@ -211,7 +211,7 @@ export default function CatPage({ params }: CatPageProps) {
                   href={`/cats/${item.slug}`}
                   className="group flex items-center gap-4 rounded-4xl border border-border bg-card p-4 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:border-accent/40 hover:shadow-lift"
                 >
-                  <span className="relative h-16 w-16 shrink-0 overflow-hidden rounded-2xl bg-accent/5">
+                  <span className="relative h-16 w-16 shrink-0 overflow-hidden rounded-lg bg-accent/5">
                     {item.photos[0] ? (
                       <Image
                         src={item.photos[0]}
