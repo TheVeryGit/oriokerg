@@ -10,6 +10,6 @@ mother: Глафира
 father: Клинт Иствуд
 description: Величайший райфлер
 photos:
-  - /images/uploads/donk_cs.jpg
+  - /images/uploads/donk_cs-1-.jpg
 reserved: false
 ---
