@@ -20,6 +20,8 @@ export type CatEntry = BaseEntry & {
   bodyType?: string;
   price?: number;
   available: boolean;
+  /** Черновик — карточка скрыта с сайта (не индексируется, нет страницы). */
+  draft: boolean;
 };
 
 export type KittenEntry = BaseEntry & {
@@ -36,6 +38,8 @@ export type KittenEntry = BaseEntry & {
   /** Телосложение ориентала: классический / современный / экстремальный. */
   bodyType?: string;
   reserved: boolean;
+  /** Черновик — карточка скрыта с сайта (не индексируется, нет страницы). */
+  draft: boolean;
 };
 
 export type ContactsSettings = {
@@ -235,8 +239,10 @@ export function getCats(): CatEntry[] {
         description: normalizeText(entry.data.description, entry.content),
         photos: normalizePhotos(entry.data.photos),
         available: normalizeBoolean(entry.data.available, true),
+        draft: normalizeBoolean(entry.data.draft, false),
       };
     })
+    .filter((cat) => !cat.draft)
     .sort((left, right) => left.name.localeCompare(right.name, "ru"));
 }
 
@@ -269,8 +275,10 @@ export function getKittens(): KittenEntry[] {
         description: normalizeText(entry.data.description, entry.content),
         photos: normalizePhotos(entry.data.photos),
         reserved: normalizeBoolean(entry.data.reserved, false),
+        draft: normalizeBoolean(entry.data.draft, false),
       };
     })
+    .filter((kitten) => !kitten.draft)
     .sort((left, right) => left.name.localeCompare(right.name, "ru"));
 }
 
