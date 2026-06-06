@@ -235,6 +235,19 @@ export default function HomePage() {
             ))}
           </Stagger>
         )}
+
+        {/* Мобильная кнопка «все котята» (на десктопе ссылка справа сверху) */}
+        {featuredKittens.length > 0 ? (
+          <Reveal className="mt-10 text-center sm:hidden">
+            <Link
+              href="/kittens"
+              className="inline-flex items-center gap-2 rounded-full border border-border-strong bg-card/60 px-7 py-3.5 text-sm font-medium text-foreground transition-colors hover:border-accent hover:text-accent"
+            >
+              Смотреть всех котят
+              <ArrowIcon />
+            </Link>
+          </Reveal>
+        ) : null}
       </section>
 
       {/* Breed — editorial split */}

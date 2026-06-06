@@ -41,17 +41,23 @@
             var photos = entry.getIn(["data", "photos"]);
             var firstPhoto = null;
 
+            // Разрешаем фото в локальный blob-URL только что загруженного файла.
+            // Боевой путь /images/uploads/... в админке ещё не существует (файл
+            // зальётся при публикации) — такую картинку НЕ показываем, иначе будет
+            // «битая» иконка; вместо неё — аккуратная подсказка.
+            var firstUrl = "";
             if (photos && photos.size > 0) {
               var raw = photos.get(0);
-              // Фото в list-виджете может прийти как Map {photo: путь} — разворачиваем.
               if (raw && typeof raw.get === "function") raw = raw.get("photo");
-              // ВАЖНО: передаём объект getAsset НАПРЯМУЮ (не .toString()).
-              // Decap сам подставит blob-URL только что загруженного файла и
-              // перерисует превью, когда asset подгрузится. Прежний .toString()
-              // с откатом на боевой /images/uploads/... показывал битую картинку
-              // до деплоя (файла там ещё нет).
-              try { firstPhoto = raw ? getAsset(raw) : null; } catch (e) { firstPhoto = null; }
+              if (raw) {
+                try {
+                  var asset = getAsset(raw);
+                  firstUrl = asset ? String(asset) : "";
+                } catch (e) { firstUrl = ""; }
+              }
             }
+            var hasPhoto = !!(photos && photos.size > 0);
+            var canShow = /^(blob:|data:)/.test(firstUrl); // локальный предпросмотр
 
             var styles = {
               wrap: {
@@ -169,9 +175,11 @@
                 h("div", {},
                   h("p", { style: styles.label }, "📐 Как на карточке (1:1 crop, object-cover)"),
                   h("div", { style: styles.squareWrap },
-                    firstPhoto
-                      ? h("img", { src: firstPhoto, style: styles.squareImg, alt: name })
-                      : h("div", { style: styles.squarePlaceholder }, h("div", {}, "🐱"), h("div", {}, "Фото не добавлено"))
+                    canShow
+                      ? h("img", { src: firstUrl, style: styles.squareImg, alt: name })
+                      : h("div", { style: styles.squarePlaceholder },
+                          h("div", { style: { fontSize: "22px" } }, hasPhoto ? "✓" : "🐱"),
+                          h("div", { style: { marginTop: "6px" } }, hasPhoto ? "Фото добавлено — появится после публикации" : "Фото не добавлено"))
                   ),
                   h("p", { style: styles.hint },
                     "💡 Кот виден ровно так, как на сайте. Если уши или лапы обрезаны — разместите кота ближе к центру фото."
@@ -181,9 +189,9 @@
                 // — Оригинал
                 h("div", {},
                   h("p", { style: styles.label }, "🖼 Исходное фото"),
-                  firstPhoto
-                    ? h("img", { src: firstPhoto, style: styles.fullImg, alt: name })
-                    : h("p", { style: { color: "#b8a898", fontSize: "13px" } }, "Фото не загружено")
+                  canShow
+                    ? h("img", { src: firstUrl, style: styles.fullImg, alt: name })
+                    : h("p", { style: { color: "#b8a898", fontSize: "13px", lineHeight: 1.6 } }, hasPhoto ? "Фото добавлено. Кадр сейчас виден в поле «Фото» слева; в этом превью оно появится после публикации." : "Фото не загружено")
                 )
               ),
 

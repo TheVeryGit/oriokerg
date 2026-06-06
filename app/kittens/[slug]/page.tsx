@@ -171,11 +171,11 @@ export default function KittenPage({ params }: KittenPageProps) {
       </Reveal>
 
       <div className="mt-8 grid gap-10 lg:grid-cols-[1.25fr_0.75fr]">
-        <Reveal>
+        <div>
           <PhotoGallery photos={kitten.photos} alt={kitten.name} />
-        </Reveal>
+        </div>
 
-        <Reveal delay={120} className="h-full">
+        <div className="h-full">
           <aside className="h-full">
             <div className="flex h-full flex-col rounded-5xl border border-border bg-card p-8 shadow-lift">
               <div className="flex items-center gap-3">
@@ -257,7 +257,7 @@ export default function KittenPage({ params }: KittenPageProps) {
               </p>
             </div>
           </aside>
-        </Reveal>
+        </div>
       </div>
 
       {kitten.description ? (
