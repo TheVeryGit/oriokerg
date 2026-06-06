@@ -9,6 +9,6 @@ mother: Глафира
 father: Клинт Иствуд
 description: Величие!
 photos:
-  - /images/uploads/bredli-kuper.png
+  - /images/uploads/bradley-cooper.png
 reserved: false
 ---
