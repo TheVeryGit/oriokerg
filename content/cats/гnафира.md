@@ -8,5 +8,5 @@ description: |
   Легендарная кошка - мама. 
 photos:
   - /images/uploads/glaphira.png
-available: true
+available: false
 ---
