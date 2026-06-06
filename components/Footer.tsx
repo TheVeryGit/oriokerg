@@ -44,8 +44,8 @@ export function Footer({ contacts }: FooterProps) {
       <div className="relative mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="grid gap-12 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr]">
           <div>
-            <p className="font-serif text-2xl font-semibold tracking-[0.18em]">
-              OrioKerg
+            <p className="font-serif text-2xl font-semibold tracking-[0.02em]">
+              Orio<span className="text-accent-soft">Kerg</span>
             </p>
             <p className="mt-3 max-w-xs text-sm leading-7 text-ink-foreground/70">
               Питомник ориентальных кошек. Здоровые котята с документами,

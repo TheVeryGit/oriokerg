@@ -61,8 +61,8 @@ export function Header() {
               aria-hidden="true"
               className="h-10 w-auto shrink-0 transition-transform duration-300 group-hover:scale-105"
             />
-            <span className="font-serif text-xl font-semibold tracking-[0.2em] text-foreground transition-colors group-hover:text-accent sm:text-2xl">
-              ORIOKERG
+            <span className="font-serif text-2xl font-semibold tracking-[0.02em] text-foreground sm:text-[1.7rem]">
+              Orio<span className="text-accent-soft">Kerg</span>
             </span>
           </Link>
 
