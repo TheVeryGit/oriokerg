@@ -56,7 +56,7 @@ export function Header() {
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/images/logo.png"
+              src="/images/logo.svg"
               alt=""
               aria-hidden="true"
               className="h-10 w-auto shrink-0 transition-transform duration-300 group-hover:scale-105"
