@@ -3,9 +3,9 @@ import { PageHeader } from "@/components/PageHeader";
 import { getKittens } from "@/lib/content";
 
 export const metadata = {
-  title: "Котята в продаже",
+  title: "Купить ориентального котёнка в Москве",
   description:
-    "Свободные ориентальные котята питомника OrioKerg — здоровые, социализированные, с документами и ветеринарным паспортом.",
+    "Ориентальные котята в продаже — питомник OrioKerg, Москва. Здоровые, социализированные, с документами WCF и ветеринарным паспортом. Доставка по России.",
 };
 
 export default function KittensPage() {

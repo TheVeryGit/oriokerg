@@ -34,18 +34,25 @@ const serif = Playfair_Display({
 export const metadata: Metadata = {
   metadataBase: new URL("https://oriokerg.ru"),
   title: {
-    default: "OrioKerg — питомник ориентальных кошек",
+    default: "Ориентальные котята в Москве — питомник OrioKerg",
     template: "%s · OrioKerg",
   },
   description:
-    "Питомник OrioKerg: здоровые социализированные ориентальные котята с документами, прививками и поддержкой на всю жизнь.",
+    "Питомник ориентальных кошек OrioKerg в Москве: здоровые социализированные котята с документами WCF, прививками и поддержкой на всю жизнь. Доставка по России.",
+  keywords: [
+    "ориентальные котята",
+    "купить ориентального котёнка",
+    "питомник ориентальных кошек",
+    "ориентальная кошка",
+    "Москва",
+  ],
   alternates: {
     canonical: "/",
   },
   openGraph: {
-    title: "OrioKerg — питомник ориентальных кошек",
+    title: "Ориентальные котята в Москве — питомник OrioKerg",
     description:
-      "Здоровые социализированные ориентальные котята с документами, прививками и поддержкой на всю жизнь.",
+      "Здоровые ориентальные котята с документами WCF, прививками и поддержкой. Питомник OrioKerg, Москва. Доставка по России.",
     type: "website",
     locale: "ru_RU",
     siteName: "OrioKerg",
@@ -61,9 +68,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "OrioKerg — питомник ориентальных кошек",
+    title: "Ориентальные котята в Москве — питомник OrioKerg",
     description:
-      "Здоровые социализированные ориентальные котята с документами, прививками и поддержкой на всю жизнь.",
+      "Здоровые ориентальные котята с документами WCF, прививками и поддержкой. Питомник OrioKerg, Москва. Доставка по России.",
     images: ["/images/uploads/oriokerg-hero.png"],
   },
 };
@@ -90,10 +97,17 @@ export default function RootLayout({ children }: RootLayoutProps) {
     name: "OrioKerg",
     alternateName: "Питомник OrioKerg",
     url: "https://oriokerg.ru",
-    logo: "https://oriokerg.ru/icon.svg",
+    logo: "https://oriokerg.ru/icon.png",
     image: "https://oriokerg.ru/images/uploads/oriokerg-hero.png",
     description:
-      "Питомник ориентальных кошек OrioKerg: здоровые социализированные котята с документами и поддержкой.",
+      "Питомник ориентальных кошек OrioKerg в Москве: здоровые социализированные котята с документами WCF и поддержкой. Доставка по России.",
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "Москва",
+      addressRegion: "Москва",
+      addressCountry: "RU",
+    },
+    areaServed: ["Москва", "Россия"],
     ...(sameAs.length ? { sameAs } : {}),
     ...(isRealPhone(contacts.phone)
       ? {

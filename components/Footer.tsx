@@ -125,7 +125,7 @@ export function Footer({ contacts }: FooterProps) {
               Политика конфиденциальности
             </Link>
             <span className="hidden md:inline">·</span>
-            <span>Россия</span>
+            <span>Москва · Россия</span>
           </div>
         </div>
       </div>
