@@ -1,11 +1,13 @@
 import { PhoneIcon, TelegramIcon, VkIcon, telHref } from "@/components/icons";
-import { isRealPhone } from "@/lib/format";
+import { isRealPhone, telegramWith } from "@/lib/format";
 
 type ContactButtonsProps = {
   telegram?: string;
   vk?: string;
   phone?: string;
   className?: string;
+  /** Предзаполненный текст для Telegram (напр. «…Интересует котёнок Диана»). */
+  message?: string;
 };
 
 const iconClass = "h-5 w-5 shrink-0";
@@ -15,12 +17,13 @@ export function ContactButtons({
   vk,
   phone,
   className = "",
+  message,
 }: ContactButtonsProps) {
   return (
     <div className={`flex flex-col gap-3 sm:flex-row ${className}`}>
       {telegram ? (
         <a
-          href={telegram}
+          href={telegramWith(telegram, message)}
           target="_blank"
           rel="noreferrer"
           className="inline-flex flex-1 items-center justify-center gap-2.5 rounded-full bg-gradient-to-br from-accent to-accent-strong px-6 py-3.5 text-sm font-medium text-accent-foreground shadow-glow transition-transform duration-200 hover:-translate-y-0.5"

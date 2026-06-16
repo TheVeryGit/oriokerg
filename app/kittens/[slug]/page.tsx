@@ -7,6 +7,7 @@ import type { ReactNode } from "react";
 import { AnimalCard } from "@/components/AnimalCard";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { ContactButtons } from "@/components/ContactButtons";
+import { TelegramIcon } from "@/components/icons";
 import { JsonLd } from "@/components/JsonLd";
 import { KittenAge } from "@/components/KittenAge";
 import { PhotoGallery } from "@/components/PhotoGallery";
@@ -15,7 +16,7 @@ import { ShareButtons } from "@/components/ShareButtons";
 import { Stagger, StaggerItem } from "@/components/motion/Stagger";
 import type { ContactsSettings } from "@/lib/content";
 import { getKittenBySlug, getKittens, getSettings } from "@/lib/content";
-import { formatBirthDate, kittenPriceLines } from "@/lib/format";
+import { formatBirthDate, kittenPriceLines, telegramWith } from "@/lib/format";
 
 type KittenPageProps = {
   params: { slug: string };
@@ -46,12 +47,17 @@ export async function generateStaticParams() {
 export function generateMetadata({ params }: KittenPageProps): Metadata {
   const kitten = getKittenBySlug(decodeSlug(params.slug));
   if (!kitten) return { title: "Котёнок" };
-  const description =
-    kitten.description ||
-    `Ориентальный котёнок ${kitten.name}, окрас: ${kitten.color}. Питомник OrioKerg.`;
+  const traits = [kitten.gender, kitten.color]
+    .filter((t) => t && t !== "Не указан")
+    .join(", ");
+  const description = `Ориентальный котёнок ${kitten.name}${
+    traits ? ` — ${traits}` : ""
+  }. Документы WCF, прививки, поддержка. Питомник OrioKerg, Москва — купить или забронировать.${
+    kitten.description ? ` ${kitten.description}` : ""
+  }`;
   const image = kitten.photos[0];
   return {
-    title: `${kitten.name} — котёнок`,
+    title: `${kitten.name} — ориентальный котёнок${traits ? ` (${traits})` : ""} в Москве`,
     description,
     alternates: { canonical: `/kittens/${encodeURIComponent(kitten.slug)}/` },
     openGraph: {
@@ -103,6 +109,7 @@ export default function KittenPage({ params }: KittenPageProps) {
   }
 
   const contacts = getSettings<ContactsSettings>("contacts");
+  const tgMessage = `Здравствуйте! Интересует котёнок ${kitten.name}`;
   const priceLines = kittenPriceLines(kitten.pricePet, kitten.priceBreed);
   const related = getKittens()
     .filter((item) => item.slug !== kitten.slug && !item.reserved)
@@ -250,6 +257,7 @@ export default function KittenPage({ params }: KittenPageProps) {
                 telegram={contacts.telegram}
                 vk={contacts.vk}
                 phone={contacts.phone}
+                message={tgMessage}
                 className="mt-auto pt-7 sm:flex-col"
               />
               <p className="mt-4 text-center text-xs text-muted">
@@ -296,6 +304,22 @@ export default function KittenPage({ params }: KittenPageProps) {
             ))}
           </Stagger>
         </section>
+      ) : null}
+
+      {/* Запас снизу, чтобы липкая моб-кнопка не перекрывала контент */}
+      <div className="h-20 lg:hidden" aria-hidden="true" />
+
+      {/* Липкая кнопка связи на мобиле — всегда под пальцем */}
+      {contacts.telegram ? (
+        <a
+          href={telegramWith(contacts.telegram, tgMessage)}
+          target="_blank"
+          rel="noreferrer"
+          className="fixed inset-x-3 bottom-3 z-30 inline-flex items-center justify-center gap-2.5 rounded-full bg-gradient-to-br from-accent to-accent-strong px-6 py-4 text-sm font-medium text-accent-foreground shadow-glow lg:hidden"
+        >
+          <TelegramIcon className="h-5 w-5" />
+          Спросить про {kitten.name}
+        </a>
       ) : null}
     </div>
   );

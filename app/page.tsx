@@ -9,7 +9,7 @@ import { StepsScroller } from "@/components/home/StepsScroller";
 import { Reveal } from "@/components/Reveal";
 import { Stagger, StaggerItem } from "@/components/motion/Stagger";
 import type { ContactsSettings } from "@/lib/content";
-import { kittenPriceLines } from "@/lib/format";
+import { kittenPriceLines, telegramWith } from "@/lib/format";
 import {
   DEFAULT_HERO_IMAGE,
   getCats,
@@ -439,7 +439,10 @@ export default function HomePage() {
             </p>
             <div className="mt-10 flex flex-wrap justify-center gap-4">
               <a
-                href={contacts.telegram}
+                href={telegramWith(
+                  contacts.telegram,
+                  "Здравствуйте! Пишу с сайта OrioKerg — расскажите о котятах",
+                )}
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex items-center gap-2.5 rounded-full bg-card px-8 py-4 text-sm font-medium text-accent-strong transition-transform duration-200 hover:-translate-y-0.5"

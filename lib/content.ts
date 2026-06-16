@@ -279,7 +279,15 @@ export function getKittens(): KittenEntry[] {
       };
     })
     .filter((kitten) => !kitten.draft)
-    .sort((left, right) => left.name.localeCompare(right.name, "ru"));
+    .sort((left, right) => {
+      // Свободные сначала; внутри — младшие (новее по дате рождения) первыми;
+      // дальше по имени. Котята без даты — в конце своей группы.
+      if (left.reserved !== right.reserved) return left.reserved ? 1 : -1;
+      const ld = left.birthDate ?? "";
+      const rd = right.birthDate ?? "";
+      if (ld !== rd) return rd.localeCompare(ld); // ISO desc → новее первыми
+      return left.name.localeCompare(right.name, "ru");
+    });
 }
 
 /* ----------------------------- Default content ---------------------------- */

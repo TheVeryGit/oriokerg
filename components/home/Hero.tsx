@@ -6,6 +6,10 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import type { CSSProperties } from "react";
 
+import { telegramWith } from "@/lib/format";
+
+const TG_GENERIC = "Здравствуйте! Пишу с сайта OrioKerg — расскажите о котятах";
+
 type HeroProps = {
   title: string;
   subtitle: string;
@@ -102,7 +106,7 @@ export function Hero({ title, subtitle, image, telegram }: HeroProps) {
               Посмотреть котят
             </Link>
             <a
-              href={telegram}
+              href={telegramWith(telegram, TG_GENERIC)}
               target="_blank"
               rel="noreferrer"
               className="rounded-full border border-border-strong bg-card/60 px-8 py-4 text-sm text-foreground transition-colors hover:border-accent hover:text-accent"

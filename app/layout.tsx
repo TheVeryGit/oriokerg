@@ -59,7 +59,7 @@ export const metadata: Metadata = {
     url: "https://oriokerg.ru",
     images: [
       {
-        url: "/images/uploads/oriokerg-hero.png",
+        url: "/images/uploads/glaphira.png",
         width: 1254,
         height: 1254,
         alt: "Ориентальные котята питомника OrioKerg",
@@ -71,7 +71,7 @@ export const metadata: Metadata = {
     title: "Ориентальные котята в Москве — питомник OrioKerg",
     description:
       "Здоровые ориентальные котята с документами WCF, прививками и поддержкой. Питомник OrioKerg, Москва. Доставка по России.",
-    images: ["/images/uploads/oriokerg-hero.png"],
+    images: ["/images/uploads/glaphira.png"],
   },
 };
 
@@ -98,7 +98,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
     alternateName: "Питомник OrioKerg",
     url: "https://oriokerg.ru",
     logo: "https://oriokerg.ru/icon.png",
-    image: "https://oriokerg.ru/images/uploads/oriokerg-hero.png",
+    image: "https://oriokerg.ru/images/uploads/glaphira.png",
     description:
       "Питомник ориентальных кошек OrioKerg в Москве: здоровые социализированные котята с документами WCF и поддержкой. Доставка по России.",
     address: {

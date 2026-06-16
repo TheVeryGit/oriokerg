@@ -45,6 +45,17 @@ export function phoneE164(phone?: string | null): string {
   return (phone ?? "").replace(/[^\d+]/g, "");
 }
 
+/**
+ * Ссылка в Telegram с предзаполненным текстом сообщения.
+ * `https://t.me/<user>` → `…?text=<urlencoded>` (Telegram-клиенты подставляют
+ * текст в поле ввода). Без текста — исходная ссылка.
+ */
+export function telegramWith(url?: string | null, text?: string) {
+  if (!url) return "";
+  if (!text) return url;
+  return `${url}${url.includes("?") ? "&" : "?"}text=${encodeURIComponent(text)}`;
+}
+
 export function formatPrice(price?: number) {
   if (typeof price !== "number") {
     return null;

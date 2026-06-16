@@ -2,7 +2,9 @@ import Link from "next/link";
 
 import { PhoneIcon, TelegramIcon, VkIcon, telHref } from "@/components/icons";
 import type { ContactsSettings } from "@/lib/content";
-import { formatPhone, isRealPhone } from "@/lib/format";
+import { formatPhone, isRealPhone, telegramWith } from "@/lib/format";
+
+const TG_GENERIC = "Здравствуйте! Пишу с сайта OrioKerg — расскажите о котятах";
 
 type FooterProps = {
   contacts: ContactsSettings;
@@ -92,7 +94,7 @@ export function Footer({ contacts }: FooterProps) {
               Связаться
             </p>
             <a
-              href={contacts.telegram}
+              href={telegramWith(contacts.telegram, TG_GENERIC)}
               target="_blank"
               rel="noreferrer"
               className="mt-5 inline-flex w-full items-center justify-center rounded-full bg-gradient-to-br from-accent to-accent-strong px-6 py-3.5 text-sm font-medium text-accent-foreground shadow-glow transition-transform hover:-translate-y-0.5"
