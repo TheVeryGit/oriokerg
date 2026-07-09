@@ -88,6 +88,7 @@ export function Header() {
           <div className="flex items-center gap-2.5">
             <Link
               href="/kittens"
+              data-ym-goal="cta_choose"
               className="hidden rounded-full bg-gradient-to-br from-accent to-accent-strong px-5 py-2.5 text-sm font-medium text-accent-foreground shadow-glow transition-transform duration-200 hover:-translate-y-0.5 lg:inline-flex"
             >
               Выбрать котёнка
@@ -158,6 +159,7 @@ export function Header() {
             })}
             <Link
               href="/kittens"
+              data-ym-goal="cta_choose"
               tabIndex={isOpen ? 0 : -1}
               className="mt-1 rounded-full bg-gradient-to-br from-accent to-accent-strong px-6 py-3.5 text-center text-sm font-medium text-accent-foreground shadow-glow"
             >
