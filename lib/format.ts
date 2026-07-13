@@ -116,22 +116,13 @@ export type PriceLine = {
 };
 
 /**
- * Строит до двух ценовых строк для котёнка: «В любимцы» (pet) и
- * «В разведение» (breed, помечается tone:"elite"). Если ни одной
- * цены нет — одна строка «Цена по запросу».
+ * Одна ценовая строка котёнка — цена «в любимцы» (pet). Цену
+ * «в разведение» на сайте не показываем цифрой (пугающий якорь для
+ * обычных покупателей) — условия разведения обсуждаются в переписке.
+ * Если pet-цены нет — «Цена по запросу» (breed-цифра не подставляется).
  */
-export function kittenPriceLines(
-  pricePet?: number,
-  priceBreed?: number,
-): PriceLine[] {
-  const lines: PriceLine[] = [];
+export function kittenPriceLines(pricePet?: number): PriceLine[] {
   const pet = formatPrice(pricePet);
-  const breed = formatPrice(priceBreed);
-
-  if (pet) lines.push({ label: "В любимцы", value: `${pet} ₽` });
-  if (breed)
-    lines.push({ label: "В разведение", value: `${breed} ₽`, tone: "elite" });
-  if (lines.length === 0) lines.push({ value: "Цена по запросу" });
-
-  return lines;
+  if (pet) return [{ value: `${pet} ₽` }];
+  return [{ value: "Цена по запросу" }];
 }

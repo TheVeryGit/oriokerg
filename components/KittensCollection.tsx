@@ -70,7 +70,7 @@ export function KittensCollection({ kittens }: KittensCollectionProps) {
                 photo={kitten.photos[0]}
                 subtitle={kitten.gender}
                 birthDate={kitten.birthDate}
-                prices={kittenPriceLines(kitten.pricePet, kitten.priceBreed)}
+                prices={kittenPriceLines(kitten.pricePet)}
                 badge={
                   kitten.reserved
                     ? { label: "Зарезервирован", tone: "sold" }

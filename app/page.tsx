@@ -63,7 +63,7 @@ const guarantees = [
   },
   {
     title: "Готов к переезду",
-    text: "Социализированный, приучённый к лотку малыш, привыкший к семье, детям и собаке.",
+    text: "Социализированный малыш, выросший в доме среди людей и повседневных звуков.",
     icon: (
       <>
         <path d="M4 11.5 12 5l8 6.5" />
@@ -224,7 +224,7 @@ export default function HomePage() {
                   photo={kitten.photos[0]}
                   subtitle={kitten.gender}
                   birthDate={kitten.birthDate}
-                  prices={kittenPriceLines(kitten.pricePet, kitten.priceBreed)}
+                  prices={kittenPriceLines(kitten.pricePet)}
                   badge={
                     kitten.reserved
                       ? { label: "Зарезервирован", tone: "sold" }

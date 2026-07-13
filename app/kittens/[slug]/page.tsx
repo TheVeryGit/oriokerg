@@ -110,7 +110,7 @@ export default function KittenPage({ params }: KittenPageProps) {
 
   const contacts = getSettings<ContactsSettings>("contacts");
   const tgMessage = `Здравствуйте! Интересует котёнок ${kitten.name}`;
-  const priceLines = kittenPriceLines(kitten.pricePet, kitten.priceBreed);
+  const priceLines = kittenPriceLines(kitten.pricePet);
   const related = getKittens()
     .filter((item) => item.slug !== kitten.slug && !item.reserved)
     .slice(0, 3);
@@ -221,6 +221,12 @@ export default function KittenPage({ params }: KittenPageProps) {
                     </span>
                   </div>
                 ))}
+                {kitten.priceBreed ? (
+                  <p className="px-4 text-xs leading-relaxed text-muted">
+                    Возможна передача в разведение — условия обсуждаются
+                    индивидуально.
+                  </p>
+                ) : null}
               </div>
 
               <dl className="mt-7">
@@ -297,7 +303,7 @@ export default function KittenPage({ params }: KittenPageProps) {
                   photo={item.photos[0]}
                   subtitle={item.gender}
                   birthDate={item.birthDate}
-                  prices={kittenPriceLines(item.pricePet, item.priceBreed)}
+                  prices={kittenPriceLines(item.pricePet)}
                   badge={{ label: "Свободен", tone: "free" }}
                 />
               </StaggerItem>
