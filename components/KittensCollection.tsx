@@ -68,6 +68,7 @@ export function KittensCollection({ kittens }: KittensCollectionProps) {
                 href={`/kittens/${kitten.slug}`}
                 name={kitten.name}
                 photo={kitten.photos[0]}
+                photos={kitten.photos}
                 subtitle={kitten.gender}
                 birthDate={kitten.birthDate}
                 prices={kittenPriceLines(kitten.pricePet)}

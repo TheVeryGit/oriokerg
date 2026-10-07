@@ -3,6 +3,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 
 import { AgeBadge } from "@/components/AgeBadge";
+import { PhotoCarousel } from "@/components/PhotoCarousel";
 
 export type AnimalCardBadge = {
   label: string;
@@ -19,6 +20,8 @@ export type AnimalCardPrice = {
 type AnimalCardProps = {
   name: string;
   photo?: string;
+  /** Все фото животного: если больше одного — на карточке работает свайп. */
+  photos?: string[];
   subtitle?: string;
   /** Одна цена (строка) — для кошек и обратной совместимости. */
   price?: string | null;
@@ -56,6 +59,7 @@ const badgeTone: Record<NonNullable<AnimalCardBadge["tone"]>, string> = {
 export function AnimalCard({
   name,
   photo,
+  photos,
   subtitle,
   price,
   prices,
@@ -64,6 +68,7 @@ export function AnimalCard({
   href,
   birthDate,
 }: AnimalCardProps) {
+  const gallery = photos && photos.length > 0 ? photos : photo ? [photo] : [];
   const priceLines: AnimalCardPrice[] =
     prices && prices.length > 0
       ? prices
@@ -73,9 +78,17 @@ export function AnimalCard({
   return (
     <CardShell href={href}>
       <div className="relative aspect-square overflow-hidden">
-        {photo ? (
+        {gallery.length > 1 ? (
+          <PhotoCarousel
+            photos={gallery}
+            alt={name}
+            insideLink={Boolean(href)}
+            sizes="(min-width: 1280px) 30vw, (min-width: 768px) 45vw, 100vw"
+            imageClassName="transition-transform duration-[1200ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04]"
+          />
+        ) : gallery.length === 1 ? (
           <Image
-            src={photo}
+            src={gallery[0]}
             alt={name}
             width={900}
             height={900}

@@ -1,8 +1,9 @@
 "use client";
 
-import { AnimatePresence, m, useReducedMotion } from "framer-motion";
 import Image from "next-export-optimize-images/image";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+
+import { PhotoCarousel } from "@/components/PhotoCarousel";
 
 type PhotoGalleryProps = {
   photos: string[];
@@ -11,7 +12,16 @@ type PhotoGalleryProps = {
 
 export function PhotoGallery({ photos, alt }: PhotoGalleryProps) {
   const [active, setActive] = useState(0);
-  const reduce = useReducedMotion();
+  const stripRef = useRef<HTMLDivElement>(null);
+
+  // Лента миниатюр следует за активным кадром (при свайпе большого фото).
+  useEffect(() => {
+    const strip = stripRef.current;
+    const thumb = strip?.children[active] as HTMLElement | undefined;
+    if (!strip || !thumb) return;
+    const left = thumb.offsetLeft - (strip.clientWidth - thumb.clientWidth) / 2;
+    strip.scrollTo({ left, behavior: "smooth" });
+  }, [active]);
 
   if (photos.length === 0) {
     return (
@@ -28,37 +38,26 @@ export function PhotoGallery({ photos, alt }: PhotoGalleryProps) {
     );
   }
 
-  const activePhoto = photos[Math.min(active, photos.length - 1)];
-
   return (
     <div className="space-y-4">
       <div className="relative aspect-square overflow-hidden rounded-5xl border border-border bg-card shadow-lift">
-        <AnimatePresence mode="wait" initial={false}>
-          <m.div
-            key={activePhoto}
-            initial={reduce ? false : { opacity: 0, scale: 1.03 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={reduce ? { opacity: 0 } : { opacity: 0, scale: 1.01 }}
-            transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-            className="absolute inset-0"
-          >
-            <Image
-              src={activePhoto}
-              alt={alt}
-              width={1200}
-              height={900}
-              priority
-              placeholder="blur"
-              sizes="(min-width: 1024px) 60vw, 100vw"
-              className="h-full w-full object-cover"
-            />
-          </m.div>
-        </AnimatePresence>
+        <PhotoCarousel
+          photos={photos}
+          alt={alt}
+          priority
+          showCounter
+          sizes="(min-width: 1024px) 60vw, 100vw"
+          active={active}
+          onActiveChange={setActive}
+        />
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/15 to-transparent" />
       </div>
 
       {photos.length > 1 ? (
-        <div className="grid grid-cols-4 gap-3 sm:grid-cols-5">
+        <div
+          ref={stripRef}
+          className="relative flex gap-3 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        >
           {photos.map((photo, index) => {
             const isActive = index === active;
             return (
@@ -67,7 +66,7 @@ export function PhotoGallery({ photos, alt }: PhotoGalleryProps) {
                 type="button"
                 aria-label={`Показать фото ${index + 1}`}
                 aria-pressed={isActive}
-                className={`relative aspect-square cursor-pointer overflow-hidden rounded-lg border-2 bg-card transition-all duration-300 ${
+                className={`relative aspect-square w-[calc((100%-2.25rem)/4)] shrink-0 cursor-pointer overflow-hidden rounded-lg border-2 bg-card transition-all duration-300 sm:w-[calc((100%-3rem)/5)] ${
                   isActive
                     ? "border-accent shadow-soft"
                     : "border-transparent opacity-70 hover:opacity-100"

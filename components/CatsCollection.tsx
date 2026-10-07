@@ -33,6 +33,7 @@ export function CatsCollection({ cats }: CatsCollectionProps) {
               href={`/cats/${cat.slug}`}
               name={cat.name}
               photo={cat.photos[0]}
+              photos={cat.photos}
               subtitle={cat.color}
               price={price ? `${price} ₽` : undefined}
               badge={{ label: roleLabel(cat.gender), tone: "muted" }}

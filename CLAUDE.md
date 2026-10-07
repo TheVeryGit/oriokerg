@@ -61,6 +61,14 @@
 - Точка входа: `public/admin/index.html`, конфиг: `public/admin/config.yml`
 - На бою доступна по адресу `/admin/` сайта
 - Backend: **git-gateway через DecapBridge** (auth.decapbridge.com) — коммитит прямо в `main`
+- **Фото котят/кошек** (поле `photos`) — кастомный виджет `photo-gallery`
+  (`public/admin/photo-gallery-widget.js`): загрузка нескольких фото сразу, квадратные
+  плитки = ровно та обрезка, что на сайте, порядок — перетаскиванием/стрелками, «★ обложка»,
+  «⌕» — фото целиком с рамкой обрезки, «Отменить». Большие фото сжимаются в браузере до
+  2200 px. В md по-прежнему список путей. Панель «Просмотр» — `public/admin/animal-preview.js`
+  (карточка в списке + страница, фото берутся из `window.OrioPhotoCache`, поэтому видны до публикации).
+  Оба файла подключены в `index.html` с `?v=N` — при правке поднимай N (кэш браузера).
+  Локально проверять через Decap `backend: test-repo` (подменить backend в config.yml).
 - Имена файлов задаются настройкой `slug` (по полю «Имя»). НЕ убирать `identifier_field: name`
   и блок `slug:` — иначе вернутся монструозные имена файлов из всех полей.
 
@@ -113,8 +121,9 @@ npm run lint    # проверка eslint
     `useScroll`+`useMotionValueEvent`, sticky-pin; на мобиле/`reduced-motion` — статичный список).
   - Всё уважает `useReducedMotion` + `@media (prefers-reduced-motion)`. Анимируем `transform`/`opacity`.
 - **Компоненты:** `AnimalCard` (фото 4:5, zoom, скрим, бейдж `gold/muted/sold`, чип цены,
-  hover-«Подробнее», ссылка через `href`); `PhotoGallery` (активное фото с fade, превью
-  с акцентной рамкой); `ContactButtons` (Telegram/ВКонтакте/телефон); бренд-иконки —
+  hover-«Подробнее», ссылка через `href`); `PhotoCarousel` (квадратная карусель на нативном
+  scroll-snap: свайп, стрелки на десктопе, точки; используется в `AnimalCard` при >1 фото и
+  в `PhotoGallery`); `PhotoGallery` (большая карусель + счётчик + лента миниатюр); `ContactButtons` (Telegram/ВКонтакте/телефон); бренд-иконки —
   в `components/icons.tsx` (Simple Icons: Telegram, VK + телефон); `PageHeader`
   (eyebrow + serif h1 + intro); `Header`
   (прозрачный→твёрдый при скролле, активная ссылка, кнопка «Выбрать котёнка», моб. меню);

@@ -301,6 +301,7 @@ export default function KittenPage({ params }: KittenPageProps) {
                   href={`/kittens/${item.slug}`}
                   name={item.name}
                   photo={item.photos[0]}
+                  photos={item.photos}
                   subtitle={item.gender}
                   birthDate={item.birthDate}
                   prices={kittenPriceLines(item.pricePet)}
