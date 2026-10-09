@@ -82,8 +82,9 @@
           style: { position: "absolute", top: 0, left: 0, width: "100%", height: "100%", display: "flex", overflowX: "auto", scrollSnapType: "x mandatory" },
         },
           urls.map(function (u, i) {
-            return h("div", { key: i, style: { flex: "0 0 100%", height: "100%", scrollSnapAlign: "center" } },
-              h("img", { src: u, alt: "", draggable: false, style: { width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", display: "block" } }));
+            return h("div", { key: i, style: { position: "relative", flex: "0 0 100%", height: "100%", scrollSnapAlign: "center", overflow: "hidden" } },
+              i > 0 ? h("img", { src: u, alt: "", draggable: false, style: { position: "absolute", top: 0, left: 0, width: "100%", height: "100%", objectFit: "cover", transform: "scale(1.25)", filter: "blur(24px)", opacity: 0.7 } }) : null,
+              h("img", { src: u, alt: "", draggable: false, style: { position: "relative", width: "100%", height: "100%", objectFit: i === 0 ? "cover" : "contain", objectPosition: "center", display: "block" } }));
           })
         ),
         multi && active > 0 ? arrow("left", -1, "Назад") : null,
@@ -108,7 +109,8 @@
       var active = Math.min(this.state.active, urls.length - 1);
       return h("div", {},
         h("div", { style: { position: "relative", width: "100%", paddingBottom: "100%", overflow: "hidden", borderRadius: "8px", border: "1px solid " + C.border, background: C.card } },
-          h("img", { src: urls[active], alt: "", style: { position: "absolute", top: 0, left: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" } }),
+          active > 0 ? h("img", { src: urls[active], alt: "", style: { position: "absolute", top: 0, left: 0, width: "100%", height: "100%", objectFit: "cover", transform: "scale(1.25)", filter: "blur(24px)", opacity: 0.7 } }) : null,
+          h("img", { src: urls[active], alt: "", style: { position: "absolute", top: 0, left: 0, width: "100%", height: "100%", objectFit: active === 0 ? "cover" : "contain", objectPosition: "center" } }),
           urls.length > 1 ? h("span", { style: { position: "absolute", left: "10px", top: "10px", padding: "3px 11px", borderRadius: "999px", background: "rgba(19,18,21,.75)", fontSize: "12px" } }, (active + 1) + " / " + urls.length) : null
         ),
         urls.length > 1 ? h("div", { style: { display: "flex", gap: "8px", marginTop: "10px", overflowX: "auto" } },
@@ -117,7 +119,7 @@
               key: i, type: "button", onClick: function () { self.setState({ active: i }); },
               style: { flex: "0 0 calc((100% - 32px) / 5)", aspectRatio: "1 / 1", padding: 0, borderRadius: "6px", overflow: "hidden", cursor: "pointer", background: C.card,
                 border: "2px solid " + (i === active ? C.gold : "transparent"), opacity: i === active ? 1 : 0.7 },
-            }, h("img", { src: u, alt: "", style: { width: "100%", height: "100%", objectFit: "cover", display: "block" } }));
+            }, h("img", { src: u, alt: "", style: { width: "100%", height: "100%", objectFit: i === 0 ? "cover" : "contain", background: C.card, display: "block" } }));
           })
         ) : null
       );
@@ -206,7 +208,7 @@
         draft ? h("p", { style: { margin: "0 0 12px", padding: "8px 14px", borderRadius: "10px", background: "rgba(201,161,79,.14)", color: C.goldSoft, fontSize: "13px" } }, "Включён «Черновик» — на сайте эта карточка НЕ будет показана.") : null,
         h("p", { style: { margin: "0 0 22px", color: C.muted, fontSize: "13px" } },
           urls.length
-            ? "Так карточка выглядит на сайте. Фото листаются свайпом, стрелками или по миниатюрам."
+            ? "Так карточка выглядит на сайте. Обложка (первое фото) — квадрат, остальные показываются целиком. Листаются свайпом, стрелками или по миниатюрам."
             : "Добавьте фото в поле «Фотографии» — они сразу появятся здесь."),
 
         h("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "28px", alignItems: "start" } },

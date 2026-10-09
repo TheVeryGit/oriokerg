@@ -151,6 +151,19 @@ export function PhotoCarousel({
             aria-roledescription="slide"
             aria-label={`${index + 1} из ${count}`}
           >
+            {index > 0 ? (
+              // Дополнительные фото показываем целиком; поля заполняет размытая копия кадра.
+              <Image
+                src={photo}
+                alt=""
+                aria-hidden="true"
+                width={64}
+                height={64}
+                sizes="64px"
+                draggable={false}
+                className="absolute inset-0 h-full w-full scale-125 select-none object-cover opacity-70 blur-2xl"
+              />
+            ) : null}
             <Image
               src={photo}
               alt={index === 0 ? alt : `${alt} — фото ${index + 1}`}
@@ -160,7 +173,9 @@ export function PhotoCarousel({
               placeholder="blur"
               sizes={sizes}
               draggable={false}
-              className={`h-full w-full select-none object-cover ${imageClassName}`}
+              className={`relative h-full w-full select-none ${
+                index === 0 ? "object-cover" : "object-contain"
+              } ${imageClassName}`}
             />
           </div>
         ))}

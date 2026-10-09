@@ -140,6 +140,9 @@
     ".og-tile.is-over{outline:3px dashed #c9a14f;outline-offset:3px;transform:scale(.97)}" +
     ".og-tile.is-dragging{opacity:.35}" +
     ".og-tile img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;pointer-events:none}" +
+    ".og-tile.is-whole{background:#2a2622}" +
+    ".og-tile.is-whole img{object-fit:contain}" +
+    ".og-whole-tag{position:absolute;right:6px;top:6px;border-radius:12px;padding:3px 9px;background:rgba(32,24,10,.78);color:#f3ead6;font-size:11px}" +
     ".og-tile.is-busy{cursor:default}" +
     ".og-tile.is-busy img{filter:grayscale(.6) brightness(.8)}" +
     ".og-num{position:absolute;left:6px;top:6px;min-width:24px;height:24px;border-radius:12px;padding:0 7px;display:flex;align-items:center;justify-content:center;background:rgba(32,24,10,.78);color:#fff;font-size:12px;font-weight:600}" +
@@ -431,7 +434,7 @@
       var self = this;
       var url = resolveUrl(path, this.props.getAsset, this.props.field);
       var isCover = index === 0;
-      var cls = "og-tile" + (isCover ? " is-cover" : "");
+      var cls = "og-tile" + (isCover ? " is-cover" : " is-whole");
       if (this.state.dragIndex === index) cls += " is-dragging";
       if (this.state.overIndex === index && this.state.dragIndex !== null && this.state.dragIndex !== index) cls += " is-over";
       var broken = this.state.broken[path];
@@ -480,7 +483,7 @@
               },
             }),
         h("span", { className: "og-num" }, String(index + 1)),
-        isCover ? h("span", { className: "og-cover-tag" }, "★ ОБЛОЖКА") : null,
+        isCover ? h("span", { className: "og-cover-tag" }, "★ ОБЛОЖКА") : h("span", { className: "og-whole-tag" }, "целиком"),
         h(
           "div",
           { className: "og-actions" },
@@ -520,7 +523,7 @@
 
       /* Рамка квадрата, который попадёт на сайт: центр фото, сторона = меньшая сторона. */
       var crop = null;
-      if (n && n.w && n.h) {
+      if (index === 0 && n && n.w && n.h) {
         if (n.w > n.h) {
           var wPct = (n.h / n.w) * 100;
           crop = { left: (100 - wPct) / 2 + "%", top: "0", width: wPct + "%", height: "100%" };
@@ -530,6 +533,7 @@
         }
       }
       var fits = n && Math.abs(n.w - n.h) < 2;
+      var isCover = index === 0;
 
       return h(
         "div",
@@ -551,9 +555,11 @@
           { className: "og-lb-cap" },
           "Фото " + (index + 1) + " из " + photos.length + (index === 0 ? " · обложка" : ""),
           h("br"),
-          fits
-            ? "Фото квадратное — на сайте видно целиком."
-            : "Яркая часть в рамке — это то, что увидят на сайте (квадрат по центру). Затемнённое — обрезается."
+          !isCover
+            ? "Дополнительное фото — на сайте показывается целиком, без обрезки."
+            : fits
+              ? "Фото квадратное — на сайте видно целиком."
+              : "Яркая часть в рамке — это то, что увидят на сайте на обложке (квадрат по центру). Затемнённое — обрезается."
         ),
         h(
           "div",
@@ -635,8 +641,8 @@
         h(
           "p",
           { className: "og-tip" },
-          "Каждое фото показано так, как оно обрежется на сайте: квадрат по центру. Если у кота обрезаны уши или лапы — выберите другой кадр. ",
-          "Порядок меняется перетаскиванием или стрелками ‹ ›. Кнопка ⌕ показывает фото целиком с рамкой обрезки."
+          "Первое фото — обложка: на сайте оно квадратное (обрезается по центру), плитка показывает точную обрезку. Остальные фото показываются целиком. Если на обложке обрезаны уши или лапы — поставьте другой кадр (★). ",
+          "Порядок меняется перетаскиванием или стрелками ‹ ›. Кнопка ⌕ показывает фото целиком (у обложки — с рамкой обрезки)."
         ),
         this.renderLightbox(photos)
       );

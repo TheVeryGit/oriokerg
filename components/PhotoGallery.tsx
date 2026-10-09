@@ -79,7 +79,9 @@ export function PhotoGallery({ photos, alt }: PhotoGalleryProps) {
                   width={240}
                   height={240}
                   sizes="20vw"
-                  className="h-full w-full object-cover"
+                  className={`h-full w-full ${
+                    index === 0 ? "object-cover" : "bg-surface-2 object-contain"
+                  }`}
                 />
               </button>
             );
