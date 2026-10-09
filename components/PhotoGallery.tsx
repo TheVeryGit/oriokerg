@@ -47,6 +47,7 @@ export function PhotoGallery({ photos, alt }: PhotoGalleryProps) {
           priority
           showCounter
           sizes="(min-width: 1024px) 60vw, 100vw"
+          coverSizes="(min-width: 1024px) 90vw, 150vw"
           active={active}
           onActiveChange={setActive}
         />

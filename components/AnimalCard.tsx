@@ -84,6 +84,7 @@ export function AnimalCard({
             alt={name}
             insideLink={Boolean(href)}
             sizes="(min-width: 1280px) 30vw, (min-width: 768px) 45vw, 100vw"
+            coverSizes="(min-width: 1280px) 45vw, (min-width: 768px) 68vw, 150vw"
             imageClassName="transition-transform duration-[1200ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04]"
           />
         ) : gallery.length === 1 ? (
@@ -93,7 +94,7 @@ export function AnimalCard({
             width={900}
             height={900}
             placeholder="blur"
-            sizes="(min-width: 1280px) 30vw, (min-width: 768px) 45vw, 100vw"
+            sizes="(min-width: 1280px) 45vw, (min-width: 768px) 68vw, 150vw"
             className="h-full w-full object-cover transition-transform duration-[1200ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.08]"
           />
         ) : (

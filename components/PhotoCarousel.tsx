@@ -9,6 +9,8 @@ type PhotoCarouselProps = {
   photos: string[];
   alt: string;
   sizes: string;
+  /** sizes для обложки: кадр 3:2 в квадрате масштабируется ×1.5, поэтому файл нужен крупнее. */
+  coverSizes?: string;
   /** Первый кадр грузится сразу (для фото над сгибом). */
   priority?: boolean;
   /** Управляемый режим: активный кадр задаёт родитель (например, миниатюры). */
@@ -51,6 +53,7 @@ export function PhotoCarousel({
   photos,
   alt,
   sizes,
+  coverSizes,
   priority = false,
   active: controlledActive,
   onActiveChange,
@@ -171,7 +174,7 @@ export function PhotoCarousel({
               height={1200}
               priority={priority && index === 0}
               placeholder="blur"
-              sizes={sizes}
+              sizes={index === 0 ? (coverSizes ?? sizes) : sizes}
               draggable={false}
               className={`relative h-full w-full select-none ${
                 index === 0 ? "object-cover" : "object-contain"
