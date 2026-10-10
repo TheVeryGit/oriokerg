@@ -47,13 +47,12 @@ export async function generateStaticParams() {
 export function generateMetadata({ params }: KittenPageProps): Metadata {
   const kitten = getKittenBySlug(decodeSlug(params.slug));
   if (!kitten) return { title: "Котёнок" };
-  const traits = [kitten.gender, kitten.color]
-    .filter((t) => t && t !== "Не указан")
-    .join(", ");
+  // Окрас у котят на сайте не показываем (в т.ч. в заголовке и сниппете).
+  const traits = kitten.gender && kitten.gender !== "Не указан" ? kitten.gender : "";
   const description = `Ориентальный котёнок ${kitten.name}${
-    traits ? ` — ${traits}` : ""
+    traits ? ` — ${traits.toLowerCase()}` : ""
   }. Документы WCF, прививки, поддержка. Питомник OrioKerg, Москва — купить или забронировать.${
-    kitten.description ? ` ${kitten.description}` : ""
+    kitten.description ? ` ${snippet(kitten.description)}` : ""
   }`;
   const image = kitten.photos[0];
   return {
@@ -68,6 +67,22 @@ export function generateMetadata({ params }: KittenPageProps): Metadata {
     },
     ...(image ? { twitter: { card: "summary_large_image", images: [image] } } : {}),
   };
+}
+
+/** Первые ~160 символов описания для сниппета поисковика — без обрыва слова. */
+function snippet(text: string, max = 160) {
+  const flat = text.replace(/\s+/g, " ").trim();
+  if (flat.length <= max) return flat;
+  const cut = flat.slice(0, max);
+  return `${cut.slice(0, cut.lastIndexOf(" "))}…`;
+}
+
+/** Абзацы описания: разделитель — перенос строки (в админке — просто Enter). */
+function paragraphs(text: string) {
+  return text
+    .split(/\n+/)
+    .map((p) => p.trim())
+    .filter(Boolean);
 }
 
 function InfoRow({ label, value }: { label: string; value: ReactNode }) {
@@ -120,9 +135,9 @@ export default function KittenPage({ params }: KittenPageProps) {
     "@context": "https://schema.org",
     "@type": "Product",
     name: kitten.name,
-    description:
-      kitten.description ||
-      `Ориентальный котёнок ${kitten.name}, окрас: ${kitten.color}.`,
+    description: kitten.description
+      ? snippet(kitten.description, 300)
+      : `Ориентальный котёнок ${kitten.name} из питомника OrioKerg.`,
     category: "Ориентальная кошка",
     ...(kitten.photos.length
       ? { image: kitten.photos.map((p) => `https://oriokerg.ru${p}`) }
@@ -231,7 +246,6 @@ export default function KittenPage({ params }: KittenPageProps) {
 
               <dl className="mt-7">
                 <InfoRow label="Пол" value={kitten.gender} />
-                <InfoRow label="Окрас" value={kitten.color} />
                 {kitten.bodyType ? (
                   <InfoRow label="Тип" value={kitten.bodyType} />
                 ) : null}
@@ -246,12 +260,6 @@ export default function KittenPage({ params }: KittenPageProps) {
                     label="Дата рождения"
                     value={formatBirthDate(kitten.birthDate)}
                   />
-                ) : null}
-                {kitten.mother ? (
-                  <InfoRow label="Мама" value={kitten.mother} />
-                ) : null}
-                {kitten.father ? (
-                  <InfoRow label="Папа" value={kitten.father} />
                 ) : null}
                 <InfoRow
                   label="Статус"
@@ -280,9 +288,11 @@ export default function KittenPage({ params }: KittenPageProps) {
             <h2 className="font-serif text-2xl font-semibold text-foreground">
               О котёнке
             </h2>
-            <p className="mt-5 max-w-3xl text-base leading-8 text-muted text-pretty">
-              {kitten.description}
-            </p>
+            <div className="mt-5 max-w-3xl space-y-4 text-base leading-8 text-muted text-pretty">
+              {paragraphs(kitten.description).map((text, index) => (
+                <p key={index}>{text}</p>
+              ))}
+            </div>
           </div>
         </Reveal>
       ) : null}

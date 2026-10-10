@@ -188,7 +188,7 @@
             h("div", { style: { fontFamily: "'Playfair Display', Georgia, serif", fontSize: "1.5rem", fontWeight: 600, lineHeight: 1.2 } }, name),
             age ? h("span", { style: { flexShrink: 0, marginTop: "4px", padding: "3px 10px", borderRadius: "999px", fontSize: "12px", background: "rgba(201,161,79,.12)", color: C.gold } }, "◷ " + age) : null
           ),
-          (gender || color) ? h("div", { style: { marginTop: "4px", fontSize: "14px", color: C.muted } }, [gender, color].filter(Boolean).join(" · ")) : null,
+          (gender || (!isKitten && color)) ? h("div", { style: { marginTop: "4px", fontSize: "14px", color: C.muted } }, [gender, isKitten ? "" : color].filter(Boolean).join(" · ")) : null,
           priceText ? h("div", { style: { marginTop: "14px", padding: "10px 16px", borderRadius: "999px", border: "1px solid " + C.border, display: "flex", justifyContent: "space-between", fontSize: "14px" } },
             h("span", { style: { color: C.muted } }, "Цена"),
             h("b", { style: { color: C.gold } }, priceText)) : null
@@ -198,8 +198,7 @@
       var facts = [];
       var addFact = function (k, v) { if (v) facts.push(h("div", { key: k }, h("span", { style: { color: C.muted } }, k + ": "), v)); };
       addFact("Дата рождения", birth ? new Date(birth).toLocaleDateString("ru-RU", { day: "numeric", month: "long", year: "numeric" }) : "");
-      addFact("Мама", d("mother"));
-      addFact("Папа", d("father"));
+      // У котят окрас и родителей на сайте не показываем.
       addFact("Тип", d("body_type"));
       if (isKitten && d("price_breed")) addFact("Цена в разведение (на сайте не показывается)", money(d("price_breed")));
 
@@ -218,7 +217,8 @@
 
         (facts.length || description) ? h("div", { style: { marginTop: "28px", padding: "18px 20px", borderRadius: "8px", border: "1px solid " + C.border, background: C.card, fontSize: "14px", lineHeight: 1.8 } },
           facts,
-          description ? h("div", { style: { marginTop: facts.length ? "10px" : 0, paddingTop: facts.length ? "10px" : 0, borderTop: facts.length ? "1px solid " + C.border : "none", color: C.muted } }, description) : null
+          description ? h("div", { style: { marginTop: facts.length ? "10px" : 0, paddingTop: facts.length ? "10px" : 0, borderTop: facts.length ? "1px solid " + C.border : "none", color: C.muted } },
+            String(description).split(/\n+/).filter(function (t) { return t.trim(); }).map(function (t, i) { return h("p", { key: i, style: { margin: i ? "10px 0 0" : 0 } }, t); })) : null
         ) : null
       );
     },

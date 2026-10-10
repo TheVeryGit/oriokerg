@@ -41,7 +41,9 @@
   чтобы статическая сборка не падала.
 - `app/kittens/page.tsx` + `app/kittens/[slug]/page.tsx` — список котят и карточка котёнка
   (карточка с галереей, ценой, статусом и CTA в мессенджеры). Тот же `__placeholder__`,
-  что и у кошек.
+  что и у кошек. **У котят окрас и родители (`color`, `mother`, `father`) на сайте НЕ
+  выводятся** — ни в характеристиках, ни в title/description; поля остаются в CMS «для себя».
+  У взрослых кошек окрас показывается. Описание котёнка — абзацы через перенос строки.
 - `app/breed/page.tsx` — страница о породе (контент из `content/settings/breed.md`)
 - `app/faq/page.tsx` — FAQ: аккордеон (`components/FaqAccordion.tsx`, CSS-grid высота — ответы
   остаются в DOM для SEO) + JSON-LD `FAQPage`. Контент — `getFaq()`.

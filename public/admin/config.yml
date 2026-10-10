@@ -62,7 +62,7 @@ collections:
         widget: select
         default: Кошка
         options: [Кот, Кошка]
-      - { label: Окрас, name: color, widget: string, hint: "Например: красный тикированный" }
+      - { label: Окрас, name: color, widget: string, required: false, hint: "Для себя — на сайте у котят окрас не показывается." }
       - label: "Тип (телосложение)"
         name: body_type
         widget: select
@@ -80,9 +80,9 @@ collections:
         format: "YYYY-MM-DD"
         picker_utc: true
         hint: "Возраст («2 месяца») посчитается на сайте автоматически. Можно не указывать."
-      - { label: "Мама (кличка)", name: mother, widget: string, required: false, hint: "Кличка матери — покажется в характеристиках. Необязательно." }
-      - { label: "Папа (кличка)", name: father, widget: string, required: false, hint: "Кличка отца — покажется в характеристиках. Необязательно." }
-      - { label: Описание, name: description, widget: text, required: false, hint: "Пара тёплых предложений о малыше: характер, привычки, чем выделяется." }
+      - { label: "Мама (кличка)", name: mother, widget: string, required: false, hint: "Для себя — на сайте не показывается." }
+      - { label: "Папа (кличка)", name: father, widget: string, required: false, hint: "Для себя — на сайте не показывается." }
+      - { label: Описание, name: description, widget: text, required: false, hint: "3–5 коротких абзацев о характере и внешности. Новый абзац — клавиша Enter." }
       - label: Фотографии
         name: photos
         widget: photo-gallery
