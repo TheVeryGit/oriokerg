@@ -68,6 +68,10 @@ export type HomepageSettings = {
   breed_title: string;
   breed_text: string;
   breed_traits: TextItem[];
+  /** Фото в блоке «Порода» на главной (портрет 5:6). Пусто — берётся из галереи. */
+  breed_image?: string;
+  /** Галерея «Жизнь в питомнике»: первое — большое, ещё 4 — маленькие. Пусто — авто. */
+  gallery: string[];
   steps_title: string;
   steps: TextItem[];
   reviews_title: string;
@@ -295,6 +299,7 @@ export function getKittens(): KittenEntry[] {
    never renders blank sections even before the owner fills everything in.   */
 
 const DEFAULT_HOMEPAGE: HomepageSettings = {
+  gallery: [],
   hero_title: "Ориентальные кошки с *характером* и родословной",
   hero_subtitle:
     "Здоровые, социализированные котята из питомника OrioKerg. Документы, прививки и поддержка на всю жизнь.",
@@ -428,6 +433,8 @@ export function getHomepage(): HomepageSettings {
     breed_title: normalizeText(data.breed_title, DEFAULT_HOMEPAGE.breed_title),
     breed_text: normalizeText(data.breed_text, DEFAULT_HOMEPAGE.breed_text),
     breed_traits: breedTraits.length ? breedTraits : DEFAULT_HOMEPAGE.breed_traits,
+    breed_image: normalizeText(data.breed_image),
+    gallery: normalizePhotos(data.gallery),
     steps_title: normalizeText(data.steps_title, DEFAULT_HOMEPAGE.steps_title),
     steps: steps.length ? steps : DEFAULT_HOMEPAGE.steps,
     reviews_title: normalizeText(data.reviews_title, DEFAULT_HOMEPAGE.reviews_title),

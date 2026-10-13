@@ -195,6 +195,15 @@ collections:
             fields:
               - { name: title, label: Заголовок, widget: string }
               - { name: text, label: Текст, widget: text }
+          - { name: breed_image, label: "Фото в блоке о породе", widget: image, required: false, hint: "Вертикальный кадр 5:6 — лучше фото, где кот стоит или сидит по центру. Если пусто — берётся второе фото галереи." }
+          - label: "Галерея «Жизнь в питомнике»"
+            name: gallery
+            widget: list
+            required: false
+            label_singular: Фото
+            summary: "Фото {{index}}"
+            hint: "5 фото: первое — большое, остальные 4 — маленькие квадраты (обрезка по центру). Перетаскиванием меняется порядок. Если пусто — берутся фото котят автоматически."
+            field: { label: Фото, name: photo, widget: image }
           - { name: steps_title, label: "Заголовок блока «Как забрать котёнка»", widget: string, required: false }
           - label: "Шаги «Как забрать котёнка»"
             name: steps

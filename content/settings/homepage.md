@@ -28,6 +28,13 @@ breed_traits:
     text: Точёный силуэт, миндалевидные глаза и шелковистая короткая шерсть.
   - title: Высокий интеллект
     text: Быстро учатся, играют в апорт и обожают головоломки и внимание.
+breed_image: /images/uploads/kilian-murphy-hq-1.jpg
+gallery:
+  - /images/uploads/borisov-yura-hq-2.jpg
+  - /images/uploads/demi-moore-hq-4.jpg
+  - /images/uploads/denzel-washington-hq-5.jpg
+  - /images/uploads/princess-diana-hq-1.jpg
+  - /images/uploads/donk-hq-2.jpg
 steps_title: Как забрать котёнка
 steps:
   - title: Знакомство

@@ -117,7 +117,12 @@ function ArrowIcon() {
   );
 }
 
-function buildGallery(): string[] {
+function buildGallery(curated: string[]): string[] {
+  // Подборка из админки (Настройки → Главная → Галерея) — в приоритете.
+  if (curated.length > 0) {
+    return [...curated, ...galleryFallback].slice(0, 5);
+  }
+
   const realPhotos = [
     ...getKittens().flatMap((kitten) => kitten.photos),
     ...getCats().flatMap((cat) => cat.photos),
@@ -137,7 +142,8 @@ export default function HomePage() {
   const featuredKittens = getKittens()
     .filter((kitten) => !kitten.reserved)
     .slice(0, 3);
-  const gallery = buildGallery();
+  const gallery = buildGallery(homepage.gallery);
+  const breedImage = homepage.breed_image || gallery[1] || heroImage;
 
   // Заголовок породы: последнее слово — золотым курсивом («Ориентальная кошка»).
   const breedWords = homepage.breed_title.trim().split(/\s+/);
@@ -257,7 +263,7 @@ export default function HomePage() {
           <Reveal direction="right" className="relative">
             <div className="relative aspect-[5/6] overflow-hidden rounded-lg shadow-lift">
               <Image
-                src={gallery[1] ?? heroImage}
+                src={breedImage}
                 alt="Ориентальная кошка крупным планом"
                 fill
                 sizes="(min-width: 1024px) 45vw, 100vw"
