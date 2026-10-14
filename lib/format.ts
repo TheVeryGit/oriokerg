@@ -126,3 +126,16 @@ export function kittenPriceLines(pricePet?: number): PriceLine[] {
   if (pet) return [{ value: `${pet} ₽` }];
   return [{ value: "Цена по запросу" }];
 }
+
+/**
+ * Имя для View Transition (плавный «перелёт» фото из карточки списка в галерею
+ * страницы). Одинаково для `/kittens/<slug>` на обеих страницах; только ASCII,
+ * т.к. slug кириллический, а CSS-идентификатор должен быть простым.
+ */
+export function photoTransitionName(href: string) {
+  let hash = 0;
+  for (let i = 0; i < href.length; i++) {
+    hash = (hash * 31 + href.charCodeAt(i)) | 0;
+  }
+  return `photo-${(hash >>> 0).toString(36)}`;
+}

@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
+import { ViewTransitions } from "next-view-transitions";
 import type { ReactNode } from "react";
 
+import { AmbientGlow } from "@/components/AmbientGlow";
 import { CookieConsent } from "@/components/CookieConsent";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
@@ -112,6 +114,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
   };
 
   return (
+    <ViewTransitions>
     <html lang="ru" suppressHydrationWarning>
       <body
         className={`relative min-h-screen bg-background text-foreground`}
@@ -132,6 +135,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         >
           К содержимому
         </a>
+        <AmbientGlow />
         <div className="grain-layer" aria-hidden="true" />
         <MotionProvider>
           <div className="relative z-[2] flex min-h-screen flex-col">
@@ -145,5 +149,6 @@ export default function RootLayout({ children }: RootLayoutProps) {
         </MotionProvider>
       </body>
     </html>
+    </ViewTransitions>
   );
 }

@@ -157,6 +157,35 @@
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
 
+  /* Фоновое свечение (components/AmbientGlow.tsx): под зерном и контентом.
+     --sp — прогресс прокрутки 0..1, пятна плавно смещаются вслед за ним. */
+  .ambient {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .ambient__glow {
+    position: absolute;
+    width: 80vmax;
+    height: 80vmax;
+    border-radius: 9999px;
+    will-change: transform;
+  }
+  .ambient__glow--a {
+    top: -35vmax;
+    left: -30vmax;
+    background: radial-gradient(closest-side, rgb(var(--accent) / 0.1), transparent);
+    transform: translate3d(calc(var(--sp, 0) * 55vw), calc(var(--sp, 0) * 70vh), 0);
+  }
+  .ambient__glow--b {
+    bottom: -40vmax;
+    right: -35vmax;
+    background: radial-gradient(closest-side, rgb(var(--accent-soft) / 0.07), transparent);
+    transform: translate3d(calc(var(--sp, 0) * -50vw), calc(var(--sp, 0) * -65vh), 0);
+  }
+
   /* Золотой надзаголовок с волосяной линией (журнальный «kicker»). */
   .kicker {
     display: inline-flex;
@@ -284,5 +313,22 @@
   }
   .grain-layer {
     display: none;
+  }
+}
+
+/* Плавный «перелёт» фото из карточки списка в галерею (next-view-transitions). */
+::view-transition-group(*) {
+  animation-duration: 0.45s;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.3s;
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
   }
 }

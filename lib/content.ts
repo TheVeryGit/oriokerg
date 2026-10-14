@@ -12,6 +12,11 @@ type BaseEntry = {
   gender: string;
   description: string;
   photos: string[];
+  /**
+   * Полноразмерные оригиналы для полноэкранного просмотра (по индексу photos).
+   * null — оригинала нет (например, фото загружено через админку).
+   */
+  photosFull: (string | null)[];
 };
 
 export type CatEntry = BaseEntry & {
@@ -108,6 +113,23 @@ export type FaqSettings = {
 export const DEFAULT_HERO_IMAGE = "/images/hero-cat.jpg";
 
 const contentRoot = path.join(process.cwd(), "content");
+const fullResRoot = path.join(process.cwd(), "public", "images", "uploads", "full");
+
+/**
+ * Для каждого фото — путь к оригиналу в полном разрешении камеры
+ * (public/images/uploads/full/<имя>), если он лежит рядом. Его показывает
+ * полноэкранный просмотр поверх сжатой версии.
+ */
+function fullResVersions(photos: string[]): (string | null)[] {
+  return photos.map((photo) => {
+    if (!photo.startsWith("/images/uploads/")) return null;
+    const name = photo.slice("/images/uploads/".length);
+    if (name.includes("/")) return null;
+    return fs.existsSync(path.join(fullResRoot, name))
+      ? `/images/uploads/full/${name}`
+      : null;
+  });
+}
 
 function listMarkdownFiles(directory: string) {
   if (!fs.existsSync(directory)) {
@@ -242,6 +264,7 @@ export function getCats(): CatEntry[] {
         price: normalizeNumber(entry.data.price),
         description: normalizeText(entry.data.description, entry.content),
         photos: normalizePhotos(entry.data.photos),
+        photosFull: fullResVersions(normalizePhotos(entry.data.photos)),
         available: normalizeBoolean(entry.data.available, true),
         draft: normalizeBoolean(entry.data.draft, false),
       };
@@ -278,6 +301,7 @@ export function getKittens(): KittenEntry[] {
         bodyType: normalizeText(entry.data.body_type) || undefined,
         description: normalizeText(entry.data.description, entry.content),
         photos: normalizePhotos(entry.data.photos),
+        photosFull: fullResVersions(normalizePhotos(entry.data.photos)),
         reserved: normalizeBoolean(entry.data.reserved, false),
         draft: normalizeBoolean(entry.data.draft, false),
       };

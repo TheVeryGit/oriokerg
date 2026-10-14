@@ -32,6 +32,8 @@
 (они подставляют дефолты, если поле в CMS пустое — пустой контент не ломает вёрстку).
 
 Фото загружаются в `public/images/uploads/` (через админку), в markdown хранится путь.
+Оригиналы в полном разрешении камеры (для полноэкранного просмотра) — `public/images/uploads/full/<то же имя>`;
+`lib/content.ts` сам находит их (`photosFull`). Фото из админки оригинала не имеют — просмотр покажет сжатую версию.
 
 ## Страницы (`app/`)
 
@@ -125,7 +127,12 @@ npm run lint    # проверка eslint
 - **Компоненты:** `AnimalCard` (фото 4:5, zoom, скрим, бейдж `gold/muted/sold`, чип цены,
   hover-«Подробнее», ссылка через `href`); `PhotoCarousel` (квадратная карусель на нативном
   scroll-snap: свайп, стрелки на десктопе, точки; используется в `AnimalCard` при >1 фото и
-  в `PhotoGallery`); `PhotoGallery` (большая карусель + счётчик + лента миниатюр); `ContactButtons` (Telegram/ВКонтакте/телефон); бренд-иконки —
+  в `PhotoGallery`); `PhotoGallery` (большая карусель + счётчик + лента миниатюр);
+  `PhotoLightbox` (полноэкранный просмотр: свайп, щипок/двойной тап/колесо — зум, свайп вниз/Esc/«Назад» —
+  закрыть; метка в history — уникальный токен, т.к. Next копирует history.state); `AmbientGlow` (фоновое
+  золотое свечение, смещается со скроллом через `--sp`); переход «фото из карточки → галерея» —
+  `next-view-transitions` (`Link` в `AnimalCard`) + `view-transition-name` из `photoTransitionName()`;
+  шрифты — `@fontsource-variable` (НЕ `next/font/google`: однажды уронил сборку на CI); `ContactButtons` (Telegram/ВКонтакте/телефон); бренд-иконки —
   в `components/icons.tsx` (Simple Icons: Telegram, VK + телефон); `PageHeader`
   (eyebrow + serif h1 + intro); `Header`
   (прозрачный→твёрдый при скролле, активная ссылка, кнопка «Выбрать котёнка», моб. меню);

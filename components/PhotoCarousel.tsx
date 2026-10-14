@@ -22,6 +22,10 @@ type PhotoCarouselProps = {
   showCounter?: boolean;
   /** Класс для <img> (например, hover-зум в карточке). */
   imageClassName?: string;
+  /** Клик по фото (открыть полноэкранный просмотр). */
+  onSlideClick?: (index: number) => void;
+  /** view-transition-name активного кадра — «перелёт» фото между страницами. */
+  transitionName?: string;
 };
 
 const hideScrollbar =
@@ -60,6 +64,8 @@ export function PhotoCarousel({
   insideLink = false,
   showCounter = false,
   imageClassName = "",
+  onSlideClick,
+  transitionName,
 }: PhotoCarouselProps) {
   const reduce = useReducedMotion();
   const trackRef = useRef<HTMLDivElement>(null);
@@ -149,10 +155,18 @@ export function PhotoCarousel({
         {photos.map((photo, index) => (
           <div
             key={`${photo}-${index}`}
-            className="relative h-full w-full shrink-0 snap-center snap-always"
+            className={`relative h-full w-full shrink-0 snap-center snap-always ${
+              onSlideClick ? "cursor-zoom-in" : ""
+            }`}
             role="group"
             aria-roledescription="slide"
             aria-label={`${index + 1} из ${count}`}
+            onClick={onSlideClick ? () => onSlideClick(index) : undefined}
+            style={
+              transitionName && index === active
+                ? { viewTransitionName: transitionName }
+                : undefined
+            }
           >
             {index > 0 ? (
               // Дополнительные фото показываем целиком; поля заполняет размытая копия кадра.
@@ -183,6 +197,28 @@ export function PhotoCarousel({
           </div>
         ))}
       </div>
+
+      {onSlideClick ? (
+        <button
+          type="button"
+          aria-label="Открыть фото на весь экран"
+          onClick={() => onSlideClick(active)}
+          className="absolute bottom-3 right-3 z-[1] flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-white/15 bg-ink/65 text-ink-foreground backdrop-blur transition-colors hover:bg-ink/85"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            className="h-4 w-4"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
+          </svg>
+        </button>
+      ) : null}
 
       {multi ? (
         <>

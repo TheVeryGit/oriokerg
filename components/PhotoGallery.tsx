@@ -4,14 +4,20 @@ import Image from "next-export-optimize-images/image";
 import { useEffect, useRef, useState } from "react";
 
 import { PhotoCarousel } from "@/components/PhotoCarousel";
+import { PhotoLightbox } from "@/components/PhotoLightbox";
 
 type PhotoGalleryProps = {
   photos: string[];
+  /** Оригиналы в полном разрешении для полноэкранного просмотра (по индексу). */
+  fullPhotos?: (string | null)[];
   alt: string;
+  /** view-transition-name обложки — совпадает с карточкой в списке. */
+  transitionName?: string;
 };
 
-export function PhotoGallery({ photos, alt }: PhotoGalleryProps) {
+export function PhotoGallery({ photos, fullPhotos, alt, transitionName }: PhotoGalleryProps) {
   const [active, setActive] = useState(0);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
   const stripRef = useRef<HTMLDivElement>(null);
 
   // Лента миниатюр следует за активным кадром (при свайпе большого фото).
@@ -50,6 +56,11 @@ export function PhotoGallery({ photos, alt }: PhotoGalleryProps) {
           coverSizes="(min-width: 1024px) 90vw, 150vw"
           active={active}
           onActiveChange={setActive}
+          onSlideClick={(index) => {
+            setActive(index);
+            setLightboxOpen(true);
+          }}
+          transitionName={transitionName}
         />
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/15 to-transparent" />
       </div>
@@ -88,6 +99,16 @@ export function PhotoGallery({ photos, alt }: PhotoGalleryProps) {
             );
           })}
         </div>
+      ) : null}
+      {lightboxOpen ? (
+        <PhotoLightbox
+          photos={photos}
+          fullPhotos={fullPhotos}
+          alt={alt}
+          index={active}
+          onIndexChange={setActive}
+          onClose={() => setLightboxOpen(false)}
+        />
       ) : null}
     </div>
   );

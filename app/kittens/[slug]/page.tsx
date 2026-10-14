@@ -16,7 +16,12 @@ import { ShareButtons } from "@/components/ShareButtons";
 import { Stagger, StaggerItem } from "@/components/motion/Stagger";
 import type { ContactsSettings } from "@/lib/content";
 import { getKittenBySlug, getKittens, getSettings } from "@/lib/content";
-import { formatBirthDate, kittenPriceLines, telegramWith } from "@/lib/format";
+import {
+  formatBirthDate,
+  kittenPriceLines,
+  photoTransitionName,
+  telegramWith,
+} from "@/lib/format";
 
 type KittenPageProps = {
   params: { slug: string };
@@ -194,7 +199,12 @@ export default function KittenPage({ params }: KittenPageProps) {
 
       <div className="mt-8 grid gap-10 lg:grid-cols-[1.25fr_0.75fr]">
         <div>
-          <PhotoGallery photos={kitten.photos} alt={kitten.name} />
+          <PhotoGallery
+            photos={kitten.photos}
+            fullPhotos={kitten.photosFull}
+            alt={kitten.name}
+            transitionName={photoTransitionName(`/kittens/${kitten.slug}`)}
+          />
         </div>
 
         <div className="h-full">

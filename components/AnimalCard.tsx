@@ -1,9 +1,10 @@
 import Image from "next-export-optimize-images/image";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import type { ReactNode } from "react";
 
 import { AgeBadge } from "@/components/AgeBadge";
 import { PhotoCarousel } from "@/components/PhotoCarousel";
+import { photoTransitionName } from "@/lib/format";
 
 export type AnimalCardBadge = {
   label: string;
@@ -69,6 +70,7 @@ export function AnimalCard({
   birthDate,
 }: AnimalCardProps) {
   const gallery = photos && photos.length > 0 ? photos : photo ? [photo] : [];
+  const transitionName = href ? photoTransitionName(href) : undefined;
   const priceLines: AnimalCardPrice[] =
     prices && prices.length > 0
       ? prices
@@ -83,6 +85,7 @@ export function AnimalCard({
             photos={gallery}
             alt={name}
             insideLink={Boolean(href)}
+            transitionName={transitionName}
             sizes="(min-width: 1280px) 30vw, (min-width: 768px) 45vw, 100vw"
             coverSizes="(min-width: 1280px) 45vw, (min-width: 768px) 68vw, 150vw"
             imageClassName="transition-transform duration-[1200ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04]"
@@ -95,6 +98,7 @@ export function AnimalCard({
             height={900}
             placeholder="blur"
             sizes="(min-width: 1280px) 45vw, (min-width: 768px) 68vw, 150vw"
+            style={transitionName ? { viewTransitionName: transitionName } : undefined}
             className="h-full w-full object-cover transition-transform duration-[1200ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.08]"
           />
         ) : (

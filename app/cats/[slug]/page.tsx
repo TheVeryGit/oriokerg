@@ -9,6 +9,7 @@ import { ContactButtons } from "@/components/ContactButtons";
 import { PhotoGallery } from "@/components/PhotoGallery";
 import { Reveal } from "@/components/Reveal";
 import type { ContactsSettings } from "@/lib/content";
+import { photoTransitionName } from "@/lib/format";
 import { formatPrice, getCatBySlug, getCats, getSettings } from "@/lib/content";
 
 type CatPageProps = {
@@ -136,7 +137,12 @@ export default function CatPage({ params }: CatPageProps) {
 
       <div className="mt-8 grid gap-10 lg:grid-cols-[1.25fr_0.75fr]">
         <Reveal>
-          <PhotoGallery photos={cat.photos} alt={cat.name} />
+          <PhotoGallery
+            photos={cat.photos}
+            fullPhotos={cat.photosFull}
+            alt={cat.name}
+            transitionName={photoTransitionName(`/cats/${cat.slug}`)}
+          />
         </Reveal>
 
         <Reveal delay={120} className="h-full">
