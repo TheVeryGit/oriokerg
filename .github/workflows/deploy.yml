@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+  # Кнопка «Run workflow» в Actions — ручной перезапуск деплоя без пуша.
+  workflow_dispatch:
 
 jobs:
   deploy:
