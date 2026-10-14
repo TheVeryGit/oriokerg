@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import { Manrope, Playfair_Display } from "next/font/google";
 import type { ReactNode } from "react";
 
 import { CookieConsent } from "@/components/CookieConsent";
@@ -12,24 +11,14 @@ import type { ContactsSettings } from "@/lib/content";
 import { getSettings } from "@/lib/content";
 import { isRealPhone, phoneE164 } from "@/lib/format";
 
+// Шрифты лежат в проекте (@fontsource-variable), а не качаются с Google Fonts при
+// сборке: next/font/google однажды уронил деплой на GitHub Actions из-за ответа Google.
+// Manrope — текст, Playfair Display — заголовки (didone «Vogue»-драма). Обе с кириллицей;
+// браузер грузит только нужные подмножества (unicode-range). Семейства — в globals.css.
+import "@fontsource-variable/manrope/wght.css";
+import "@fontsource-variable/playfair-display/wght.css";
+import "@fontsource-variable/playfair-display/wght-italic.css";
 import "./globals.css";
-
-// Body face — distinctive, full Cyrillic, premium (intentionally NOT Inter/Roboto).
-const sans = Manrope({
-  subsets: ["latin", "cyrillic"],
-  weight: ["400", "500", "600", "700"],
-  display: "swap",
-  variable: "--font-sans",
-});
-
-// Playfair Display — high-contrast didone («Vogue»-драма), полная кириллица.
-const serif = Playfair_Display({
-  subsets: ["latin", "cyrillic"],
-  weight: ["400", "500", "600", "700", "800", "900"],
-  style: ["normal", "italic"],
-  display: "swap",
-  variable: "--font-serif",
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://oriokerg.ru"),
@@ -125,7 +114,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="ru" suppressHydrationWarning>
       <body
-        className={`${sans.variable} ${serif.variable} relative min-h-screen bg-background text-foreground`}
+        className={`relative min-h-screen bg-background text-foreground`}
       >
         <JsonLd data={organizationLd} />
         <YandexMetrika />

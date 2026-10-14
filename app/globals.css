@@ -3,6 +3,10 @@
 @tailwind utilities;
 
 :root {
+  /* Шрифты: файлы из @fontsource-variable (подключены в app/layout.tsx). */
+  --font-sans: "Manrope Variable";
+  --font-serif: "Playfair Display Variable";
+
   /* «Editorial Noir»: тёмный журнальный люкс — графит + тёплый айвори + золото.
      Tokens are space-separated RGB CHANNELS (not hex) so Tailwind opacity
      modifiers (bg-card/70, bg-surface-2/50, …) actually work. Use them in raw
